@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+# DONIGER: Added import os here going off of Prof. Sherriff's additions to settings.txt to fix common issues
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,8 @@ SECRET_KEY = 'django-insecure-lavbz$wk&8@o^!_%bxp5@7nnhk4#i01-t^b%*!$&dfee32b105
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# DONIGER: Added both the local host and herokuapp.com here to handled the DisallowedHost error as seen in Prof. Sherriff's additions.
+ALLOWED_HOSTS = ['localhost','127.0.0.1','staff-build-example.herokuapp.com']
 
 
 # Application definition
@@ -115,9 +118,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+# DONIGER: Added the static_root variable here to fix an erorr with static files not being found as seen in Prof. Sherriff's additions
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# DONIGER copying Prof Sherriff's additions
+# Activate Django-Heroku.
+# Use this code to avoid the psycopg2 / django-heroku error!
+# Do NOT import django-heroku above!
+try:
+    if 'HEROKU' in os.environ:
+        import django_heroku
+        django_heroku.settings(locals())
+except ImportError:
+    found = False
