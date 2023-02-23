@@ -55,7 +55,8 @@ SOCIALACCOUNT_LOGIN_ON_GET=True
 
 # IMMEL: for oauth
 AUTHENTICATION_BACKENDS = [
-    'allauth.account.auth_backends.AuthenticationBackend'
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
     ]
 
 # IMMEL: for oauth
