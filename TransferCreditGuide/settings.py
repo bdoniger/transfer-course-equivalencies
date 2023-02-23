@@ -37,7 +37,6 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1','transfer-credit-guide.herokuapp.com']
 # Application definition
 # IMMEl: Add necessary apps for oauth
 INSTALLED_APPS = [
-    'login.app.LoginConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
