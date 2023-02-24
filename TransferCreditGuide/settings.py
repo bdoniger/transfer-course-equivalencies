@@ -32,7 +32,7 @@ DEBUG = True
 # DONIGER: Added both the local host and herokuapp.com here to handled the DisallowedHost error as seen in Prof. Sherriff's additions.
 ALLOWED_HOSTS = ['localhost','127.0.0.1','transfer-credit-guide.herokuapp.com']
 
-SITE_ID = 2
+SITE_ID = 3
 
 # Application definition
 INSTALLED_APPS = [
