@@ -32,6 +32,7 @@ DEBUG = True
 # DONIGER: Added both the local host and herokuapp.com here to handled the DisallowedHost error as seen in Prof. Sherriff's additions.
 ALLOWED_HOSTS = ['localhost','127.0.0.1','transfer-credit-guide.herokuapp.com']
 
+SITE_ID = 2
 
 # Application definition
 INSTALLED_APPS = [
@@ -41,8 +42,33 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
+SOCIALACCOUNT_LOGIN_ON_GET=True
+
+AUTHENTICATION_BACKENDS = [
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,7 +86,9 @@ ROOT_URLCONF = 'TransferCreditGuide.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'TransferGuide/templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
