@@ -4,7 +4,7 @@
         {%  if '@virginia.edu' in user.email %}
             <p>Logged in as student {{ user.username }}</p>
         {%  else %}
-            <p>Logged in as admin {{ user.email }}</p>
+            <p>Logged in as admin {{ user.username }}</p>
         {%  endif %}
     {%  else %}
         <p>You are not logged in</p>
