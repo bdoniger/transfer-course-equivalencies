@@ -5,7 +5,7 @@
           <p>Logged in as {{ user.username }} (admin)</p>
     {%  else %}
         <p>Logged in as {{ user.username }} (student</p>
-    {% endif %}
+
         <p>You are not logged in</p>
         <button class="btn btn-outline-info">
         <a href="{% provider_login_url 'google'%}?next=/">
