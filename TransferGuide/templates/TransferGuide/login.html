@@ -1,11 +1,7 @@
 {% load socialaccount %}
 {% block content %}
     {%  if user.is_authenticated %}
-        {%  if '@virginia.edu' in user.email %}
-            <p>Logged in as student {{ user.username }}</p>
-        {%  else %}
-            <p>Logged in as admin {{ user.username }}</p>
-        {%  endif %}
+          <p>Logged in as student {{ user.usertype }}</p>
     {%  else %}
         <p>You are not logged in</p>
         <button class="btn btn-outline-info">
