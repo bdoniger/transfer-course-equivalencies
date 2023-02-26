@@ -1,7 +1,7 @@
 {% load socialaccount %}
 {% block content %}
-    {%  if user.is_authenticated %}
-          <p>Logged in as student {{ user.usertype }}</p>
+    {% if user.is_superuser %}
+          <p>Logged in as {{ user.usertype }}</p>
     {%  else %}
         <p>You are not logged in</p>
         <button class="btn btn-outline-info">
