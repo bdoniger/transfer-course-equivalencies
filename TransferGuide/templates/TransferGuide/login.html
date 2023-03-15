@@ -1,3 +1,4 @@
+{% block content %}
 <style>
 nav {
     background-color: black;
@@ -35,26 +36,48 @@ li a:hover {
 
 
 {% load socialaccount %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Styling Buttons</title>
+      <style>
+        .NotLog {
+            margin: auto;
+            width: 50%;
+            border: 3px solid green;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+</html>
+
+
+
 {% if user.is_authenticated %}
     <nav>
     <ul>
-     <li><a href="https://transfer-credit-guide.herokuapp.com/">Home1</a></li>
-     <li><a href="https://transfer-credit-guide.herokuapp.com/">Class Infos</a></li>
+     <li><a href="{% url 'index' %}">Home1</a></li>
+     <li><a href="{% url 'index' %}">Class Infos</a></li>
     </ul>
     </nav>
     {% if user.is_superuser %}
           <p>Logged in as {{ user.username }} (admin)</p>
              <div class="user_panel">
-                    <a href="/logout">logout</a>
+                    <a href="{% url 'logout' %}">logout</a>
              </div>
     {%  else %}
         <p>Logged in as {{ user.username }} (student)</p>
             <div class="user_panel">
-                    <a href="/logout">logout</a>
+                    <a href="{% url 'logout' %}">logout</a>
              </div>
     {% endif %}
 {% else %}
+<div class = 'NotLog'>
         <p>You are not logged in</p>
         <button class="btn btn-outline-info">
         <a href="{% provider_login_url 'google'%}?next=/">
@@ -62,5 +85,8 @@ li a:hover {
             Login with Google
         </a>
     </button>
+</div>
+
+
 {%  endif %}
 {% endblock content %}
