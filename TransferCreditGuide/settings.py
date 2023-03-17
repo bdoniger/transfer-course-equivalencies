@@ -77,8 +77,6 @@ RQ_QUEUES = {
          'DB': 0,
          'DEFAULT_TIMEOUT': 480,
      }
-
-     
     'with-sentinel': {
         'SENTINELS': [('localhost', 26736), ('localhost', 26737)],
         'MASTER_NAME': 'redismaster',
