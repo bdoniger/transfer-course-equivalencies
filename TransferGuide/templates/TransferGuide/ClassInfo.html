@@ -1,6 +1,6 @@
 <style>
 nav {
-    background-color: black;
+    background-color: #232D4B;
     height: 50px;
 }
 
@@ -18,14 +18,20 @@ nav ul li{
 
 li a {
     text-decoration: none;
-    color:white;
+    color:#EB5F0C;
     line-height: 50px;
 }
 
 li a:hover {
-    background-color: yellow;
-    color: green;
+    background-color: #E57200;
+    color: #141E3C;
 
+}
+
+li name {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
 }
 
 
@@ -33,7 +39,9 @@ li a:hover {
 
 <nav>
     <ul>
-     <li><a href="https://transfer-credit-guide.herokuapp.com/">Home1</a></li>
-     <li><a href="https://transfer-credit-guide.herokuapp.com/">Class Infos</a></li>
+     <li><a href="https://transfer-credit-guide.herokuapp.com/">Home</a></li>
+     <li><a href="https://transfer-credit-guide.herokuapp.com/">Courses</a></li>
+     <li><name>Welcome {{ user.username }}!</name></li>
+     <li><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
 </nav>
