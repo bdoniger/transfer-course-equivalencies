@@ -67,7 +67,7 @@ RQ_QUEUES = {
          'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379'),  # If you're
          'DB': 0,
          'DEFAULT_TIMEOUT': 480,
-     },'''
+     }'''
     'with-sentinel': {
         'SENTINELS': [('localhost', 26736), ('localhost', 26737)],
         'MASTER_NAME': 'redismaster',
