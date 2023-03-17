@@ -58,18 +58,16 @@ SOCIALACCOUNT_LOGIN_ON_GET=True
 
 #background task setup
 
+
+
 RQ_QUEUES = {
     'default': {
-        'HOST': 'localhost',
-        'PORT': 6379,
-        'DB': 0,
-        'USERNAME': 'some-user',
-        'PASSWORD': 'some-password',
-        'DEFAULT_TIMEOUT': 360,
-        'REDIS_CLIENT_KWARGS': {    # Eventual additional Redis connection arguments
-            'ssl_cert_reqs': None,
-        },
-    },
+         'HOST': 'localhost',
+         'PORT': '6379',
+         'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379'),  # If you're
+         'DB': 0,
+         'DEFAULT_TIMEOUT': 480,
+     },
     'with-sentinel': {
         'SENTINELS': [('localhost', 26736), ('localhost', 26737)],
         'MASTER_NAME': 'redismaster',
@@ -88,7 +86,7 @@ RQ_QUEUES = {
         },
     },
     'high': {
-        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'), # If you're on Heroku
+        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379'),#'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'), # If you're on Heroku
         'DEFAULT_TIMEOUT': 500,
     },
     'low': {
