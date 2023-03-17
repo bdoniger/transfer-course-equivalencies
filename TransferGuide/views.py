@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 
 def index(request):
@@ -13,6 +14,8 @@ def Info(request):
 
 def logoutt(request):
     logout(request)
-    return render(request, 'TransferGuide/login.html')
 
+    response = redirect('https://transfer-credit-guide.herokuapp.com/')
+    return response
+    # return render(request, 'TransferGuide/login.html')
 
