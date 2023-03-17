@@ -4,7 +4,7 @@ from django.contrib.auth import logout
 
 import django_rq as RQ
 from .tasks import sisBackground
-=======
+
 from django.db import models
 from .models import Course
 from django.core.exceptions import ObjectDoesNotExist 
