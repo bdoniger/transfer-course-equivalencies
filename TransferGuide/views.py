@@ -28,7 +28,7 @@ def logoutt(request):
     # return render(request, 'TransferGuide/login.html')
 
 def sisUpdate(request):
-    queue = RQ.get_queue('default')
+    queue = RQ.get_queue('high')
     queue.enqueue(sisBackground)
     return render(request, 'TransferGuide/ClassInfo.html')
         
