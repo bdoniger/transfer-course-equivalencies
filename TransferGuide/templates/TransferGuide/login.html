@@ -1,7 +1,7 @@
 {% block content %}
 <style>
 nav {
-    background-color: black;
+    background-color: #232D4B;
     height: 50px;
 }
 
@@ -19,15 +19,23 @@ nav ul li{
 
 li a {
     text-decoration: none;
-    color:white;
+    color:#EB5F0C;
     line-height: 50px;
 }
 
 li a:hover {
-    background-color: yellow;
-    color: green;
+    background-color: #E57200;
+    color: #141E3C;
 
 }
+
+li name {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+
 
 
 </style>
@@ -40,16 +48,17 @@ li a:hover {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Styling Buttons</title>
-      <style>
-        .NotLog {
-            margin: auto;
-            width: 50%;
-            border: 3px solid green;
-            padding: 10px;
-            text-align: center;
-        }
-    </style>
+    <title>Transfer Guide</title>
+<!--      <style>-->
+<!--        .NotLog {-->
+<!--            margin: auto;-->
+<!--            width: 50%;-->
+<!--            border: 5px solid #EB5F0C;-->
+<!--            padding: 10px;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--    </style>-->
 </head>
 <body>
 
@@ -61,30 +70,26 @@ li a:hover {
 {% if user.is_authenticated %}
     <nav>
     <ul>
-     <li><a href="{% url 'index' %}">Home1</a></li>
-     <li><a href="{% url 'index' %}">Class Infos</a></li>
+     <li><a href="{% url 'index' %}">Home</a></li>
+     <li><a href="{% url 'index' %}">Courses</a></li>
+     <li><name>Welcome {{ user.username }}!</name></li>
+     <li><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
     </nav>
     {% if user.is_superuser %}
           <p>Logged in as {{ user.username }} (admin)</p>
-             <div class="user_panel">
-                    <a href="{% url 'logout' %}">logout</a>
-             </div>
     {%  else %}
         <p>Logged in as {{ user.username }} (student)</p>
-            <div class="user_panel">
-                    <a href="{% url 'logout' %}">logout</a>
-             </div>
     {% endif %}
 {% else %}
 <div class = 'NotLog'>
-        <p>You are not logged in</p>
-        <button class="btn btn-outline-info">
-        <a href="{% provider_login_url 'google'%}?next=/">
-            <i class="fab fa-google"></i>
-            Login with Google
-        </a>
-    </button>
+    <nav>
+    <ul>
+     <li><a href="{% url 'index' %}">Home</a></li>
+     <li><a href="{% url 'index' %}">Courses</a></li>
+     <li><a href="{% provider_login_url 'google'%}?next=/">Login with Google</a></li>
+    </ul>
+    </nav>
 </div>
 
 
