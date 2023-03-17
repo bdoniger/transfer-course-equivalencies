@@ -56,6 +56,8 @@ INSTALLED_APPS = [
 
 SOCIALACCOUNT_LOGIN_ON_GET=True
 
+#background task setup
+
 RQ_QUEUES = {
     'default': {
         'HOST': 'localhost',
