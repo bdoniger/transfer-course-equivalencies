@@ -57,27 +57,10 @@ INSTALLED_APPS = [
 SOCIALACCOUNT_LOGIN_ON_GET=True
 
 #background task setup
-'''
-RQ_QUEUES = {
-    'default': {
-         'HOST': 'localhost',
-         'PORT': '6379',
-         'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379'),  # If you're
-         'DB': 0,
-         'DEFAULT_TIMEOUT': 480,
-     }
-}'''
-RQ_QUEUES = {
-    "default": {
-        "HOST": "redis",
-        "PORT": "6379",
-        "URL": os.getenv("REDISTOGO_URL", "redis://redis:6379"),  # If you're
-        "DB": 0,
-        "DEFAULT_TIMEOUT": 480,
-    }
-}
-'''
 
+
+
+'''
 RQ_QUEUES = {
     'default': {
          'HOST': 'localhost',
