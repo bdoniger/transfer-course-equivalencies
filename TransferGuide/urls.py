@@ -9,3 +9,7 @@ urlpatterns = [
     path('accounts/logout/', views.logoutt, name='logout'),
     path('sisUpdate/', views.sisUpdate, name='update')
 ]
+
+urlpatterns += [
+    path('django-rq/', include('django_rq.urls'))
+]
