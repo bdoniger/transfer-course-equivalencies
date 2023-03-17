@@ -5,6 +5,7 @@ from django.db import models
 from .models import Course
 from django.core.exceptions import ObjectDoesNotExist 
 from django.core.exceptions import MultipleObjectsReturned
+from django.shortcuts import redirect
 import requests
 
 
@@ -18,7 +19,10 @@ def Info(request):
 
 def logoutt(request):
     logout(request)
-    return render(request, 'TransferGuide/login.html')
+
+    response = redirect('https://transfer-credit-guide.herokuapp.com/')
+    return response
+    # return render(request, 'TransferGuide/login.html')
 
 def sisUpdate(request):
     #library info found from https://requests.readthedocs.io/en/latest/user/quickstart/
