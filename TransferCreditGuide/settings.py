@@ -34,10 +34,12 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1','transfer-credit-guide.herokuapp.com']
 
 SITE_ID = 3
 
+
 SECURE_SSL_REDIRECT = True
 
 # Application definition
 INSTALLED_APPS = [
+    'TransferGuide.apps.TransferguideConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
