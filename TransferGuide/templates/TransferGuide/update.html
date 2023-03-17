@@ -1,0 +1,19 @@
+<SCRIPT TYPE="text/javascript"> 
+    function popup(mylink, windowname) 
+    { 
+        if (! window.focus)return true; 
+        var href; 
+        if (typeof(mylink) == 'string') href=mylink; 
+        else href=mylink.href; 
+        window.location.href = href;
+        
+        return false; 
+    } 
+</SCRIPT>
+<header>
+    <h1>Updating classes from SIS, this may take a while</h1>
+</header>
+<BODY onLoad="popup('/sisUpdate/{{param}}', 'notes')">
+    <label for="file">Updating Progress: {{percent}}%</label>
+    <progress id="file" value="{{percent}}" max="100"> {{percent}}% </progress>
+</BODY>

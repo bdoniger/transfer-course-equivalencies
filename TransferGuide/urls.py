@@ -7,9 +7,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('ClassInfos/', views.Info, name='Info'),
     path('accounts/logout/', views.logoutt, name='logout'),
-    path('sisUpdate/', views.sisUpdate, name='update')
-]
-
-urlpatterns += [
-    path('django-rq/', include('django_rq.urls'))
+    path('sisUpdate/<semester>/<page>/<subjectNum>/', views.sisUpdate, name='update'),
+    path('displayUpdate/<semester>/<page>/<subjectNum>/', views.displayUpdate, name='update')
 ]
