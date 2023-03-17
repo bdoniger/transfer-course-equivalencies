@@ -4,7 +4,6 @@ from django.contrib.auth import logout
 
 import django_rq as RQ
 from .tasks import sisBackground
-=======
 from django.db import models
 from .models import Course
 from django.core.exceptions import ObjectDoesNotExist 
@@ -29,7 +28,7 @@ def logoutt(request):
     # return render(request, 'TransferGuide/login.html')
 
 def sisUpdate(request):
-    queue = RQ.get_queue('high')
+    queue = RQ.get_queue('default')
     queue.enqueue(sisBackground)
     return render(request, 'TransferGuide/ClassInfo.html')
         
