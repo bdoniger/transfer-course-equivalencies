@@ -71,7 +71,7 @@ li name {
     <nav>
     <ul>
      <li><a href="{% url 'index' %}">Home</a></li>
-     <li><a href="{% url 'index' %}">Courses</a></li>
+     <li><a href="{% url 'allCourses' %}">Courses</a></li>
      <li><name>Welcome {{ user.username }}!</name></li>
      <li><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
@@ -86,7 +86,7 @@ li name {
     <nav>
     <ul>
      <li><a href="{% url 'index' %}">Home</a></li>
-     <li><a href="{% url 'index' %}">Courses</a></li>
+     <li><a href="{% url 'allCourses' %}">Courses</a></li>
      <li><a href="{% provider_login_url 'google'%}?next=/">Login with Google</a></li>
     </ul>
     </nav>

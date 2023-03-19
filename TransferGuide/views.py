@@ -97,4 +97,4 @@ class CoursesViewAll(generic.ListView):
         """
         Return all course
         """
-        return Course.objects.all()
+        return Course.objects.all().order_by('courseSubject')
