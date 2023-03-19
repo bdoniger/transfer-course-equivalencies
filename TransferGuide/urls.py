@@ -8,5 +8,6 @@ urlpatterns = [
     path('ClassInfos/', views.Info, name='Info'),
     path('accounts/logout/', views.logoutt, name='logout'),
     path('sisUpdate/<semester>/<page>/<subjectNum>/', views.sisUpdate, name='update'),
-    path('displayUpdate/<semester>/<page>/<subjectNum>/', views.displayUpdate, name='update')
+    path('displayUpdate/<semester>/<page>/<subjectNum>/', views.displayUpdate, name='update'),
+    path('allCourses', views.CoursesViewAll.as_view(), name='allCourses')
 ]

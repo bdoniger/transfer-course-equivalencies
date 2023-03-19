@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import logout
 from django.template import loader
+from django.views import generic
+
 from .tasks import sisBackground
 from django.db import models
 from .models import Course
@@ -85,4 +87,14 @@ def sisUpdate(request, semester, page, subjectNum):
     response = redirect('/displayUpdate/'+str(semester)+'/'+str(page)+'/'+str(subjectNum)+'/')
     return response
     #return render(request, 'TransferGuide/ClassInfo.html')
-     
+
+
+class CoursesViewAll(generic.ListView):
+    template_name = 'TransferGuide/allCourses.html'
+    context_object_name = 'all_courses_list'
+
+    def get_queryset(self):
+        """
+        Return all course
+        """
+        return Course.objects.all()

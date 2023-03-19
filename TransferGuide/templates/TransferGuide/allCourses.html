@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+
+<style>
+nav {
+    background-color: #232D4B;
+    height: 50px;
+}
+
+nav ul{
+
+}
+
+nav ul li{
+    list-style-type: none;
+    width: 150px;
+    float: left;
+    border-right: 1px solid #ccc;
+    text-align: center;
+}
+
+li a {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+li a:hover {
+    background-color: #E57200;
+    color: #141E3C;
+
+}
+
+li name {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+.container {
+            position: absolute;
+            top: 120px;
+            left: 0;
+            right: 0;
+            bottom: 120px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            height: 100vh; /* sets height to full viewport height */
+            width: 100%;
+            {#background-color: #232d4b;#}
+            z-index: 0;
+        }
+
+</style>
+
+<nav>
+    <ul>
+     <li><a href="https://transfer-credit-guide.herokuapp.com/">Home</a></li>
+     <li><a href="https://transfer-credit-guide.herokuapp.com/">Courses</a></li>
+     <li><name>Welcome {{ user.username }}!</name></li>
+     <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+</nav>
+
+
+<body>
+<div class="content">
+<div style="text-align: center" class="container">
+    {% if all_courses_list %}
+    <table>
+        <thead>
+        <tr>
+            <th>Course Subject</th>
+            <th>Course Number</th>
+            <th>Course Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for course in all_courses_list %}
+        <tr>
+            <td>{{ course.courseSubject }}</td>
+            <td>{{ course.courseNumber }}</td>
+            <td>{{ course.courseName }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+        </tbody>
+        {% else %}
+        <h2>No courses are available.</h2>
+        {% endif %}
+    </table>
+</div>
+</div>
+</body>
+</html>
