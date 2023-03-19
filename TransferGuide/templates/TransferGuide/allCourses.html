@@ -63,30 +63,119 @@ li name {
     <ul>
      <li><a href="{% url 'index' %}">Home</a></li>
      <li><a href="{% url 'allCourses' %}">Courses</a></li>
-     <li><name>Welcome {{ user.username }}!</name></li>
+        {% if user.is_authenticated %}
+        <li><name>Welcome {{ user.username }}!</name></li>
+        {% endif %}
      <li><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
 </nav>
 
 
 <body>
-<div class="content">
-<div style="text-align: center" class="container">
+{#<div class="content">#}
+{#<div class="container">#}
+{#    {% if all_courses_list %}#}
+{#    <table>#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>Course Subject</th>#}
+{#            <th>Course Number</th>#}
+{#            <th>Course Name</th>#}
+{#        </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for course in all_courses_list %}#}
+{#        <tr>#}
+{#            <td>{{ course.courseSubject }}</td>#}
+{#            <td>{{ course.courseNumber }}</td>#}
+{#            <td>{{ course.courseName }}</td>#}
+{#        </tr>#}
+{#        {% endfor %}#}
+{#        <tr>#}
+{#        </tbody>#}
+{#        {% else %}#}
+{#        <h2>No courses are available.</h2>#}
+{#        {% endif %}#}
+{#    </table>#}
+
+
+{#    {% if all_courses_list %}#}
+{#    <table>#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>Course Subject</th>#}
+{#            <th>Course Number</th>#}
+{#            <th>Course Name</th>#}
+{#        </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for subject in all_courses_list.subjects %}#}
+{#        <tr>#}
+{#        <td>#}
+{#        <details>#}
+{#          <summary>#}
+{#            {{ subject.courseSubject }}#}
+{#          </summary>#}
+{#          <p style="text-align: left">#}
+{#            {% for course in all_courses_list.courses %}#}
+{#                {% if course.courseSubject == subject.courseSubject %}#}
+{#                    {{ course.courseSubject }}#}
+{#                    {{ course.courseNumber }}#}
+{#                    {{ course.courseName }}#}
+{#                    <br>#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{#          </p>#}
+{#        </details>#}
+{#        </td>#}
+{##}
+{#        </tr>#}
+{#        {% endfor %}#}
+{#        <tr>#}
+{#        </tbody>#}
+{#        {% else %}#}
+{#        <h2>No courses are available.</h2>#}
+{#        {% endif %}#}
+{#    </table>#}
+
     {% if all_courses_list %}
     <table>
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>Course Subject</th>#}
+{#            <th>Course Number</th>#}
+{#            <th>Course Name</th>#}
+{#        </tr>#}
+{#        </thead>#}
+        <tbody>
+        {% for subject in all_courses_list.subjects %}
+        <tr>
+        <td>
+        <details>
+          <summary style="text-align:left">
+            {{ subject.courseSubject }}
+          </summary>
+        <table>
         <thead>
         <tr>
-            <th>Course Subject</th>
-            <th>Course Number</th>
-            <th>Course Name</th>
+            <th>Subject</th>
+            <th>Number</th>
+            <th>Name</th>
         </tr>
         </thead>
-        <tbody>
-        {% for course in all_courses_list %}
-        <tr>
-            <td>{{ course.courseSubject }}</td>
-            <td>{{ course.courseNumber }}</td>
-            <td>{{ course.courseName }}</td>
+            {% for course in all_courses_list.courses %}
+                {% if course.courseSubject == subject.courseSubject %}
+                    <tr>
+                        <td>{{ course.courseSubject }}</td>
+                        <td>{{ course.courseNumber }}</td>
+                        <td style="text-align: left">{{ course.courseName }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+        </details>
+        </td>
+
         </tr>
         {% endfor %}
         <tr>
@@ -95,7 +184,8 @@ li name {
         <h2>No courses are available.</h2>
         {% endif %}
     </table>
-</div>
-</div>
+
+{#</div>#}
+{#</div>#}
 </body>
 </html>

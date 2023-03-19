@@ -7,12 +7,13 @@ from django.views import generic
 from .tasks import sisBackground
 from django.db import models
 from .models import Course
-from django.core.exceptions import ObjectDoesNotExist 
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import MultipleObjectsReturned
 from django.shortcuts import redirect
-import requests 
+import requests
 
 subjectList = []
+
 
 def index(request):
     return render(request, 'TransferGuide/login.html')
@@ -29,29 +30,30 @@ def logoutt(request):
     return response
     # return render(request, 'TransferGuide/login.html')
 
+
 def displayUpdate(request, semester, page, subjectNum):
-    
     template = loader.get_template('TransferGuide/update.html')
-    param = str(semester)+'/'+str(page)+'/'+str(subjectNum)+'/'
-    num = (int(semester)*202 + int(subjectNum) )*100
-    percent = int(num/808)
+    param = str(semester) + '/' + str(page) + '/' + str(subjectNum) + '/'
+    num = (int(semester) * 202 + int(subjectNum)) * 100
+    percent = int(num / 808)
     context = {
         'param': param,
         'percent': percent,
     }
-    return HttpResponse(template.render(context,request))
+    return HttpResponse(template.render(context, request))
+
 
 def sisUpdate(request, semester, page, subjectNum):
-
-    semesters = ['1231', '1232', '1236','1238']
+    semesters = ['1231', '1232', '1236', '1238']
     semester = int(semester)
     subjectNum = int(subjectNum)
     page = int(page)
     if subjectList == []:
-        info = requests.get('https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearchOptions?institution=UVA01&term=1232')
+        info = requests.get(
+            'https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearchOptions?institution=UVA01&term=1232')
         data = info.json()
         a = data['subjects']
-    
+
         gettingSubjects = True
         x = 0
         while gettingSubjects:
@@ -64,29 +66,28 @@ def sisUpdate(request, semester, page, subjectNum):
                 print(subjectList)
                 gettingSubjects = False
                 break
-            
-            x = x+1
-    
+
+            x = x + 1
 
     test = sisBackground(semesters[semester], subjectList[subjectNum], page)
 
-    if(test):
-            subjectNum = subjectNum+1
-            page = 1
+    if (test):
+        subjectNum = subjectNum + 1
+        page = 1
     else:
-        page = page+1
-    
-    if(subjectNum == len(subjectList)):
+        page = page + 1
+
+    if (subjectNum == len(subjectList)):
         subjectNum = 0
         page = 1
-        semester = semester+1
-    
-    if(semester == 4):
+        semester = semester + 1
+
+    if (semester == 4):
         return render(request, 'TransferGuide/ClassInfo.html')
-    
-    response = redirect('/displayUpdate/'+str(semester)+'/'+str(page)+'/'+str(subjectNum)+'/')
+
+    response = redirect('/displayUpdate/' + str(semester) + '/' + str(page) + '/' + str(subjectNum) + '/')
     return response
-    #return render(request, 'TransferGuide/ClassInfo.html')
+    # return render(request, 'TransferGuide/ClassInfo.html')
 
 
 class CoursesViewAll(generic.ListView):
@@ -94,7 +95,7 @@ class CoursesViewAll(generic.ListView):
     context_object_name = 'all_courses_list'
 
     def get_queryset(self):
-        """
-        Return all course
-        """
-        return Course.objects.all().order_by('courseSubject')
+        return {
+            "courses": Course.objects.all().order_by('courseSubject'),
+            "subjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+        }
