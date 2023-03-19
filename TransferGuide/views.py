@@ -96,6 +96,6 @@ class CoursesViewAll(generic.ListView):
 
     def get_queryset(self):
         return {
-            "courses": Course.objects.all().order_by('courseSubject'),
+            "courses": Course.objects.all().order_by('courseSubject', 'courseNumber'),
             "subjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
         }
