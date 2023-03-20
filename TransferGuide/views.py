@@ -10,6 +10,7 @@ from django.shortcuts import redirect
 import requests
 
 from django.db.models import Q
+
 subjectList = []
 
 
@@ -109,21 +110,27 @@ class SearchResultsView(generic.ListView):
         subject_query = self.request.GET.get("subject")
         number_query = self.request.GET.get("number")
         name_query = self.request.GET.get("name")
-        print(subject_query, number_query, name_query)
+        # print(subject_query, number_query, name_query)
         queryset = {}
+        if subject_query is None:
+            subject_query = ''
         if subject_query is not None:
             subject_query = subject_query.upper()
         if name_query is None:
             name_query = ''
+        if number_query is None:
+            number_query = -1
 
         # All 3 parameters so should be &
         if (subject_query != '') & (number_query != '') & (name_query != ''):
             queryset = {
                 "courses": Course.objects.filter(
-                    Q(courseSubject=subject_query) & Q(courseNumber=number_query) & Q(courseName__icontains=name_query))
+                    Q(courseSubject__icontains=subject_query) & Q(courseNumber__contains=number_query) & Q(
+                        courseName__icontains=name_query))
                 .order_by('courseSubject', 'courseNumber'),
                 "subjects": Course.objects.filter(
-                    Q(courseSubject=subject_query) & Q(courseNumber=number_query) & Q(courseName__icontains=name_query))
+                    Q(courseSubject__icontains=subject_query) & Q(courseNumber__contains=number_query) & Q(
+                        courseName__icontains=name_query))
                 .values('courseSubject').order_by('courseSubject').distinct()
             }
 
@@ -131,10 +138,10 @@ class SearchResultsView(generic.ListView):
         elif (subject_query != '') & (number_query != ''):
             queryset = {
                 "courses": Course.objects.filter(
-                    Q(courseSubject=subject_query) & Q(courseNumber=number_query))
+                    Q(courseSubject__icontains=subject_query) & Q(courseNumber__contains=number_query))
                 .order_by('courseSubject', 'courseNumber'),
                 "subjects": Course.objects.filter(
-                    Q(courseSubject=subject_query) & Q(courseNumber=number_query))
+                    Q(courseSubject__icontains=subject_query) & Q(courseNumber__contains=number_query))
                 .values('courseSubject').order_by('courseSubject').distinct()
             }
 
@@ -142,10 +149,10 @@ class SearchResultsView(generic.ListView):
         elif (subject_query != '') & (name_query != ''):
             queryset = {
                 "courses": Course.objects.filter(
-                    Q(courseSubject=subject_query) & Q(courseName__icontains=name_query))
+                    Q(courseSubject__icontains=subject_query) & Q(courseName__icontains=name_query))
                 .order_by('courseSubject', 'courseNumber'),
                 "subjects": Course.objects.filter(
-                    Q(courseSubject=subject_query) & Q(courseName__icontains=name_query))
+                    Q(courseSubject__icontains=subject_query) & Q(courseName__icontains=name_query))
                 .values('courseSubject').order_by('courseSubject').distinct()
             }
 
@@ -153,20 +160,20 @@ class SearchResultsView(generic.ListView):
         elif (number_query != '') & (name_query != ''):
             queryset = {
                 "courses": Course.objects.filter(
-                    Q(courseNumber=number_query) & Q(courseName__icontains=name_query))
+                    Q(courseNumber__contains=number_query) & Q(courseName__icontains=name_query))
                 .order_by('courseSubject', 'courseNumber'),
                 "subjects": Course.objects.filter(
-                    Q(courseNumber=number_query) & Q(courseName__icontains=name_query))
+                    Q(courseNumber__contains=number_query) & Q(courseName__icontains=name_query))
                 .values('courseSubject').order_by('courseSubject').distinct()
             }
         # Just Subject
         elif subject_query != '':
             queryset = {
                 "courses": Course.objects.filter(
-                    Q(courseSubject=subject_query))
+                    Q(courseSubject__icontains=subject_query))
                 .order_by('courseSubject', 'courseNumber'),
                 "subjects": Course.objects.filter(
-                    Q(courseSubject=subject_query))
+                    Q(courseSubject__icontains=subject_query))
                 .values('courseSubject').order_by('courseSubject').distinct()
             }
 
@@ -174,10 +181,10 @@ class SearchResultsView(generic.ListView):
         elif number_query != '':
             queryset = {
                 "courses": Course.objects.filter(
-                    Q(courseNumber=number_query))
+                    Q(courseNumber__contains=number_query))
                 .order_by('courseSubject', 'courseNumber'),
                 "subjects": Course.objects.filter(
-                    Q(courseNumber=number_query))
+                    Q(courseNumber__contains=number_query))
                 .values('courseSubject').order_by('courseSubject').distinct()
             }
 

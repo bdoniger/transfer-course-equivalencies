@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Info</title>
+</head>
+
+<style>
+    nav {
+    background-color: #232D4B;
+    height: 50px;
+    overflow: clip;
+}
+
+nav ul{
+
+}
+
+nav ul li{
+    list-style-type: none;
+    width: 150px;
+    float: left;
+    border-right: 1px solid #ccc;
+    text-align: center;
+}
+
+li a {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+li a:hover {
+    background-color: #E57200;
+    color: #141E3C;
+
+}
+
+li name {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+.container {
+    top: 140px;
+    float: left;
+    left: 9px;
+    right: 0;
+    {#bottom: 0;#}
+    display: flex;
+    align-items: flex-start;
+    justify-content: left;
+    {#height: 100vh; /* sets height to full viewport height */#}
+    width: 100%;
+}
+
+</style>
+
+<body>
+{% load socialaccount %}
+<nav>
+    <ul>
+     <li><a href="{% url 'index' %}">Home</a></li>
+     <li><a href="{% url 'allCourses' %}">All Courses</a></li>
+     <li><a href="{% url 'search_results' %}">Course Search</a></li>
+        {% if user.is_authenticated %}
+        <li><name>Welcome {{ user.username }}!</name></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+        {%  else %}
+            <li><a href="{% provider_login_url 'google'%}?next=/">Login with Google</a></li>
+        {% endif %}
+    </ul>
+</nav>
+<div>
+    <a>Course:</a>
+    {% if course_info %}
+        {% for course in course_info %}
+            {{ course.courseSubject }}
+            {{ course.courseNumber }}
+            {{ course.courseName }}
+        {% endfor %}
+    {% endif %}
+    <br>
+    <a>Known courses that transfer:</a>
+    <a>None</a>
+    <br>
+    <a>Known courses that <i>do not</i> transfer:</a>
+    <a>None</a>
+</div>
+
+</body>
+</html>
