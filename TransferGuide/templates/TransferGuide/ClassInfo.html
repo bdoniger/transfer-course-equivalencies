@@ -1,7 +1,9 @@
+{% load socialaccount %}
 <style>
 nav {
     background-color: #232D4B;
     height: 50px;
+    overflow: clip;
 }
 
 nav ul{
@@ -39,9 +41,14 @@ li name {
 
 <nav>
     <ul>
-     <li><a href="https://transfer-credit-guide.herokuapp.com/">Home</a></li>
-     <li><a href="https://transfer-credit-guide.herokuapp.com/">Courses</a></li>
-     <li><name>Welcome {{ user.username }}!</name></li>
-     <li><a href="{% url 'logout' %}">Logout</a></li>
+     <li><a href="{% url 'index' %}">Home</a></li>
+     <li><a href="{% url 'allCourses' %}">All Courses</a></li>
+     <li><a href="{% url 'search_results' %}">Course Search</a></li>
+        {% if user.is_authenticated %}
+        <li><name>Welcome {{ user.username }}!</name></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+        {%  else %}
+            <li><a href="{% provider_login_url 'google'%}?next=/">Login with Google</a></li>
+        {% endif %}
     </ul>
 </nav>

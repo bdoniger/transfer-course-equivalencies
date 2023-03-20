@@ -11,6 +11,7 @@
 nav {
     background-color: #232D4B;
     height: 50px;
+    overflow: clip;
 }
 
 nav ul{
@@ -49,7 +50,8 @@ li name {
 <nav>
     <ul>
      <li><a href="{% url 'index' %}">Home</a></li>
-     <li><a href="{% url 'allCourses' %}">Courses</a></li>
+     <li><a href="{% url 'allCourses' %}">All Courses</a></li>
+     <li><a href="{% url 'search_results' %}">Course Search</a></li>
         {% if user.is_authenticated %}
         <li><name>Welcome {{ user.username }}!</name></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
@@ -61,26 +63,6 @@ li name {
 
 
 <body>
-
-
-
-
-{#<details style="text-align:left">#}
-{#<summary>Subject Options</summary>#}
-{# <div id="container" style="text-align:left">#}
-{#     {% if all_courses_list %}#}
-{#         {% for course in all_courses_list.subjects %}#}
-{#             <label><input type="checkbox" name="test" value="1" />{{ course.courseSubject }}</label>#}
-{#         {% endfor %}#}
-{#     {% endif %}#}
-{#    </div>#}
-{#</details>#}
-
-
-
-
-
-
 
     {% if all_courses_list %}
     <table>
