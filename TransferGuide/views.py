@@ -218,3 +218,24 @@ class SearchResultsView(generic.ListView):
                 return queryset
         else:
             return queryset
+
+class CourseInfo(generic.ListView):
+    model = Course
+    template_name = 'TransferGuide/courseInfo.html'
+    context_object_name = 'course_info'
+
+    def get_queryset(self):
+        subject_query = self.request.GET.get("subject")
+        number_query = self.request.GET.get("number")
+        name_query = self.request.GET.get("name")
+
+        name_query = name_query.replace('-', ' ')
+
+        # print(subject_query, number_query, name_query)
+
+        queryset = Course.objects.filter(courseName__iexact=name_query, courseNumber=number_query,
+                                         courseSubject=subject_query)
+        # print(queryset)
+        return queryset
+
+
