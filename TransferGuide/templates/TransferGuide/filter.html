@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+</head>
+
+<style>
+    nav {
+    background-color: #232D4B;
+    height: 50px;
+    overflow: clip;
+}
+
+nav ul{
+
+}
+
+nav ul li{
+    list-style-type: none;
+    width: 150px;
+    float: left;
+    border-right: 1px solid #ccc;
+    text-align: center;
+}
+
+li a {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+li a:hover {
+    background-color: #E57200;
+    color: #141E3C;
+
+}
+
+li name {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+.container {
+    top: 140px;
+    float: left;
+    left: 9px;
+    right: 0;
+    {#bottom: 0;#}
+    display: flex;
+    align-items: flex-start;
+    justify-content: left;
+    {#height: 100vh; /* sets height to full viewport height */#}
+    width: 100%;
+}
+
+</style>
+<body>
+{% load socialaccount %}
+<nav>
+    <ul>
+     <li><a href="{% url 'index' %}">Home</a></li>
+     <li><a href="{% url 'allCourses' %}">All Courses</a></li>
+     <li><a href="{% url 'search_results' %}">Course Search</a></li>
+        {% if user.is_authenticated %}
+        <li><name>Welcome {{ user.username }}!</name></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+        {%  else %}
+            <li><a href="{% provider_login_url 'google'%}?next=/">Login with Google</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+{#<details>#}
+{#    <details>#}
+{#        <summary>#}
+{#            Subject#}
+{#        </summary>#}
+<form action="{% url 'course_filter' %}">
+        <table style="justify-content: left; overflow: clip">
+            <tr>
+                {% for subject in filtered_courses.allSubjects %}
+                    <input id="subject" type="checkbox" value="{{ subject.courseSubject }}" name="subject">
+                    <label for="subject">{{ subject.courseSubject }}</label>
+                {% endfor %}
+
+            </tr>
+            <br>
+            <br>
+            <tr>
+                <input id="1000" type="checkbox" value="1" name="number">
+                <label for="1000">1000</label>
+                <input id="2000" type="checkbox" value="2" name="number">
+                <label for="2000">2000</label>
+                <input id="3000" type="checkbox" value="3" name="number">
+                <label for="3000">3000</label>
+                <input id="4000" type="checkbox" value="4" name="number">
+                <label for="4000">4000</label>
+                <input id="5000" type="checkbox" value="5" name="number">
+                <label for="5000">5000</label>
+                <input id="6000" type="checkbox" value="6" name="number">
+                <label for="6000">6000</label>
+                <input id="7000" type="checkbox" value="7" name="number">
+                <label for="7000">7000</label>
+                <input id="8000" type="checkbox" value="8" name="number">
+                <label for="8000">8000</label>
+                <input id="9000" type="checkbox" value="9" name="number">
+                <label for="9000">9000</label>
+            </tr>
+            <br>
+            <br>
+            <input type="submit" value="Submit">
+            <button href="{% url 'course_filter' %}">Clear Results</button>
+        </table>
+</form>
+
+{#    </details>#}
+{#    <details>#}
+{#        <summary>#}
+{#            Number#}
+{#        </summary>#}
+{#    </details>#}
+{#</details>#}
+
+
+
+<br>
+    {% if filtered_courses > 0 %}
+        <h1>Search Results</h1>
+    {% endif %}
+    {% if filtered_courses %}
+    <table>
+        <tbody>
+        {% for subject in filtered_courses.filteredSubjects %}
+        <tr>
+        <td>
+        <details>
+          <summary style="text-align:left">
+            {{ subject.courseSubject }}
+          </summary>
+        <table>
+        <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Number</th>
+            <th>Name</th>
+            <th>Details</th>
+        </tr>
+        </thead>
+            {% for course in filtered_courses.courses %}
+                {% if course.courseSubject == subject.courseSubject %}
+                    <tr>
+                        <td>{{ course.courseSubject }}</td>
+                        <td>{{ course.courseNumber }}</td>
+                        <td style="text-align: left">{{ course.courseName }}</td>
+                        <td><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }} >Info</a></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+        </details>
+        </td>
+
+        </tr>
+        {% endfor %}
+        <tr>
+        </tbody>
+        {% else %}
+        <h2>No courses are available.</h2>
+        {% endif %}
+    </table>
+
+
+</body>
+</html>
