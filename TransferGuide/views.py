@@ -219,6 +219,7 @@ class SearchResultsView(generic.ListView):
         else:
             return queryset
 
+
 class CourseInfo(generic.ListView):
     model = Course
     template_name = 'TransferGuide/courseInfo.html'
@@ -229,13 +230,46 @@ class CourseInfo(generic.ListView):
         number_query = self.request.GET.get("number")
         name_query = self.request.GET.get("name")
 
-        name_query = name_query.replace('-', ' ')
+        # name_query = name_query.replace('-', ' ')
 
         # print(subject_query, number_query, name_query)
 
-        queryset = Course.objects.filter(courseName__iexact=name_query, courseNumber=number_query,
-                                         courseSubject=subject_query)
+        # queryset = Course.objects.filter(courseName__icontains=name_query, courseNumber=number_query, courseSubject=subject_query)
+        queryset = Course.objects.filter(courseNumber=number_query, courseSubject=subject_query)
         # print(queryset)
         return queryset
 
 
+#need to add university, maybe approved/disapproved courses filter alter
+class CourseFilter(generic.ListView):
+    model = Course
+    template_name = 'TransferGuide/filter.html'
+    context_object_name = 'filtered_courses'
+
+    def get_queryset(self):
+        subject_query = self.request.GET.getlist("subject")
+        number_query = self.request.GET.getlist("number")
+
+        print(number_query)
+        number_query = [eval(i) for i in number_query]
+
+        if subject_query is None:
+            subject_query = ''
+        if number_query is None:
+            number_query = -1
+        # subject_query_list = subject_query.split(',')
+        print(subject_query)
+        number_query_list = []
+        if len(number_query) > 0:
+            number_query_list.append(min(number_query)*1000)
+            for i in range(min(number_query)*1000, ((max(number_query)+1)*1000)-1):
+                number_query_list.append(i)
+
+        queryset = {
+            "courses": Course.objects.filter(
+                Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list)),
+            "filteredSubjects": Course.objects.filter(courseSubject__in=subject_query).values('courseSubject').order_by('courseSubject').distinct(),
+            "allSubjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+        }
+        print(queryset.get("courses"))
+        return queryset
