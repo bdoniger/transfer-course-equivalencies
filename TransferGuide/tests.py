@@ -24,3 +24,21 @@ class URLTests(TestCase):
         response = self.client.get('/search/')
         self.assertTrue(response.status_code == 200)
 
+    def test_Search(self):
+        response = self.client.get('/search/')
+        self.assertTrue(response.status_code == 200)
+
+class CourseDisplay(TestCase):
+    def test_display(self):
+        course = Course(courseName="name", courseNumber='1', courseSubject='BRUH')
+        name = course.courseName
+        number = course.courseNumber
+        subject = course.courseSubject
+        self.assertEqual(subject + number + name, "BRUH" + "1" + "name")
+
+    def test_display2(self):
+        course = Course(courseName="name", courseNumber='123456', courseSubject='BRUH')
+        name = course.courseName
+        number = course.courseNumber
+        subject = course.courseSubject
+        self.assertEqual(subject + number + name, "BRUH" + "123456" + "name")
