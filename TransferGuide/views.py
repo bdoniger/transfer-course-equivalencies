@@ -101,7 +101,7 @@ class CoursesViewAll(generic.ListView):
 
 class SearchResultsView(generic.ListView):
     model = Course
-    template_name = 'TransferGuide/search_results.html'
+    template_name = 'TransferGuide/searchResults.html'
     context_object_name = 'all_courses_list'
 
     # Need to add search based on university once that is set up
