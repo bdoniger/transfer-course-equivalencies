@@ -1,3 +1,4 @@
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,13 +52,34 @@ li name {
      <li><a href="{% url 'allCourses' %}">Courses</a></li>
         {% if user.is_authenticated %}
         <li><name>Welcome {{ user.username }}!</name></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+        {%  else %}
+            <li><a href="{% provider_login_url 'google'%}?next=/">Login with Google</a></li>
         {% endif %}
-     <li><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
 </nav>
 
 
 <body>
+
+
+
+
+{#<details style="text-align:left">#}
+{#<summary>Subject Options</summary>#}
+{# <div id="container" style="text-align:left">#}
+{#     {% if all_courses_list %}#}
+{#         {% for course in all_courses_list.subjects %}#}
+{#             <label><input type="checkbox" name="test" value="1" />{{ course.courseSubject }}</label>#}
+{#         {% endfor %}#}
+{#     {% endif %}#}
+{#    </div>#}
+{#</details>#}
+
+
+
+
+
 
 
     {% if all_courses_list %}
