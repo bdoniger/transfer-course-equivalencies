@@ -10,5 +10,7 @@ urlpatterns = [
     path('sisUpdate/<semester>/<page>/<subjectNum>/', views.sisUpdate, name='update'),
     path('displayUpdate/<semester>/<page>/<subjectNum>/', views.displayUpdate, name='update'),
     path('allCourses', views.CoursesViewAll.as_view(), name='allCourses'),
-    path('search/', views.SearchResultsView.as_view(), name='search_results')
+    path('search/', views.SearchResultsView.as_view(), name='search_results'),
+    path('info/', views.CourseInfo.as_view(), name='course_info'),
+    path('filter/', views.CourseFilter.as_view(), name='course_filter')
 ]
