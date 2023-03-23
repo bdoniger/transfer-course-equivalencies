@@ -35,7 +35,7 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1','transfer-credit-guide.herokuapp.com']
 SITE_ID = 3
 
 
-#SECURE_SSL_REDIRECT = False
+SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
