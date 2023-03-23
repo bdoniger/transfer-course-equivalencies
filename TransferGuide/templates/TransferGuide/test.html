@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>W3.CSS Template</title>
+<title>Test Page</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -57,42 +57,101 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
 <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
 <div class="w3-main" style="margin-left:250px">
-
-  <div class="w3-row w3-padding-64">
-    <div class="w3-twothird w3-container">
-      <h1 class="w3-text-teal">Heading</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum
-        dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+{#    <div class="w3-row w3-padding-64">#}
+{#    <div class="w3-twothird w3-container">#}
+{#    <table>#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>Subject</th>#}
+{#            <th>Number</th>#}
+{#            <th>Name</th>#}
+{#            <th>Details</th>#}
+{#        </tr>#}
+{#        </thead>#}
+{#    {% for subject in all_courses_list.subjects %}#}
+{#            {% for course in all_courses_list.courses %}#}
+{#                {% if course.courseSubject == subject.courseSubject %}#}
+{#                    <tr>#}
+{#                        <td>{{ course.courseSubject }}</td>#}
+{#                        <td>{{ course.courseNumber }}</td>#}
+{#                        <td style="text-align: left">{{ course.courseName }}</td>#}
+{#                        <td><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }} >Info</a></td>#}
+{#                    </tr>#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{#    {% endfor %}#}
+{#    </table>#}
+{#        </div>#}
+{#  </div>#}
+{% for subject in all_courses_list.subjects %}
+    {% if subject.courseSubject == "AIRS" %}
+        <div class="w3-row" style="margin-top: 40px">
+        <div class="w3-twothird w3-container">
+            <h1 class="w3-text-teal">{{ subject.courseSubject }}</h1>
+            <details>
+            <summary>View Courses</summary>
+            <table>
+                <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Number</th>
+                    <th>Name</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                    {% for course in all_courses_list.courses %}
+                        {% if course.courseSubject == subject.courseSubject %}
+                            <tr>
+                                <td>{{ course.courseSubject }}</td>
+                                <td>{{ course.courseNumber }}</td>
+                                <td style="text-align: left">{{ course.courseName }}</td>
+                                <td><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }} >Info</a></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+            </table>
+            </details>
+        </div>
     </div>
-    <div class="w3-third w3-container">
-      <p class="w3-border w3-padding-large w3-padding-32 w3-center">AD</p>
-      <p class="w3-border w3-padding-large w3-padding-64 w3-center">AD</p>
+    {% else %}
+    <div class="w3-row">
+        <div class="w3-twothird w3-container">
+            <h1 class="w3-text-teal">{{ subject.courseSubject }}</h1>
+            <details>
+            <summary>View Courses</summary>
+            <table>
+                <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Number</th>
+                    <th>Name</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                    {% for course in all_courses_list.courses %}
+                        {% if course.courseSubject == subject.courseSubject %}
+                            <tr>
+                                <td>{{ course.courseSubject }}</td>
+                                <td>{{ course.courseNumber }}</td>
+                                <td style="text-align: left">{{ course.courseName }}</td>
+                                <td><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }} >Info</a></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+            </table>
+            </details>
+        </div>
     </div>
-  </div>
-
-  <div class="w3-row">
-    <div class="w3-twothird w3-container">
-      <h1 class="w3-text-teal">Heading</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum
-        dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-    <div class="w3-third w3-container">
-      <p class="w3-border w3-padding-large w3-padding-32 w3-center">AD</p>
-      <p class="w3-border w3-padding-large w3-padding-64 w3-center">AD</p>
-    </div>
-  </div>
-
-  <div class="w3-row w3-padding-64">
-    <div class="w3-twothird w3-container">
-      <h1 class="w3-text-teal">Heading</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum
-        dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-    <div class="w3-third w3-container">
-      <p class="w3-border w3-padding-large w3-padding-32 w3-center">AD</p>
-      <p class="w3-border w3-padding-large w3-padding-64 w3-center">AD</p>
-    </div>
-  </div>
+    {% endif %}
+{% endfor %}
+{##}
+{#  <div class="w3-row w3-padding-64">#}
+{#    <div class="w3-twothird w3-container">#}
+{#      <h1 class="w3-text-teal">Heading</h1>#}
+{#      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum#}
+{#        dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>#}
+{#    </div>#}
+{#  </div>#}
 
   <!-- Pagination -->
   <div class="w3-center w3-padding-32">
