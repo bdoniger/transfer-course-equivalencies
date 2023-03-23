@@ -273,3 +273,14 @@ class CourseFilter(generic.ListView):
         }
         print(queryset.get("courses"))
         return queryset
+
+
+class Test(generic.ListView):
+    template_name = 'TransferGuide/test.html'
+    context_object_name = 'all_courses_list'
+
+    def get_queryset(self):
+        return {
+            "courses": Course.objects.all().order_by('courseSubject', 'courseNumber'),
+            "subjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+        }
