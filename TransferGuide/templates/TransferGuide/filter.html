@@ -72,48 +72,42 @@ li name {
     </ul>
 </nav>
 
-{#<details>#}
-{#    <details>#}
-{#        <summary>#}
-{#            Subject#}
-{#        </summary>#}
-<form action="{% url 'course_filter' %}">
-        <table style="justify-content: left; overflow: clip">
-            <tr>
-                {% for subject in filtered_courses.allSubjects %}
-                    <input id="subject" type="checkbox" value="{{ subject.courseSubject }}" name="subject">
-                    <label for="subject">{{ subject.courseSubject }}</label>
-                {% endfor %}
 
-            </tr>
-            <br>
-            <br>
-            <tr>
-                <input id="1000" type="checkbox" value="1" name="number">
-                <label for="1000">1000</label>
-                <input id="2000" type="checkbox" value="2" name="number">
-                <label for="2000">2000</label>
-                <input id="3000" type="checkbox" value="3" name="number">
-                <label for="3000">3000</label>
-                <input id="4000" type="checkbox" value="4" name="number">
-                <label for="4000">4000</label>
-                <input id="5000" type="checkbox" value="5" name="number">
-                <label for="5000">5000</label>
-                <input id="6000" type="checkbox" value="6" name="number">
-                <label for="6000">6000</label>
-                <input id="7000" type="checkbox" value="7" name="number">
-                <label for="7000">7000</label>
-                <input id="8000" type="checkbox" value="8" name="number">
-                <label for="8000">8000</label>
-                <input id="9000" type="checkbox" value="9" name="number">
-                <label for="9000">9000</label>
-            </tr>
-            <br>
-            <br>
-            <input type="submit" value="Submit">
-            <button href="{% url 'course_filter' %}">Clear Results</button>
-        </table>
-</form>
+
+
+
+{#<div class="container">#}
+{#<form action="{% url 'course_filter' %}">#}
+{#    <table style="justify-content: left; overflow: unset">#}
+{#        {% for subject in filtered_courses.allSubjects %}#}
+{#            <td><input id="{{ subject.courseSubject }}" type="checkbox" value="{{ subject.courseSubject }}" name="subject"></td>#}
+{#            <td><label for="{{ subject.courseSubject }}">{{ subject.courseSubject }}</label></td>#}
+{#        {% endfor %}#}
+{#        <tr>#}
+{#            <td><input id="1000" type="checkbox" value="1" name="number"></td>#}
+{#            <td><label for="1000">1000</label></td>#}
+{#            <td><input id="2000" type="checkbox" value="2" name="number"></td>#}
+{#            <td><label for="2000">2000</label></td>#}
+{#            <td><input id="3000" type="checkbox" value="3" name="number"></td>#}
+{#            <td><label for="3000">3000</label></td>#}
+{#            <td><input id="4000" type="checkbox" value="4" name="number"></td>#}
+{#            <td><label for="4000">4000</label></td>#}
+{#            <td><input id="5000" type="checkbox" value="5" name="number"></td>#}
+{#            <td><label for="5000">5000</label></td>#}
+{#            <td><input id="6000" type="checkbox" value="6" name="number"></td>#}
+{#            <td><label for="6000">6000</label></td>#}
+{#            <td><input id="7000" type="checkbox" value="7" name="number"></td>#}
+{#            <td><label for="7000">7000</label></td>#}
+{#            <td><input id="8000" type="checkbox" value="8" name="number"></td>#}
+{#            <td><label for="8000">8000</label></td>#}
+{#            <td><input id="9000" type="checkbox" value="9" name="number"></td>#}
+{#            <td><label for="9000">9000</label></td>#}
+{#        </tr>#}
+{#        <td><input type="submit" value="Submit"></td>#}
+{#        <td><button href="{% url 'course_filter' %}">Clear Results</button></td>#}
+{#    </table>#}
+{#</form>#}
+{#</div>#}
 
 {#    </details>#}
 {#    <details>#}
@@ -125,51 +119,117 @@ li name {
 
 
 
-<br>
-    {% if filtered_courses > 0 %}
-        <h1>Search Results</h1>
-    {% endif %}
-    {% if filtered_courses %}
-    <table>
-        <tbody>
-        {% for subject in filtered_courses.filteredSubjects %}
-        <tr>
-        <td>
-        <details>
-          <summary style="text-align:left">
-            {{ subject.courseSubject }}
-          </summary>
-        <table>
-        <thead>
-        <tr>
-            <th>Subject</th>
-            <th>Number</th>
-            <th>Name</th>
-            <th>Details</th>
-        </tr>
-        </thead>
-            {% for course in filtered_courses.courses %}
-                {% if course.courseSubject == subject.courseSubject %}
-                    <tr>
-                        <td>{{ course.courseSubject }}</td>
-                        <td>{{ course.courseNumber }}</td>
-                        <td style="text-align: left">{{ course.courseName }}</td>
-                        <td><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }} >Info</a></td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-        </details>
-        </td>
 
-        </tr>
-        {% endfor %}
-        <tr>
-        </tbody>
-        {% else %}
-        <h2>No courses are available.</h2>
-        {% endif %}
-    </table>
+    <!-- Ignite UI for jQuery Required Combined CSS Files -->
+    <link href="http://cdn-na.infragistics.com/igniteui/2022.2/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link href="http://cdn-na.infragistics.com/igniteui/2022.2/latest/css/structure/infragistics.css" rel="stylesheet" />
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+    <!-- Ignite UI for jQuery Required Combined JavaScript Files -->
+    <script src="http://cdn-na.infragistics.com/igniteui/2022.2/latest/js/infragistics.core.js"></script>
+    <script src="http://cdn-na.infragistics.com/igniteui/2022.2/latest/js/infragistics.lob.js"></script>
+
+    <style>
+        .combo-label {margin-bottom:.5em;}
+    </style>
+    <br />
+    <div class=".ui-widget-overlay"></div>
+
+    <h4 class="combo-label">Select subject(s)</h4>
+    <div id="checkboxSelectCombo"></div>
+
+    <script>
+
+        var subjects = JSON.parse('{{ filtered_courses}}'.replace(/&quot;/g,'"'));
+
+
+        $(function () {
+
+            $("#singleSelectCombo").igCombo({
+                width: 300,
+                dataSource: subjects,
+                textKey: "Name",
+                valueKey: "Name",
+                dropDownOnFocus: true,
+                dropDownOrientation: "bottom"
+            });
+
+            $("#multiSelectCombo").igCombo({
+                width: 300,
+                dataSource: subjects,
+                textKey: "Name",
+                valueKey: "Name",
+                multiSelection: {
+                    enabled: true
+                },
+                dropDownOrientation: "bottom"
+            });
+
+            $("#checkboxSelectCombo").igCombo({
+                width: 300,
+                dataSource: subjects,
+                textKey: "Name",
+                valueKey: "Name",
+                multiSelection: {
+                    enabled: true,
+                    showCheckboxes: true
+                },
+                dropDownOrientation: "bottom"
+            });
+
+        });
+
+    </script>
+
+
+<br>
+{#    {% if filtered_courses > 0 %}#}
+{#        <h1>Search Results</h1>#}
+{#    {% endif %}#}
+{#    {% if filtered_courses %}#}
+{#    <table>#}
+{#        <tbody>#}
+{#        {% for subject in filtered_courses.filteredSubjects %}#}
+{#        <tr>#}
+{#        <td>#}
+{#        <details>#}
+{#          <summary style="text-align:left">#}
+{#            {{ subject.courseSubject }}#}
+{#          </summary>#}
+{#        <table>#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>Subject</th>#}
+{#            <th>Number</th>#}
+{#            <th>Name</th>#}
+{#            <th>Details</th>#}
+{#        </tr>#}
+{#        </thead>#}
+{#            {% for course in filtered_courses.courses %}#}
+{#                {% if course.courseSubject == subject.courseSubject %}#}
+{#                    <tr>#}
+{#                        <td>{{ course.courseSubject }}</td>#}
+{#                        <td>{{ course.courseNumber }}</td>#}
+{#                        <td style="text-align: left">{{ course.courseName }}</td>#}
+{#                        <td><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }} >Info</a></td>#}
+{#                    </tr>#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{#        </table>#}
+{#        </details>#}
+{#        </td>#}
+{##}
+{#        </tr>#}
+{#        {% endfor %}#}
+{#        <tr>#}
+{#        </tbody>#}
+{#        {% else %}#}
+{#        <h2>No courses are available.</h2>#}
+{#        {% endif %}#}
+{#    </table>#}
 
 
 </body>

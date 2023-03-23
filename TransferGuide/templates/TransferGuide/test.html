@@ -46,9 +46,9 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     <i class="fa fa-remove"></i>
   </a>
   <h4 class="w3-bar-item"><b>Menu</b></h4>
-  <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
-  <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
-  <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'allCourses' %}">All Courses</a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'course_filter' %}">Filter</a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'search_results' %}">Course Search</a>
   <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
 </nav>
 
@@ -57,32 +57,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
 <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
 <div class="w3-main" style="margin-left:250px">
-{#    <div class="w3-row w3-padding-64">#}
-{#    <div class="w3-twothird w3-container">#}
-{#    <table>#}
-{#        <thead>#}
-{#        <tr>#}
-{#            <th>Subject</th>#}
-{#            <th>Number</th>#}
-{#            <th>Name</th>#}
-{#            <th>Details</th>#}
-{#        </tr>#}
-{#        </thead>#}
-{#    {% for subject in all_courses_list.subjects %}#}
-{#            {% for course in all_courses_list.courses %}#}
-{#                {% if course.courseSubject == subject.courseSubject %}#}
-{#                    <tr>#}
-{#                        <td>{{ course.courseSubject }}</td>#}
-{#                        <td>{{ course.courseNumber }}</td>#}
-{#                        <td style="text-align: left">{{ course.courseName }}</td>#}
-{#                        <td><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }} >Info</a></td>#}
-{#                    </tr>#}
-{#                {% endif %}#}
-{#            {% endfor %}#}
-{#    {% endfor %}#}
-{#    </table>#}
-{#        </div>#}
-{#  </div>#}
+
 {% for subject in all_courses_list.subjects %}
     {% if subject.courseSubject == "AIRS" %}
         <div class="w3-row" style="margin-top: 40px">

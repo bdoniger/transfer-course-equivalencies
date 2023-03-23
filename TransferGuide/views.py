@@ -1,5 +1,7 @@
+import json
+
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import logout
 from django.template import loader
 from django.views import generic
@@ -10,6 +12,8 @@ from django.shortcuts import redirect
 import requests
 
 from django.db.models import Q
+
+from django.core import serializers
 
 subjectList = []
 
@@ -265,15 +269,42 @@ class CourseFilter(generic.ListView):
             for i in range(min(number_query)*1000, ((max(number_query)+1)*1000)-1):
                 number_query_list.append(i)
 
+        all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+
         queryset = {
             "courses": Course.objects.filter(
                 Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list)),
             "filteredSubjects": Course.objects.filter(courseSubject__in=subject_query).values('courseSubject').order_by('courseSubject').distinct(),
             "allSubjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
         }
-        print(queryset.get("courses"))
-        return queryset
+        # print(queryset.get("courses"))
 
+        # json_queryset = {
+        #     "courses": serializers.serialize("json", queryset.get('courses')),
+        #     "filteredSubjects": serializers.serialize("json", queryset.get('filteredSubjects')),
+        #     "allSubjects": serializers.serialize("json", queryset.get('allSubjects'))
+        # }
+        # return queryset
+        # json_course_data = serializers.serialize("json", json_queryset)
+        # return json_course_data
+        # print(queryset.get('allSubjects'))
+        # print(type(queryset.get('allSubjects')))
+        # all_subjects = queryset.get('allSubjects')
+        # print(type(all_subjects))
+        # print(all_subjects)
+        all_subjects_queryset = all_subjects_queryset.values_list()
+        # print(all_subjects_queryset)
+        subjects = []
+        for item in all_subjects_queryset:
+            if item[3] not in subjects:
+                subjects.append(item[3])
+        # print(subjects)
+        # print(serializers.serialize("json", queryset.get('allSubjects')))
+        # return serializers.serialize("json", queryset.get('courses'))
+        # return serializers.serialize("json", subjects)
+        json_subjects = json.dumps(subjects)
+        print(json_subjects)
+        return json_subjects
 
 class Test(generic.ListView):
     template_name = 'TransferGuide/test.html'
