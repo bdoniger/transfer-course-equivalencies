@@ -1,5 +1,7 @@
+import json
+
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import logout
 from django.template import loader
 from django.views import generic
@@ -10,6 +12,8 @@ from django.shortcuts import redirect
 import requests
 
 from django.db.models import Q
+
+from django.core import serializers
 
 subjectList = []
 
@@ -247,23 +251,25 @@ class CourseFilter(generic.ListView):
     context_object_name = 'filtered_courses'
 
     def get_queryset(self):
-        subject_query = self.request.GET.getlist("subject")
+        subject_query = self.request.GET.get("subject")
         number_query = self.request.GET.getlist("number")
 
-        print(number_query)
+        # print(number_query)
         number_query = [eval(i) for i in number_query]
 
         if subject_query is None:
             subject_query = ''
         if number_query is None:
             number_query = -1
-        # subject_query_list = subject_query.split(',')
-        print(subject_query)
+        subject_query = subject_query.split(',')
+        # print(subject_query)
         number_query_list = []
         if len(number_query) > 0:
             number_query_list.append(min(number_query)*1000)
             for i in range(min(number_query)*1000, ((max(number_query)+1)*1000)-1):
                 number_query_list.append(i)
+
+        all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
 
         queryset = {
             "courses": Course.objects.filter(
@@ -271,9 +277,24 @@ class CourseFilter(generic.ListView):
             "filteredSubjects": Course.objects.filter(courseSubject__in=subject_query).values('courseSubject').order_by('courseSubject').distinct(),
             "allSubjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
         }
-        print(queryset.get("courses"))
-        return queryset
 
+        all_subjects_queryset = all_subjects_queryset.values_list()
+        subjects = []
+        for item in all_subjects_queryset:
+            if item[3] not in subjects:
+                subjects.append(item[3])
+        json_subjects = json.dumps(subjects)
+
+        return_set = {
+            "json": json_subjects,
+            "courses": Course.objects.filter(
+                Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list)),
+            "filteredSubjects": Course.objects.filter(courseSubject__in=subject_query).values('courseSubject').order_by(
+                'courseSubject').distinct(),
+            "allSubjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+        }
+        print(return_set.get("filteredSubjects"))
+        return return_set
 
 class Test(generic.ListView):
     template_name = 'TransferGuide/test.html'

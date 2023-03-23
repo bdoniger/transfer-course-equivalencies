@@ -72,48 +72,42 @@ li name {
     </ul>
 </nav>
 
-{#<details>#}
-{#    <details>#}
-{#        <summary>#}
-{#            Subject#}
-{#        </summary>#}
-<form action="{% url 'course_filter' %}">
-        <table style="justify-content: left; overflow: clip">
-            <tr>
-                {% for subject in filtered_courses.allSubjects %}
-                    <input id="subject" type="checkbox" value="{{ subject.courseSubject }}" name="subject">
-                    <label for="subject">{{ subject.courseSubject }}</label>
-                {% endfor %}
 
-            </tr>
-            <br>
-            <br>
-            <tr>
-                <input id="1000" type="checkbox" value="1" name="number">
-                <label for="1000">1000</label>
-                <input id="2000" type="checkbox" value="2" name="number">
-                <label for="2000">2000</label>
-                <input id="3000" type="checkbox" value="3" name="number">
-                <label for="3000">3000</label>
-                <input id="4000" type="checkbox" value="4" name="number">
-                <label for="4000">4000</label>
-                <input id="5000" type="checkbox" value="5" name="number">
-                <label for="5000">5000</label>
-                <input id="6000" type="checkbox" value="6" name="number">
-                <label for="6000">6000</label>
-                <input id="7000" type="checkbox" value="7" name="number">
-                <label for="7000">7000</label>
-                <input id="8000" type="checkbox" value="8" name="number">
-                <label for="8000">8000</label>
-                <input id="9000" type="checkbox" value="9" name="number">
-                <label for="9000">9000</label>
-            </tr>
-            <br>
-            <br>
-            <input type="submit" value="Submit">
-            <button href="{% url 'course_filter' %}">Clear Results</button>
-        </table>
-</form>
+
+
+
+{#<div class="container">#}
+{#<form action="{% url 'course_filter' %}">#}
+{#    <table style="justify-content: left; overflow: unset">#}
+{#        {% for subject in filtered_courses.allSubjects %}#}
+{#            <td><input id="{{ subject.courseSubject }}" type="checkbox" value="{{ subject.courseSubject }}" name="subject"></td>#}
+{#            <td><label for="{{ subject.courseSubject }}">{{ subject.courseSubject }}</label></td>#}
+{#        {% endfor %}#}
+{#        <tr>#}
+{#            <td><input id="1000" type="checkbox" value="1" name="number"></td>#}
+{#            <td><label for="1000">1000</label></td>#}
+{#            <td><input id="2000" type="checkbox" value="2" name="number"></td>#}
+{#            <td><label for="2000">2000</label></td>#}
+{#            <td><input id="3000" type="checkbox" value="3" name="number"></td>#}
+{#            <td><label for="3000">3000</label></td>#}
+{#            <td><input id="4000" type="checkbox" value="4" name="number"></td>#}
+{#            <td><label for="4000">4000</label></td>#}
+{#            <td><input id="5000" type="checkbox" value="5" name="number"></td>#}
+{#            <td><label for="5000">5000</label></td>#}
+{#            <td><input id="6000" type="checkbox" value="6" name="number"></td>#}
+{#            <td><label for="6000">6000</label></td>#}
+{#            <td><input id="7000" type="checkbox" value="7" name="number"></td>#}
+{#            <td><label for="7000">7000</label></td>#}
+{#            <td><input id="8000" type="checkbox" value="8" name="number"></td>#}
+{#            <td><label for="8000">8000</label></td>#}
+{#            <td><input id="9000" type="checkbox" value="9" name="number"></td>#}
+{#            <td><label for="9000">9000</label></td>#}
+{#        </tr>#}
+{#        <td><input type="submit" value="Submit"></td>#}
+{#        <td><button href="{% url 'course_filter' %}">Clear Results</button></td>#}
+{#    </table>#}
+{#</form>#}
+{#</div>#}
 
 {#    </details>#}
 {#    <details>#}
@@ -123,6 +117,121 @@ li name {
 {#    </details>#}
 {#</details>#}
 
+
+
+
+    <!-- Ignite UI for jQuery Required Combined CSS Files -->
+    <link href="http://cdn-na.infragistics.com/igniteui/2022.2/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link href="http://cdn-na.infragistics.com/igniteui/2022.2/latest/css/structure/infragistics.css" rel="stylesheet" />
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+    <!-- Ignite UI for jQuery Required Combined JavaScript Files -->
+    <script src="http://cdn-na.infragistics.com/igniteui/2022.2/latest/js/infragistics.core.js"></script>
+    <script src="http://cdn-na.infragistics.com/igniteui/2022.2/latest/js/infragistics.lob.js"></script>
+
+    <style>
+        .combo-label {margin-bottom:.5em;}
+    </style>
+    <br />
+    <div class=".ui-widget-overlay"></div>
+
+    <div id="checkboxSelectCombo">
+{#        <script>#}
+{##}
+{#        var subjects = JSON.parse('{{ filtered_courses.json }}'.replace(/&quot;/g,'"'));#}
+{##}
+{##}
+{#        $(function () {#}
+{#        $("#checkboxSelectCombo").igCombo({#}
+{#            width: 300,#}
+{#            dataSource: subjects,#}
+{#            textKey: "Name",#}
+{#            valueKey: "Name",#}
+{#            multiSelection: {#}
+{#                enabled: true,#}
+{#                showCheckboxes: true#}
+{#            },#}
+{#            dropDownOrientation: "bottom"#}
+{#        });#}
+{##}
+{##}
+{#        $("#submitBtn").click(function() {#}
+{#            var selectedValues = $("#checkboxSelectCombo").igCombo("value");#}
+{#            var cur_url = window.location.href;#}
+{#            var index = cur_url.indexOf('?');#}
+{#            if (index > -1){#}
+{#                cur_url = cur_url.substring(0,index);#}
+{#            }#}
+{#            window.location.href = cur_url + "?subject=" + selectedValues;#}
+{#        });#}
+{#    });#}
+{#        </script>#}
+
+        <script>
+    var subjects = JSON.parse('{{ filtered_courses.json }}'.replace(/&quot;/g,'"'));
+
+    $(function () {
+        // Set up the combo box for selecting subjects
+        $("#checkboxSelectCombo").igCombo({
+            width: 300,
+            dataSource: subjects,
+            textKey: "Name",
+            valueKey: "Name",
+            multiSelection: {
+                enabled: true,
+                showCheckboxes: true
+            },
+            dropDownOrientation: "bottom"
+        });
+
+        // Set up the slider for choosing a number
+        $("#numberSlider").slider({
+            range: "min",
+            min: 1,
+            max: 9,
+            value: 1,
+            slide: function (event, ui) {
+                $("#numberInput").val(ui.value * 1000);
+            },
+            create: function(event, ui) {
+            $(this).find('.ui-slider-handle').css({
+            height: '15px',
+            'margin-left': '-5px',
+            'margin-top': '1px'
+        });
+    }
+        });
+        $("#numberInput").val($("#numberSlider").slider("value") * 1000);
+
+        // Handle the submit button click event
+        $("#submitBtn").click(function() {
+            var selectedValues = $("#checkboxSelectCombo").igCombo("value");
+            var numberValue = $("#numberSlider").slider("value");
+            var cur_url = window.location.href;
+            var index = cur_url.indexOf('?');
+            if (index > -1){
+                cur_url = cur_url.substring(0,index);
+            }
+            window.location.href = cur_url + "?subject=" + selectedValues + "&number=" + numberValue;
+        });
+    });
+</script>
+
+<div>
+    <label for="numberInput">Number:</label>
+    <input type="text" id="numberInput" readonly style="border:0; color:#f6931f; font-weight:bold;">
+    <br>
+    <br>
+</div>
+<div id="numberSlider"></div>
+        <h4 class="combo-label">Select subject(s)</h4>
+    </div>
+<br>
+<button id="submitBtn" type="submit" value="Submit">Submit</button>
+<button><a href="{% url 'course_filter' %}" style="color: #000000; text-decoration: none;">Clear Filters</a></button>
 
 
 <br>
