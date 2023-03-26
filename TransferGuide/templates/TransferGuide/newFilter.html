@@ -1,5 +1,6 @@
 {% load socialaccount %}
 {#Template from https://www.w3schools.com/w3css/w3css_templates.asp#}
+{#Searchbox from https://www.igniteui.com/combo/selection-and-checkboxes#}
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +57,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
-<div class="w3-main" style="margin-left:250px">
+<div class="w3-main" style="margin-left:260px">
 
     <link href="http://cdn-na.infragistics.com/igniteui/2022.2/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
     <link href="http://cdn-na.infragistics.com/igniteui/2022.2/latest/css/structure/infragistics.css" rel="stylesheet" />
@@ -68,6 +69,9 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     <!-- Ignite UI for jQuery Required Combined JavaScript Files -->
     <script src="http://cdn-na.infragistics.com/igniteui/2022.2/latest/js/infragistics.core.js"></script>
     <script src="http://cdn-na.infragistics.com/igniteui/2022.2/latest/js/infragistics.lob.js"></script>
+
+    <br>
+    <br>
 
     <style>
         .combo-label {margin-bottom:.5em;}
@@ -200,7 +204,11 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     </div>
   </div>
 
-  <footer id="myFooter">
+
+
+<!-- END MAIN -->
+</div>
+<footer id="myFooter" style="padding-left: 250px">
     <div class="w3-container w3-theme-l2 w3-padding-32">
       <h4>Footer</h4>
     </div>
@@ -209,9 +217,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
       <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
     </div>
   </footer>
-
-<!-- END MAIN -->
-</div>
 
 <script>
 // Get the Sidebar
