@@ -89,6 +89,10 @@ def sisUpdate(request, semester, page, subjectNum):
     # return render(request, 'TransferGuide/ClassInfo.html')
 
 
+def addEquivCoursePage(request):
+    return render(request, 'TransferGuide/addEquivCourse.html')
+
+
 class CoursesViewAll(generic.ListView):
     template_name = 'TransferGuide/allCourses.html'
     context_object_name = 'all_courses_list'
