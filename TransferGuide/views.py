@@ -247,7 +247,7 @@ class CourseInfo(generic.ListView):
 #need to add university, maybe approved/disapproved courses filter alter
 class CourseFilter(generic.ListView):
     model = Course
-    template_name = 'TransferGuide/filter.html'
+    template_name = 'TransferGuide/newFilter.html'
     context_object_name = 'filtered_courses'
 
     def get_queryset(self):
@@ -289,7 +289,7 @@ class CourseFilter(generic.ListView):
             "json": json_subjects,
             "courses": Course.objects.filter(
                 Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list)),
-            "filteredSubjects": Course.objects.filter(courseSubject__in=subject_query).values('courseSubject').order_by(
+            "filteredSubjects": Course.objects.filter(Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list)).values('courseSubject').order_by(
                 'courseSubject').distinct(),
             "allSubjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
         }
