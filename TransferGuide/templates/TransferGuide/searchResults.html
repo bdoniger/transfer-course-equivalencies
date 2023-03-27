@@ -80,7 +80,10 @@ li name {
       <input id="number" name="number" type="text" placeholder="Course Number">
       <label for="name" aria-hidden="true"></label>
       <input id="name" name="name" type="text" placeholder="Course Name">
+      <label for="university" aria-hidden="true"></label>
+      <input id="university" name="university" type="text" placeholder="Course University">
       <input type="submit" value="Submit">
+
       <a href="{% url 'search_results' %}">Clear Results</a>
     </form>
 </div>
@@ -105,6 +108,7 @@ li name {
             <th>Number</th>
             <th>Name</th>
             <th>Details</th>
+            <th>University</th>
         </tr>
         </thead>
             {% for course in all_courses_list.courses %}
@@ -114,6 +118,7 @@ li name {
                         <td>{{ course.courseNumber }}</td>
                         <td style="text-align: left">{{ course.courseName }}</td>
                         <td><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }} >Info</a></td>
+                        <td>{{ course.university }}</td>
                     </tr>
                 {% endif %}
             {% endfor %}
