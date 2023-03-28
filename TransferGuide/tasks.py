@@ -31,7 +31,7 @@ def sisBackground(semester, subject, pageNum):
 
 
             if inDB == False:#create new course if it does not exist
-                Course.objects.create(courseNumber=catalogNum, courseSubject=subject, courseName=name, equivalentCourse='N/A')
+                Course.objects.create(courseNumber=catalogNum, courseSubject=subject, courseName=name)
 
 
         except IndexError:

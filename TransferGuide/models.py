@@ -6,8 +6,11 @@ class Course(models.Model):
     courseNumber = models.CharField(max_length=5, default="N/A") #number of course
     courseSubject = models.CharField(max_length=20, default="N/A") #department of course, i.e. CS
     university = models.CharField(max_length=100, default="UVA") #UVA or other
-    equivalentCourse = models.CharField(max_length=2000, default="N/A") #equivalent UVA course
-    nonEquvialentCourse = models.CharField(max_length=2000, default="N/A") #non-equivalent UVA course
+    #equivalentCourse = models.CharField(max_length=2000, default="N/A") #equivalent UVA course
+    #nonEquvialentCourse = models.CharField(max_length=2000, default="N/A") #non-equivalent UVA course
+    equivalentCourse = models.JSONField(encoder=None, decoder=None,default=dict)
+    nonEquivalentCourse = models.JSONField(encoder=None, decoder=None,default=dict)
+
     def __str__(self):
         return self.courseName
     
