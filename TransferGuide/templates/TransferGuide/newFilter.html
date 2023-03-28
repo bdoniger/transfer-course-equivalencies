@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Test Page</title>
+<title>Course Filter</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -30,8 +30,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
     <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
     <a href="{% url 'index' %}" class="w3-bar-item w3-button w3-theme-l1">Home</a>
-    <a href="{% url 'allCourses' %}" class="w3-bar-item w3-button w3-hide-small w3-hover-white">All Courses</a>
-    <a href="{% url 'search_results' %}" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Course Search</a>
+{#    <a href="{% url 'allCourses' %}" class="w3-bar-item w3-button w3-hide-small w3-hover-white">All Courses</a>#}
+{#    <a href="{% url 'search_results' %}" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Course Search</a>#}
     {% if user.is_authenticated %}
         <a class="w3-bar-item w3-button w3-hide-small w3-hover-white">Welcome {{ user.username }}!</a>
         <a href="{% url 'logout' %}" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Logout</a>
@@ -50,7 +50,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'allCourses' %}">All Courses</a>
   <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'course_filter' %}">Filter</a>
   <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'search_results' %}">Course Search</a>
-  <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
+{#  <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>#}
 </nav>
 
 <!-- Overlay effect when opening sidebar on small screens -->
@@ -167,6 +167,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
             <th>Number</th>
             <th>Name</th>
             <th>Details</th>
+            <th>University</th>
         </tr>
         </thead>
             {% for course in filtered_courses.courses %}
@@ -176,6 +177,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                         <td>{{ course.courseNumber }}</td>
                         <td style="text-align: left">{{ course.courseName }}</td>
                         <td><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }} >Info</a></td>
+                        <td>{{ course.university }}</td>
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -193,30 +195,30 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     </table>
 
   <!-- Pagination -->
-  <div class="w3-center w3-padding-32">
-    <div class="w3-bar">
-      <a class="w3-button w3-black" href="#">1</a>
-      <a class="w3-button w3-hover-black" href="#">2</a>
-      <a class="w3-button w3-hover-black" href="#">3</a>
-      <a class="w3-button w3-hover-black" href="#">4</a>
-      <a class="w3-button w3-hover-black" href="#">5</a>
-      <a class="w3-button w3-hover-black" href="#">»</a>
-    </div>
-  </div>
+{#  <div class="w3-center w3-padding-32">#}
+{#    <div class="w3-bar">#}
+{#      <a class="w3-button w3-black" href="#">1</a>#}
+{#      <a class="w3-button w3-hover-black" href="#">2</a>#}
+{#      <a class="w3-button w3-hover-black" href="#">3</a>#}
+{#      <a class="w3-button w3-hover-black" href="#">4</a>#}
+{#      <a class="w3-button w3-hover-black" href="#">5</a>#}
+{#      <a class="w3-button w3-hover-black" href="#">»</a>#}
+{#    </div>#}
+{#  </div>#}
 
 
 
 <!-- END MAIN -->
 </div>
-<footer id="myFooter" style="padding-left: 250px">
-    <div class="w3-container w3-theme-l2 w3-padding-32">
-      <h4>Footer</h4>
-    </div>
-
-    <div class="w3-container w3-theme-l1">
-      <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-    </div>
-  </footer>
+{#<footer id="myFooter" style="padding-left: 250px">#}
+{#    <div class="w3-container w3-theme-l2 w3-padding-32">#}
+{#      <h4>Footer</h4>#}
+{#    </div>#}
+{##}
+{#    <div class="w3-container w3-theme-l1">#}
+{#      <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>#}
+{#    </div>#}
+{#  </footer>#}
 
 <script>
 // Get the Sidebar
