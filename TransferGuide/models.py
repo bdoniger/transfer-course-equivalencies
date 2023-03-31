@@ -8,13 +8,8 @@ class Course(models.Model):
     university = models.CharField(max_length=100, default="UVA") #UVA or other
     #equivalentCourse = models.CharField(max_length=2000, default="N/A") #equivalent UVA course
     #nonEquvialentCourse = models.CharField(max_length=2000, default="N/A") #non-equivalent UVA course
-<<<<<<< Updated upstream
     equivalentCourse = models.JSONField(encoder=None, decoder=None,default=dict, null=True, blank=True)
     nonEquivalentCourse = models.JSONField(encoder=None, decoder=None,default=dict, null=True, blank=True)
-=======
-    equivalentCourse = models.JSONField(encoder=None, decoder=None,default=dict, blank=True, null=True)
-    nonEquivalentCourse = models.JSONField(encoder=None, decoder=None,default=dict, blank=True, null=True)
->>>>>>> Stashed changes
 
     def __str__(self):
         return self.courseName
