@@ -13,5 +13,7 @@ urlpatterns = [
     path('search/', views.SearchResultsView.as_view(), name='search_results'),
     path('info/', views.CourseInfo.as_view(), name='course_info'),
     path('filter/', views.CourseFilter.as_view(), name='course_filter'),
-    path('addEquivalentCourse/', views.addEquivCourse, name='addEquivCoursePage')
+    path('addEquivalentCourse/', views.addEquivCourse, name='addEquivCoursePage'),
+    path('requestForm/', views.RequestForms.as_view(), name='student_request'),
+    path('requestForm/database', views.Requestsdatabase, name='dataForRequests')
 ]

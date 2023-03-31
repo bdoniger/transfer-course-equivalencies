@@ -1,0 +1,77 @@
+{% load socialaccount %}
+
+<style>
+nav {
+    background-color: #232D4B;
+    height: 50px;
+    overflow: clip;
+}
+
+nav ul{
+
+}
+
+nav ul li{
+    list-style-type: none;
+    width: 150px;
+    float: left;
+    border-right: 1px solid #ccc;
+    text-align: center;
+}
+
+li a {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+li a:hover {
+    background-color: #E57200;
+    color: #141E3C;
+
+}
+
+li name {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+
+</style>
+
+<nav>
+    <ul>
+     <li><a href="{% url 'index' %}">Home</a></li>
+     <li><a href="{% url 'allCourses' %}">All Courses</a></li>
+     <li><a href="{% url 'search_results' %}">Course Search</a></li>
+     <li><a href="{% url 'student_request' %}">Request center</a></li>
+        {% if user.is_authenticated %}
+        <li><name>Welcome {{ user.username }}!</name></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+        {%  else %}
+            <li><a href="{% provider_login_url 'google'%}?next=/">Login with Google</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+<form action="{% url 'dataForRequests'%}" method="post">
+{% csrf_token %}
+
+    <div style="text-align:center;vertical-align:middle;">
+    <label for="ccourseName">CourseName: </label><br>
+    <input type="text" id="ccourseName" name="courseName"><br>
+    <label for="ccourseNumber">CourseNumber: </label><br>
+    <input type="text" id="ccourseNumber" name="courseNumber"><br>
+    <label for="ccourseSubject">CourseSubject: </label><br>
+    <input type="text" id="ccourseSubject" name="courseSubject"><br>
+    <label for="uuniversity">university: </label><br>
+    <input type="text" id="uuniversity" name="university"><br>
+    <label for="uurl"> url: </label><br>
+    <input type="text" id="uurl" name="url">
+        <p> </p>
+        <div style="text-align:center;vertical-align:middle;"><input type="submit" class="btn btn-primary" value="Post"></div>
+    </div>
+
+</form>
+</ul>
