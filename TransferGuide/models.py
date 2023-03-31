@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -20,3 +21,8 @@ class requestForm(models.Model):
     courseSubject = models.CharField(max_length=20, default="N/A") #department of course, i.e. CS
     university = models.CharField(max_length=100, default="N/A") #UVA or other
     url = models.CharField(max_length=1000, default="N/A") #url to class webpage
+    studentName = models.ForeignKey(User, on_delete=models.CASCADE)
+    reject = models.BooleanField(default=False)
+    pending = models.BooleanField(default=False)
+    approve = models.BooleanField(default=False)
+

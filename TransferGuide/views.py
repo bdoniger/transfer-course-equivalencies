@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import logout
 from django.template import loader
 from django.views import generic
 
 from .tasks import sisBackground
-from .models import Course
+from .models import Course, requestForm
 from django.shortcuts import redirect
 import requests
 
@@ -240,7 +240,7 @@ class CourseInfo(generic.ListView):
         return queryset
 
 
-#need to add university, maybe approved/disapproved courses filter alter
+# need to add university, maybe approved/disapproved courses filter alter
 class CourseFilter(generic.ListView):
     model = Course
     template_name = 'TransferGuide/filter.html'
@@ -261,15 +261,30 @@ class CourseFilter(generic.ListView):
         print(subject_query)
         number_query_list = []
         if len(number_query) > 0:
-            number_query_list.append(min(number_query)*1000)
-            for i in range(min(number_query)*1000, ((max(number_query)+1)*1000)-1):
+            number_query_list.append(min(number_query) * 1000)
+            for i in range(min(number_query) * 1000, ((max(number_query) + 1) * 1000) - 1):
                 number_query_list.append(i)
 
         queryset = {
             "courses": Course.objects.filter(
                 Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list)),
-            "filteredSubjects": Course.objects.filter(courseSubject__in=subject_query).values('courseSubject').order_by('courseSubject').distinct(),
+            "filteredSubjects": Course.objects.filter(courseSubject__in=subject_query).values('courseSubject').order_by(
+                'courseSubject').distinct(),
             "allSubjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
         }
         print(queryset.get("courses"))
         return queryset
+
+
+class RequestForms(generic.ListView):
+    model = requestForm
+    template_name = 'TransferGuide/Requests.html'
+
+
+
+def Requestsdatabase(request):
+    if(request.method == "POST"):
+
+        #requestForm1 = requestForm.objects.create(title=request.POST['title'], body=request.POST['body'])
+
+        return HttpResponse("d")

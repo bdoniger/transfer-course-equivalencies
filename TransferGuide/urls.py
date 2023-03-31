@@ -12,5 +12,7 @@ urlpatterns = [
     path('allCourses', views.CoursesViewAll.as_view(), name='allCourses'),
     path('search/', views.SearchResultsView.as_view(), name='search_results'),
     path('info/', views.CourseInfo.as_view(), name='course_info'),
-    path('filter/', views.CourseFilter.as_view(), name='course_filter')
+    path('filter/', views.CourseFilter.as_view(), name='course_filter'),
+    path('requestForm/', views.RequestForms.as_view(), name='student_request'),
+    path('requestForm/database', views.Requestsdatabase, name='dataForRequests')
 ]
