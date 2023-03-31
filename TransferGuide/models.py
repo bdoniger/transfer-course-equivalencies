@@ -8,8 +8,8 @@ class Course(models.Model):
     university = models.CharField(max_length=100, default="UVA") #UVA or other
     #equivalentCourse = models.CharField(max_length=2000, default="N/A") #equivalent UVA course
     #nonEquvialentCourse = models.CharField(max_length=2000, default="N/A") #non-equivalent UVA course
-    equivalentCourse = models.JSONField(encoder=None, decoder=None,default=dict)
-    nonEquivalentCourse = models.JSONField(encoder=None, decoder=None,default=dict)
+    equivalentCourse = models.JSONField(encoder=None, decoder=None,default=dict, null=True, blank=True)
+    nonEquivalentCourse = models.JSONField(encoder=None, decoder=None,default=dict, null=True, blank=True)
 
     def __str__(self):
         return self.courseName
