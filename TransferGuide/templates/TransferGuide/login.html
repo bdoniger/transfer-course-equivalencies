@@ -84,6 +84,7 @@ li name {
 </nav>
     {% if user.is_superuser %}
           <p>Logged in as {{ user.username }} (admin)</p>
+		  <a href = "{%url 'addEquivCoursePage'%}">Add a Course Equivalency</a>
     {%  else %}
         <p>Logged in as {{ user.username }} (student)</p>
     {% endif %}
