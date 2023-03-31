@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import logout
 from django.template import loader
+from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
 
 from .tasks import sisBackground
-from .models import Course
+from .models import Course, requestForm
 from django.shortcuts import redirect
 import requests
 
@@ -323,3 +324,23 @@ class CourseFilter(generic.ListView):
         }
         print(queryset.get("courses"))
         return queryset
+
+
+
+
+
+
+class RequestForms(generic.ListView):
+    model = requestForm
+    template_name = 'TransferGuide/Requests.html'
+
+
+
+def Requestsdatabase(request):
+    if(request.method == "POST"):
+
+        requestForm1 = requestForm.objects.create(courseName=request.POST['courseName'],
+                                                  courseNumber=request.POST['courseNumber'], courseSubject=request.POST['courseSubject'],
+                                                  university=request.POST['university'], url=request.POST['url'], studentName=request.user, studentEmail=request.user.email)
+
+        return HttpResponse("You Have submit your requests")
