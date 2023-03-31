@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import logout
 from django.template import loader
 from django.views import generic
+from django.contrib import messages
 
 from .tasks import sisBackground
 from .models import Course
@@ -89,7 +90,52 @@ def sisUpdate(request, semester, page, subjectNum):
     # return render(request, 'TransferGuide/ClassInfo.html')
 
 
-def addEquivCoursePage(request):
+def addEquivCourse(request):
+    if request.method == 'POST':
+        form = request.POST
+        
+        existingCourse = Course.objects.filter(university=form.get('university')).filter(courseSubject=form.get('department')).filter(courseNumber=form.get('number'))
+        
+        if not existingCourse:
+            #queryset is empty
+            oCourse=Course()
+            oCourse.courseName = form.get('name')
+            oCourse.courseNumber = form.get('number')
+            oCourse.courseSubject = form.get('department')
+            oCourse.university = form.get('university')
+            equivCourseDict = {
+                "university": "UVA",
+                "subject": form.get('UVADepartment'),
+                "number": form.get('UVANumber'),
+                "name": form.get('UVAName')
+                }
+            equivCourseList = list()
+            equivCourseList.append(equivCourseDict)
+            oCourse.equivalentCourse = equivCourseList
+            oCourse.save()
+
+            #add outside course to uva course's equivalency list
+            uvaCourse = Course.objects.filter(courseSubject=form.get('UVADepartment')).filter(courseNumber=form.get('UVANumber')).get()
+            oldEquivList = uvaCourse.equivalentCourse
+            UVAEquivCourseDict = {
+                "university": form.get('university'),
+                "subject": form.get('department'),
+                "number": form.get('number'),
+                "name": form.get('name')
+                }
+            if (len(oldEquivList) == 0):
+                oldEquivList = list()
+        
+            oldEquivList.append(UVAEquivCourseDict)
+            uvaCourse.equivalentCourse = oldEquivList
+            uvaCourse.save()
+
+            messages.success(request,'Course Equivalency Added!')
+            return render(request, 'TransferGuide/addEquivCourse.html')
+        else:
+            messages.error(request,'class equivalency already exists in database')
+            return render(request, 'TransferGuide/addEquivCourse.html')
+        
     return render(request, 'TransferGuide/addEquivCourse.html')
 
 
