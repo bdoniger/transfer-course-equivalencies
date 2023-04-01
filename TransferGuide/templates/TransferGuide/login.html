@@ -50,6 +50,8 @@ li name {
 <head>
     <meta charset="UTF-8">
     <title>Transfer Guide</title>
+
+
 <!--      <style>-->
 <!--        .NotLog {-->
 <!--            margin: auto;-->
@@ -68,13 +70,19 @@ li name {
 
 
 
+
+
+
+
+
 {% if user.is_authenticated %}
+
     <nav>
     <ul>
      <li><a href="{% url 'index' %}">Home</a></li>
      <li><a href="{% url 'allCourses' %}">All Courses</a></li>
      <li><a href="{% url 'search_results' %}">Course Search</a></li>
-     <li><a href="{% url 'student_request' %}">Request center</a></li>
+     <li><a href="{% url 'student_request' %}">Request1 center</a></li>
         {% if user.is_authenticated %}
         <li><name>Welcome {{ user.username }}!</name></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
@@ -84,10 +92,36 @@ li name {
     </ul>
 </nav>
     {% if user.is_superuser %}
+
           <p>Logged in as {{ user.username }} (admin)</p>
 		  <a href = "{%url 'addEquivCoursePage'%}">Add a Course Equivalency</a>
     {%  else %}
         <p>Logged in as {{ user.username }} (student)</p>
+
+        Your Request(s):
+
+        <ul>
+
+
+            {% for requestForm in requestForm_list %}
+                <p></p>
+
+                <li>courseName - {{ requestForm.courseName}}</li>
+                <li>courseNumber - {{ requestForm.courseNumber}}</li>
+                <li>courseSubject - {{ requestForm.courseSubject}}</li>
+                <li>university - {{ requestForm.university}}</li>
+                {% if requestForm.pending %}
+                    <li>Status - Pending</li>
+                {%  else %}
+                    {% if requestForm.reject %}
+                        <li>Status - reject</li>
+                    {%  else %}
+                        <li>Status - approve</li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+
     {% endif %}
 {% else %}
 <div class = 'NotLog'>

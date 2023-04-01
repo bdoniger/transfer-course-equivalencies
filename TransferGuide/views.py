@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import logout
 from django.template import loader
-from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
 
@@ -16,8 +15,10 @@ from django.db.models import Q
 subjectList = []
 
 
-def index(request):
-    return render(request, 'TransferGuide/login.html')
+class index(generic.ListView):
+    model = requestForm
+    template_name = 'TransferGuide/login.html'
+    context_object_name = 'requestForm_list'
 
 
 def Info(request):
