@@ -105,18 +105,19 @@ li name {
 
             {% for requestForm in requestForm_list %}
                 <p></p>
-
-                <li>courseName - {{ requestForm.courseName}}</li>
-                <li>courseNumber - {{ requestForm.courseNumber}}</li>
-                <li>courseSubject - {{ requestForm.courseSubject}}</li>
-                <li>university - {{ requestForm.university}}</li>
-                {% if requestForm.pending %}
-                    <li>Status - Pending</li>
-                {%  else %}
-                    {% if requestForm.reject %}
-                        <li>Status - reject</li>
+                {% if requestForm.studentEmail == user.email %}
+                    <li>courseName - {{ requestForm.courseName}}</li>
+                    <li>courseNumber - {{ requestForm.courseNumber}}</li>
+                    <li>courseSubject - {{ requestForm.courseSubject}}</li>
+                    <li>university - {{ requestForm.university}}</li>
+                    {% if requestForm.pending %}
+                        <li>Status - Pending</li>
                     {%  else %}
-                        <li>Status - approve</li>
+                        {% if requestForm.reject %}
+                            <li>Status - reject</li>
+                        {%  else %}
+                            <li>Status - approve</li>
+                        {% endif %}
                     {% endif %}
                 {% endif %}
             {% endfor %}
