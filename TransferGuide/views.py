@@ -19,7 +19,7 @@ subjectList = []
 
 
 def index(request):
-    return render(request, 'TransferGuide/login.html')
+    return render(request, 'TransferGuide/newLogin.html')
 
 
 def Info(request):
@@ -94,7 +94,7 @@ def sisUpdate(request, semester, page, subjectNum):
 
 
 class CoursesViewAll(generic.ListView):
-    template_name = 'TransferGuide/allCourses.html'
+    template_name = 'TransferGuide/newAllCourses.html'
     context_object_name = 'all_courses_list'
 
     def get_queryset(self):
@@ -105,8 +105,31 @@ class CoursesViewAll(generic.ListView):
 
 
 def make_query(subject_query, number_query, name_query, university_query):
+    all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+    all_universities_queryset = Course.objects.all().values('university').order_by('university').distinct()
+    all_numbers_queryset = Course.objects.all().values("courseNumber").order_by("courseNumber").distinct()
+
+    all_subjects_queryset = all_subjects_queryset.values_list()
+    all_universities_queryset = all_universities_queryset.values_list()
+    all_numbers_queryset = all_numbers_queryset.values_list()
+    subjects = []
+    universities = []
+    numbers = []
+    for item in all_subjects_queryset:
+        if item[3] not in subjects:
+            subjects.append(item[3])
+    for item in all_universities_queryset:
+        if item[4] not in universities:
+            universities.append(item[4])
+    for item in all_numbers_queryset:
+        if item[2] not in numbers:
+            numbers.append(item[2])
+    json_subjects = json.dumps(subjects)
+    json_universities = json.dumps(universities)
+    json_numbers = json.dumps(numbers)
+
     if (subject_query == '') & ((number_query == -1) | (number_query == '')) & (name_query == '') & (university_query == ''):
-        return {}
+        return {"json": json_subjects, "universitiesJSON": json_universities, "numbersJSON": json_numbers}
 
     courses = Course.objects.all().order_by('courseSubject', 'courseNumber')
     subjects = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
@@ -121,8 +144,8 @@ def make_query(subject_query, number_query, name_query, university_query):
                 courses = courses.filter(Q(courseSubject__icontains=filter_criteria))
                 subjects = subjects.filter(Q(courseSubject__icontains=filter_criteria))
             elif filter_criteria == number_query:
-                courses = courses.filter(Q(courseNumber__contains=number_query))
-                subjects = subjects.filter(Q(courseNumber__contains=number_query))
+                courses &= courses.filter(Q(courseNumber=number_query))
+                subjects &= subjects.filter(Q(courseNumber=number_query))
             elif filter_criteria == name_query:
                 courses = courses.filter(Q(courseName__icontains=name_query))
                 subjects = subjects.filter(Q(courseName__icontains=name_query))
@@ -130,12 +153,12 @@ def make_query(subject_query, number_query, name_query, university_query):
                 courses = courses.filter(Q(university__icontains=university_query))
                 subjects = subjects.filter(Q(university__icontains=university_query))
 
-    return {"courses": courses, "subjects": subjects}
+    return {"courses": courses, "subjects": subjects, "json": json_subjects, "universitiesJSON": json_universities, "numbersJSON": json_numbers}
 
 
 class SearchResultsView(generic.ListView):
     model = Course
-    template_name = 'TransferGuide/searchResults.html'
+    template_name = 'TransferGuide/newSearch.html'
     context_object_name = 'all_courses_list'
 
     # Need to add search based on university once that is set up
@@ -190,17 +213,24 @@ class CourseFilter(generic.ListView):
         number_query_list = []
         if len(number_query) > 0:
             number_query_list.append(min(number_query)*1000)
-            for i in range(min(number_query)*1000, ((max(number_query)+1)*1000)-1):
+            for i in range(min(number_query)*1000, ((max(number_query)+1)*1000)):
                 number_query_list.append(i)
 
         all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+        all_universities_queryset = Course.objects.all().values('university').order_by('university').distinct()
 
         all_subjects_queryset = all_subjects_queryset.values_list()
+        all_universities_queryset = all_universities_queryset.values_list()
         subjects = []
+        universities = []
         for item in all_subjects_queryset:
             if item[3] not in subjects:
                 subjects.append(item[3])
+        for item in all_universities_queryset:
+            if item[4] not in universities:
+                universities.append(item[4])
         json_subjects = json.dumps(subjects)
+        json_universities = json.dumps(universities)
 
         return_set = {
             "json": json_subjects,
@@ -208,7 +238,8 @@ class CourseFilter(generic.ListView):
                 Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list)),
             "filteredSubjects": Course.objects.filter(Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list)).values('courseSubject').order_by(
                 'courseSubject').distinct(),
-            "allSubjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+            "allSubjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct(),
+            "universitiesJSON": json_universities
         }
         return return_set
 
