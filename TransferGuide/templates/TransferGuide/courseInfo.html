@@ -83,10 +83,14 @@ li name {
     {% endif %}
     <br>
     <a>Known courses that transfer:</a>
-    <a>None</a>
+    <a>{{ course.equivalentCourse }}</a>
     <br>
     <a>Known courses that <i>do not</i> transfer:</a>
-    <a>None</a>
+    {% if course.nonEquivalentCourse == "N/A" %}
+            <a>None</a>
+    {% else %}
+        <a>{{ course.nonEquivalentCourse }}</a>
+    {% endif %}
 </div>
 
 </body>
