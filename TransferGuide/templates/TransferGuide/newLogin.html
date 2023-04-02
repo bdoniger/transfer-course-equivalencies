@@ -106,7 +106,9 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
     {% if user.is_superuser %}
     {% else %}
+        {% if user.loggedin %}
         Your Request(s):
+         {% endif %}
         <ul>
             {% for requestForm in requestForm_list %}
                 <p></p>
