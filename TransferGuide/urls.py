@@ -4,7 +4,7 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.index.as_view(), name='index'),
     path('ClassInfos/', views.Info, name='Info'),
     path('accounts/logout/', views.logoutt, name='logout'),
     path('sisUpdate/<semester>/<page>/<subjectNum>/', views.sisUpdate, name='update'),
@@ -13,5 +13,7 @@ urlpatterns = [
     path('search/', views.SearchResultsView.as_view(), name='search_results'),
     path('info/', views.CourseInfo.as_view(), name='course_info'),
     path('filter/', views.CourseFilter.as_view(), name='course_filter'),
-    path('test/', views.Test.as_view(), name='test')
+    path('addEquivalentCourse/', views.addEquivCourse, name='addEquivCoursePage'),
+    path('requestForm/', views.RequestForms.as_view(), name='student_request'),
+    path('requestForm/database', views.Requestsdatabase, name='dataForRequests')
 ]

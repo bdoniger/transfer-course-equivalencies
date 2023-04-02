@@ -1,0 +1,120 @@
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Courses</title>
+</head>
+
+
+<style>
+nav {
+    background-color: #232D4B;
+    height: 50px;
+    overflow: clip;
+}
+
+nav ul{
+
+}
+
+nav ul li{
+    list-style-type: none;
+    width: 150px;
+    float: left;
+    border-right: 1px solid #ccc;
+    text-align: center;
+}
+
+li a {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+li a:hover {
+    background-color: #E57200;
+    color: #141E3C;
+
+}
+
+li name {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+
+</style>
+
+<nav>
+    <ul>
+     <li><a href="{% url 'index' %}">Home</a></li>
+     <li><a href="{% url 'allCourses' %}">All Courses</a></li>
+     <li><a href="{% url 'search_results' %}">Course Search</a></li>
+        {% if user.is_authenticated %}
+        <li><name>Welcome {{ user.username }}!</name></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+        {%  else %}
+            <li><a href="{% provider_login_url 'google'%}?next=/">Login with Google</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+		{{ message }}
+	</div>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<form action="" method="POST">
+{% csrf_token %}
+
+<h2 align="left">UVA Course Details</h2>
+<table>
+	<tr>
+		<td align="right">Name:</td>
+      	<td align="left"><input type="text" name="UVAName" placeholder="Introduction to Programming" required /></td>
+    </tr>
+    <tr>
+      	<td align="right">Number:</td>
+      	<td align="left"><input type="text" name="UVANumber" placeholder="1110" required /></td>
+    </tr>
+   	<tr>
+  		<td align="right">Department/Subject:</td>
+     	<td align="left"><input type="text" name="UVADepartment" placeholder="CS" required /></td>
+   	</tr>
+</table>
+
+<h2 align="left">Outside Institution Course Details</h2>
+<table>
+    <tr>
+      	<td align="right">Institution:</td>
+      	<td align="left"><input type="text" name="university" placeholder="United States Naval Academy" required /></td>
+    </tr>
+    <tr>
+      	<td align="right">Name:</td>
+      	<td align="left"><input type="text" name="name" placeholder="Intro to Comp Sci" required /></td>
+    </tr>
+    <tr>
+      	<td align="right">Number:</td>
+      	<td align="left"><input type="text" name="number" placeholder="204" required /></td>
+    </tr>
+   	<tr>
+  		<td align="right">Department/Subject:</td>
+     	<td align="left"><input type="text" name="department" placeholder="SI" required /></td>
+   	</tr>  	
+</table>
+
+<br>
+<br>
+
+<p>
+	<input type="submit" value="Add Course">
+</p>
+</form>

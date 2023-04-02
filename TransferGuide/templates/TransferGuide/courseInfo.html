@@ -83,14 +83,45 @@ li name {
     {% endif %}
     <br>
     <a>Known courses that transfer:</a>
-    <a>{{ course.equivalentCourse }}</a>
-    <br>
+		{% if course_info %}
+			{% for course in course_info %}
+				{% if course.equivalentCourse %}
+					{% for dict in course.equivalentCourse %}
+						{% if dict %}
+							<li>
+								{% for k,v in dict.items %}
+									{% if v %}
+										{{ v }}
+									{% endif %}
+    							{% endfor %}
+							</li>
+						{% endif %}
+					{% endfor %}
+				{% else %}
+					None
+				{% endif %}
+			{% endfor %}
+		{% endif %}
     <a>Known courses that <i>do not</i> transfer:</a>
-    {% if course.nonEquivalentCourse == "N/A" %}
-            <a>None</a>
-    {% else %}
-        <a>{{ course.nonEquivalentCourse }}</a>
-    {% endif %}
+		{% if course_info %}
+			{% for course in course_info %}
+				{% if course.nonEquivalentCourse %}
+					{% for dict in course.nonEquivalentCourse %}
+						{% if dict %}
+							<li>
+								{% for k,v in dict.items %}
+									{% if v %}
+										{{ v }}
+									{% endif %}
+    							{% endfor %}
+							</li>
+						{% endif %}
+					{% endfor %}
+				{% else %}
+					None
+				{% endif %}
+			{% endfor %}
+		{% endif %}
 </div>
 
 </body>
