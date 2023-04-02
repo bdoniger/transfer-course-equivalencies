@@ -7,6 +7,7 @@
 <head>
 <title>Course Search</title>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
@@ -99,7 +100,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     var universities = JSON.parse('{{ all_courses_list.universitiesJSON }}'.replace(/&quot;/g,'"'));
     var course_numbers = JSON.parse('{{ all_courses_list.numbersJSON }}'.replace(/&quot;/g,'"'));
     var course_names = JSON.parse('{{ all_courses_list.namesJSON }}'.replace(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&#x27;/g, "'"));
-    console.log(course_names)
 
     $(function () {
         // Set up the combo box for selecting subjects
