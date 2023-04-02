@@ -51,6 +51,9 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'allCourses' %}">All Courses</a>
   <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'course_filter' %}">Filter</a>
   <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'search_results' %}">Course Search</a>
+    {% if user.is_superuser %}
+      <a class="w3-bar-item w3-button w3-hover-black" href="{%url 'addEquivCoursePage'%}">Add a Course Equivalency</a>
+  {% endif %}
   <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'student_request' %}">Equivalency Request Form</a>
 {#  <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>#}
 </nav>
