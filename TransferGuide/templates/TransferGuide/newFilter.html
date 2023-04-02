@@ -21,6 +21,18 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   bottom: 0;
   height: inherit;
 }
+
+.parent {
+  width: 100%;
+  text-align: left; /* centers the child elements horizontally */
+  margin-left:260px;
+
+}
+
+.child {
+  display: inline-block;
+  {#width: 30%; /* adjust as needed */#}
+}
 </style>
 </head>
 <body>
@@ -79,11 +91,12 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     <br />
     <div class=".ui-widget-overlay"></div>
 
-    <div id="checkboxSelectCombo">
 
 
     <script>
     var subjects = JSON.parse('{{ filtered_courses.json }}'.replace(/&quot;/g,'"'));
+    var universities = JSON.parse('{{ filtered_courses.universitiesJSON }}'.replace(/&quot;/g,'"'));
+    var course_numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     $(function () {
         // Set up the combo box for selecting subjects
@@ -96,61 +109,84 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                 enabled: true,
                 showCheckboxes: true
             },
-            dropDownOrientation: "bottom"
+            dropDownOrientation: "bottom",
+            placeHolder: "Select Subjects"
+        });
+
+        $("#checkboxUniversitiesSelectCombo").igCombo({
+            width: 300,
+            dataSource: universities,
+            textKey: "Name",
+            valueKey: "Name",
+            multiSelection: {
+                enabled: true,
+                showCheckboxes: true
+            },
+            dropDownOrientation: "bottom",
+            placeHolder: "Select Subjects"
         });
 
         // Set up the slider for choosing a number
-        $("#numberSlider").slider({
-            range: "min",
-            min: 1,
-            max: 9,
-            value: 1,
-            slide: function (event, ui) {
-                $("#numberInput").val(ui.value * 1000);
+        $("#checkboxNumberSelectCombo").igCombo({
+            width: 300,
+            dataSource: course_numbers,
+            textKey: "Name",
+            valueKey: "Name",
+            multiSelection: {
+                enabled: true,
+                showCheckboxes: true
             },
-            create: function(event, ui) {
-            $(this).find('.ui-slider-handle').css({
-            height: '15px',
-            'margin-left': '-5px',
-            'margin-top': '1px'
+            dropDownOrientation: "bottom",
+            placeHolder: "Select Subjects"
         });
-    }
-        });
-        $("#numberInput").val($("#numberSlider").slider("value") * 1000);
 
         // Handle the submit button click event
         $("#submitBtn").click(function() {
             var selectedValues = $("#checkboxSelectCombo").igCombo("value");
-            var numberValue = $("#numberSlider").slider("value");
+            var selectedUniversities = $("#checkboxUniversitiesSelectCombo").igCombo("value");
+            var numberValue = $("#checkboxNumberSelectCombo").igCombo("value");
             var cur_url = window.location.href;
             var index = cur_url.indexOf('?');
             if (index > -1){
                 cur_url = cur_url.substring(0,index);
             }
-            window.location.href = cur_url + "?subject=" + selectedValues + "&number=" + numberValue;
+            window.location.href = cur_url + "?subject=" + selectedValues + "&number=" + numberValue + "&universities=" +selectedUniversities;
         });
     });
 </script>
-
-<div>
-    <label for="numberInput">Number:</label>
-    <input type="text" id="numberInput" readonly style="border:0; color:#f6931f; font-weight:bold;">
-    <br>
-    <br>
 </div>
-<div id="numberSlider"></div>
-        <h4 class="combo-label">Select subject(s)</h4>
+</div>
+    <div class="parent" style="width: 100%; margin-left:260px; display: inline-block">
+        <h2>Filter Courses</h2>
+        <h6>All Fields are Required</h6>
+{#        <br>#}
+        <div class="child">
+            <a class="combo-label">Select Universities</a>
+            <br>
+            <div id="checkboxUniversitiesSelectCombo"></div>
+        </div>
+        <div class="child">
+            <a class="combo-label">Select Subject(s)</a>
+            <br>
+            <div id="checkboxSelectCombo"></div>
+        </div>
+        <div class="child">
+            <a class="combo-label">Course Level</a>
+            <br>
+            <div id="checkboxNumberSelectCombo"></div>
+        </div>
+        <br>
+        <button id="submitBtn" type="submit" value="Submit">Submit</button>
+        <button><a href="{% url 'course_filter' %}" style="color: #000000; text-decoration: none;">Clear Filters</a></button>
     </div>
-<br>
-<button id="submitBtn" type="submit" value="Submit">Submit</button>
-<button><a href="{% url 'course_filter' %}" style="color: #000000; text-decoration: none;">Clear Filters</a></button>
 
-
+<div class="w3-main" style="margin-left:260px">
+<div class="container">
 <br>
-    {% if filtered_courses > 0 %}
+    {% if filtered_courses.courses > 0 %}
         <h1>Search Results</h1>
     {% endif %}
-    {% if filtered_courses %}
+    {% if filtered_courses.courses %}
     <table>
         <tbody>
         {% for subject in filtered_courses.filteredSubjects %}
@@ -190,7 +226,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         <tr>
         </tbody>
         {% else %}
-        <h2>No courses are available.</h2>
+        <h2>No courses found.</h2>
         {% endif %}
     </table>
 
@@ -205,11 +241,12 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 {#      <a class="w3-button w3-hover-black" href="#">»</a>#}
 {#    </div>#}
 {#  </div>#}
+</div>
 
+</div>
 
 
 <!-- END MAIN -->
-</div>
 {#<footer id="myFooter" style="padding-left: 250px">#}
 {#    <div class="w3-container w3-theme-l2 w3-padding-32">#}
 {#      <h4>Footer</h4>#}
