@@ -100,11 +100,12 @@ def addEquivCourse(request):
     if request.method == 'POST':
         form = request.POST
 
-        existingCourse = Course.objects.filter(university=form.get('university')).filter(courseSubject=form.get('department')).filter(courseNumber=form.get('number'))
+        existingCourse = Course.objects.filter(university=form.get('university')).filter(
+            courseSubject=form.get('department')).filter(courseNumber=form.get('number'))
 
         if not existingCourse:
-            #queryset is empty
-            oCourse=Course()
+            # queryset is empty
+            oCourse = Course()
             oCourse.courseName = form.get('name')
             oCourse.courseNumber = form.get('number')
             oCourse.courseSubject = form.get('department')
@@ -114,21 +115,22 @@ def addEquivCourse(request):
                 "subject": form.get('UVADepartment'),
                 "number": form.get('UVANumber'),
                 "name": form.get('UVAName')
-                }
+            }
             equivCourseList = list()
             equivCourseList.append(equivCourseDict)
             oCourse.equivalentCourse = equivCourseList
             oCourse.save()
 
-            #add outside course to uva course's equivalency list
-            uvaCourse = Course.objects.filter(courseSubject=form.get('UVADepartment')).filter(courseNumber=form.get('UVANumber')).get()
+            # add outside course to uva course's equivalency list
+            uvaCourse = Course.objects.filter(courseSubject=form.get('UVADepartment')).filter(
+                courseNumber=form.get('UVANumber')).get()
             oldEquivList = uvaCourse.equivalentCourse
             UVAEquivCourseDict = {
                 "university": form.get('university'),
                 "subject": form.get('department'),
                 "number": form.get('number'),
                 "name": form.get('name')
-                }
+            }
             if (len(oldEquivList) == 0):
                 oldEquivList = list()
 
@@ -136,10 +138,10 @@ def addEquivCourse(request):
             uvaCourse.equivalentCourse = oldEquivList
             uvaCourse.save()
 
-            messages.success(request,'Course Equivalency Added!')
+            messages.success(request, 'Course Equivalency Added!')
             return render(request, 'TransferGuide/addEquivCourse.html')
         else:
-            messages.error(request,'class equivalency already exists in database')
+            messages.error(request, 'class equivalency already exists in database')
             return render(request, 'TransferGuide/addEquivCourse.html')
 
     return render(request, 'TransferGuide/addEquivCourse.html')
@@ -270,8 +272,6 @@ class CourseFilter(generic.ListView):
         number_query = self.request.GET.get("number")
         university_query = self.request.GET.getlist("universities")
 
-
-
         if subject_query is None:
             subject_query = ''
         if (number_query == '') | (number_query is None):
@@ -328,7 +328,7 @@ class CourseFilter(generic.ListView):
 
 
 class Test(generic.ListView):
-    template_name = 'TransferGuide/test.html'
+    template_name = 'TransferGuide/login.html'
     context_object_name = 'all_courses_list'
 
     def get_queryset(self):
@@ -338,21 +338,17 @@ class Test(generic.ListView):
         }
 
 
-
-
-
-
 class RequestForms(generic.ListView):
     model = requestForm
     template_name = 'TransferGuide/Requests.html'
 
 
-
 def Requestsdatabase(request):
-    if(request.method == "POST"):
-
+    if request.method == "POST":
         requestForm1 = requestForm.objects.create(courseName=request.POST['courseName'],
-                                                  courseNumber=request.POST['courseNumber'], courseSubject=request.POST['courseSubject'],
-                                                  university=request.POST['university'], url=request.POST['url'], studentName=request.user, studentEmail=request.user.email)
+                                                  courseNumber=request.POST['courseNumber'],
+                                                  courseSubject=request.POST['courseSubject'],
+                                                  university=request.POST['university'], url=request.POST['url'],
+                                                  studentName=request.user, studentEmail=request.user.email)
 
         return HttpResponse("You Have submit your requests")
