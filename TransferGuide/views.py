@@ -327,8 +327,46 @@ class CourseFilter(generic.ListView):
         return return_set
 
 
+class AddEquivalency(generic.ListView):
+    template_name = 'TransferGuide/newAddEquivCourse.html'
+    context_object_name = 'all_courses_list'
+
+    def get_queryset(self):
+        all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+        all_numbers_queryset = Course.objects.all().values("courseNumber").order_by("courseNumber").distinct()
+        all_names_queryset = Course.objects.all().values("courseName").order_by("courseName").distinct()
+
+        all_subjects_queryset = all_subjects_queryset.values_list()
+        all_numbers_queryset = all_numbers_queryset.values_list()
+        all_names_queryset = all_names_queryset.values_list()
+        subjects = []
+        numbers = []
+        names = []
+
+        for item in all_subjects_queryset:
+            if item[4] == 'UVA':
+                if item[3] not in subjects:
+                    subjects.append(item[3])
+        for item in all_numbers_queryset:
+            if item[4] == 'UVA':
+                if item[2] not in numbers:
+                    numbers.append(item[2])
+        for item in all_names_queryset:
+            if item[4] == 'UVA':
+                if item[1] not in names:
+                    if "\"" in item[1]:
+                        names.append(item[1].replace("\"", ''))
+                    else:
+                        names.append(item[1])
+
+        json_subjects = json.dumps(subjects)
+        json_numbers = json.dumps(numbers)
+        json_names = json.dumps(names)
+        return {"json": json_subjects, "numbersJSON": json_numbers, "namesJSON": json_names}
+
+
 class Test(generic.ListView):
-    template_name = 'TransferGuide/login.html'
+    template_name = 'TransferGuide/newAddEquivCourse.html'
     context_object_name = 'all_courses_list'
 
     def get_queryset(self):
@@ -343,7 +381,7 @@ class RequestForms(generic.ListView):
     template_name = 'TransferGuide/Requests.html'
 
 
-def Requestsdatabase(request):
+def requests_database(request):
     if request.method == "POST":
         requestForm1 = requestForm.objects.create(courseName=request.POST['courseName'],
                                                   courseNumber=request.POST['courseNumber'],

@@ -15,6 +15,6 @@ urlpatterns = [
     path('filter/', views.CourseFilter.as_view(), name='course_filter'),
     path('addEquivalentCourse/', views.addEquivCourse, name='addEquivCoursePage'),
     path('requestForm/', views.RequestForms.as_view(), name='student_request'),
-    path('requestForm/database', views.Requestsdatabase, name='dataForRequests'),
-    path('test/', views.Test.as_view(), name="test")
+    path('requestForm/database', views.requests_database, name='dataForRequests'),
+    path('test/', views.AddEquivalency.as_view(), name="test")
 ]

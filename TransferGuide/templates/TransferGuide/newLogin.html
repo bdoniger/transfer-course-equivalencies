@@ -8,6 +8,7 @@
 <title>Transfer Guide</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -68,6 +69,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   {% if user.is_superuser %}
       <a class="w3-bar-item w3-button w3-hover-black" href="{%url 'addEquivCoursePage'%}">Add a Course Equivalency</a>
   {% endif %}
+  <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'student_request' %}">Equivalency Request Form</a>
 
 {#  <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>#}
 </nav>
