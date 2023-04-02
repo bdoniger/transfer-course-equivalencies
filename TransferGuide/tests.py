@@ -42,3 +42,10 @@ class CourseDisplay(TestCase):
         number = course.courseNumber
         subject = course.courseSubject
         self.assertEqual(subject + number + name, "BRUH" + "123456" + "name")
+class RequestValidity(TestCase):
+    def test_CourseName(self):
+    def test_CourseNumber(self):
+    def test_CourseSubject(self):
+    def test_university(self):
+    def test_url(self):
+
