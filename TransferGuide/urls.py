@@ -1,10 +1,10 @@
-from django.urls import path, include
+from django.urls import path
 
 from . import views
 
 
 urlpatterns = [
-    path('', views.index.as_view(), name='index'),
+    path('', views.index, name='index'),
     path('ClassInfos/', views.Info, name='Info'),
     path('accounts/logout/', views.logoutt, name='logout'),
     path('sisUpdate/<semester>/<page>/<subjectNum>/', views.sisUpdate, name='update'),
@@ -16,5 +16,6 @@ urlpatterns = [
     path('addEquivalentCourse/', views.addEquivCourse, name='addEquivCoursePage'),
     path('requestForm/', views.RequestForms.as_view(), name='student_request'),
     path('requestForm/database', views.requests_database, name='dataForRequests'),
+    path('pendingRequests/', views.pending_requests, name='pendingRequests'),
     path('test/', views.AddEquivalency.as_view(), name="test")
 ]

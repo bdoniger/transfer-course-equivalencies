@@ -246,7 +246,21 @@ class SearchResultsView(generic.ListView):
         if university_query is None:
             university_query = ''
 
-        return make_query(subject_query, number_query, name_query, university_query)
+            if (courses_got != '') & (courses_got is not None):
+                courses_count = len(queryset.get('courses'))
+            else:
+                courses_count = 0
+            if (subjects_got != '') & (subjects_got is not None):
+                subjects_count = len(queryset.get('subjects'))
+            else:
+                subjects_count = 0
+
+            if (courses_count == 0) & (subjects_count == 0):
+                return {}
+            else:
+                return queryset
+        else:
+            return queryset
 
 
 class CourseInfo(generic.ListView):
@@ -390,3 +404,18 @@ def requests_database(request):
                                                   studentName=request.user, studentEmail=request.user.email)
 
         return HttpResponse("You Have submit your requests")
+
+
+
+def pending_requests(request):
+    requests = requestForm.objects.all()
+
+    form_id = request.GET.get("request_id")
+    status = request.GET.get("status")
+
+    if form_id is not None:
+        form = requestForm.objects.all().filter(id=form_id)[0]
+        form.status = status
+        form.save()
+
+    return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
