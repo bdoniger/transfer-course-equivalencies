@@ -28,6 +28,14 @@ class URLTests(TestCase):
         response = self.client.get('/search/')
         self.assertTrue(response.status_code == 200)
 
+    def test_addEquivalentCourse(self):
+        response = self.client.get('/addEquivalentCourse/')
+        self.assertTrue(response.status_code == 200)
+
+    def test_PendingRequests(self):
+        response = self.client.get('/pendingRequests/')
+        self.assertTrue(response.status_code == 200)
+
 class CourseDisplay(TestCase):
     def test_display(self):
         course = Course(courseName="name", courseNumber='1', courseSubject='BRUH')

@@ -15,10 +15,13 @@ from django.db.models import Q
 subjectList = []
 
 
-class index(generic.ListView):
+def index(request):
     model = requestForm
     template_name = 'TransferGuide/login.html'
     context_object_name = 'requestForm_list'
+    requests = requestForm.objects.all()
+
+    return render(request, 'TransferGuide/login.html', context={"requests": requests})
 
 
 def Info(request):
@@ -345,3 +348,19 @@ def Requestsdatabase(request):
                                                   university=request.POST['university'], url=request.POST['url'], studentName=request.user, studentEmail=request.user.email)
 
         return HttpResponse("You Have submit your requests")
+
+
+def PendingRequests(request):
+    if request.method == 'POST':
+        form = request.POST
+    requests = requestForm.objects.all()
+
+
+    return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
+
+def changeStatus(request):
+    requests = requestForm.objects.all()
+
+
+
+    return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})

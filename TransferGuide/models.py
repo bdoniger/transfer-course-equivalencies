@@ -23,12 +23,14 @@ class requestForm(models.Model):
     url = models.CharField(max_length=1000, default="N/A") #url to class webpage
     studentName = models.ForeignKey(User, on_delete=models.CASCADE)
     studentEmail = models.CharField(max_length=1000, default="N/A")
-    reject = models.BooleanField(default=False)
-    pending = models.BooleanField(default=True)
-    approve = models.BooleanField(default=False)
+    rejected = models.BooleanField(default="False")
+    pending = models.BooleanField(default="True")
+    accepted = models.BooleanField(default="False")
 
     def __str__(self):
         return 'Comment {} by {} by {} by {} by {} by {} by {} by {} by {} by {}'.format(self.courseName, self.courseNumber,
                                                                  self.courseSubject, self.university,
-                                                                 self.url, self.studentName, self.studentEmail, self.reject,
-                                                            self.pending, self.approve)
+                                                                 self.url, self.studentName, self.studentEmail, self.rejected, self.pending, self.accepted)
+
+class user(models.Model):
+    isAdmin = models.BooleanField(default=True)
