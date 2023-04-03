@@ -338,8 +338,8 @@ class RequestForms(generic.ListView):
     template_name = 'TransferGuide/Requests.html'
 
 
-def Requestsdatabase(request):
-    if (request.method == "POST"):
+def requests_database(request):
+    if request.method == "POST":
         requestForm1 = requestForm.objects.create(courseName=request.POST['courseName'],
                                                   courseNumber=request.POST['courseNumber'],
                                                   courseSubject=request.POST['courseSubject'],
@@ -349,23 +349,15 @@ def Requestsdatabase(request):
         return HttpResponse("You Have submit your requests")
 
 
-def PendingRequests(request):
-    if request.method == 'POST':
-        form = request.POST
+def pending_requests(request):
     requests = requestForm.objects.all()
 
-    return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
-
-
-def changeStatus(request):
-    requests = requestForm.objects.all()
-
-    form_id = request.GET.get("formID")
+    form_id = request.GET.get("request_id")
     status = request.GET.get("status")
 
-    request = requestForm.objects.all().filter(id=form_id)
-    request.status = status
-    request.save()
-
+    if form_id is not None:
+        form = requestForm.objects.all().filter(id=form_id)[0]
+        form.status = status
+        form.save()
 
     return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
