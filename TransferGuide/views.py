@@ -98,12 +98,13 @@ def sisUpdate(request, semester, page, subjectNum):
 def addEquivCourse(request):
     if request.method == 'POST':
         form = request.POST
-        
-        existingCourse = Course.objects.filter(university=form.get('university')).filter(courseSubject=form.get('department')).filter(courseNumber=form.get('number'))
-        
+
+        existingCourse = Course.objects.filter(university=form.get('university')).filter(
+            courseSubject=form.get('department')).filter(courseNumber=form.get('number'))
+
         if not existingCourse:
-            #queryset is empty
-            oCourse=Course()
+            # queryset is empty
+            oCourse = Course()
             oCourse.courseName = form.get('name')
             oCourse.courseNumber = form.get('number')
             oCourse.courseSubject = form.get('department')
@@ -113,34 +114,35 @@ def addEquivCourse(request):
                 "subject": form.get('UVADepartment'),
                 "number": form.get('UVANumber'),
                 "name": form.get('UVAName')
-                }
+            }
             equivCourseList = list()
             equivCourseList.append(equivCourseDict)
             oCourse.equivalentCourse = equivCourseList
             oCourse.save()
 
-            #add outside course to uva course's equivalency list
-            uvaCourse = Course.objects.filter(courseSubject=form.get('UVADepartment')).filter(courseNumber=form.get('UVANumber')).get()
+            # add outside course to uva course's equivalency list
+            uvaCourse = Course.objects.filter(courseSubject=form.get('UVADepartment')).filter(
+                courseNumber=form.get('UVANumber')).get()
             oldEquivList = uvaCourse.equivalentCourse
             UVAEquivCourseDict = {
                 "university": form.get('university'),
                 "subject": form.get('department'),
                 "number": form.get('number'),
                 "name": form.get('name')
-                }
+            }
             if (len(oldEquivList) == 0):
                 oldEquivList = list()
-        
+
             oldEquivList.append(UVAEquivCourseDict)
             uvaCourse.equivalentCourse = oldEquivList
             uvaCourse.save()
 
-            messages.success(request,'Course Equivalency Added!')
+            messages.success(request, 'Course Equivalency Added!')
             return render(request, 'TransferGuide/addEquivCourse.html')
         else:
-            messages.error(request,'class equivalency already exists in database')
+            messages.error(request, 'class equivalency already exists in database')
             return render(request, 'TransferGuide/addEquivCourse.html')
-        
+
     return render(request, 'TransferGuide/addEquivCourse.html')
 
 
@@ -295,7 +297,7 @@ class CourseInfo(generic.ListView):
         return queryset
 
 
-#need to add university, maybe approved/disapproved courses filter alter
+# need to add university, maybe approved/disapproved courses filter alter
 class CourseFilter(generic.ListView):
     model = Course
     template_name = 'TransferGuide/filter.html'
@@ -316,22 +318,19 @@ class CourseFilter(generic.ListView):
         print(subject_query)
         number_query_list = []
         if len(number_query) > 0:
-            number_query_list.append(min(number_query)*1000)
-            for i in range(min(number_query)*1000, ((max(number_query)+1)*1000)-1):
+            number_query_list.append(min(number_query) * 1000)
+            for i in range(min(number_query) * 1000, ((max(number_query) + 1) * 1000) - 1):
                 number_query_list.append(i)
 
         queryset = {
             "courses": Course.objects.filter(
                 Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list)),
-            "filteredSubjects": Course.objects.filter(courseSubject__in=subject_query).values('courseSubject').order_by('courseSubject').distinct(),
+            "filteredSubjects": Course.objects.filter(courseSubject__in=subject_query).values('courseSubject').order_by(
+                'courseSubject').distinct(),
             "allSubjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
         }
         print(queryset.get("courses"))
         return queryset
-
-
-
-
 
 
 class RequestForms(generic.ListView):
@@ -339,13 +338,13 @@ class RequestForms(generic.ListView):
     template_name = 'TransferGuide/Requests.html'
 
 
-
 def Requestsdatabase(request):
-    if(request.method == "POST"):
-
+    if (request.method == "POST"):
         requestForm1 = requestForm.objects.create(courseName=request.POST['courseName'],
-                                                  courseNumber=request.POST['courseNumber'], courseSubject=request.POST['courseSubject'],
-                                                  university=request.POST['university'], url=request.POST['url'], studentName=request.user, studentEmail=request.user.email)
+                                                  courseNumber=request.POST['courseNumber'],
+                                                  courseSubject=request.POST['courseSubject'],
+                                                  university=request.POST['university'], url=request.POST['url'],
+                                                  studentName=request.user, studentEmail=request.user.email)
 
         return HttpResponse("You Have submit your requests")
 
@@ -355,12 +354,18 @@ def PendingRequests(request):
         form = request.POST
     requests = requestForm.objects.all()
 
-
     return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
+
 
 def changeStatus(request):
     requests = requestForm.objects.all()
 
+    form_id = request.GET.get("formID")
+    status = request.GET.get("status")
+
+    request = requestForm.objects.all().filter(id=form_id)
+    request.status = status
+    request.save()
 
 
     return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})

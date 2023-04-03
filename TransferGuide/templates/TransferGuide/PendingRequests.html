@@ -77,17 +77,18 @@ li name {
   {% if request.accepted %}
   <p>Status: accepted</p>
   {% endif %}
-    <form action="{% url 'changeStatus' %}" method="post">
-      {% csrf_token %}
-      <label for="requests">Change Status:</label>
-      <select name="request" id="requests">
-        <option value=True>Rejected</option>
-        <option value=True>Pending</option>
-        <option value=True>Accepted</option>
+    <form action="{% url 'pendingRequests' %}" method="GET">
+{#      {% csrf_token %}#}
+      <label for="status">Change Status:</label>
+      <select name="status" id="status">
+        <option value="rejected">Rejected</option>
+        <option value="pending">Pending</option>
+        <option value="accepted">Accepted</option>
       </select>
       <br><br>
-      <input type="submit" value=Submit>
-  </form>
+      <input type="hidden" name="request_id" value="{{ request.id }}">
+      <input type="submit" value="Submit">
+    </form>
   {% endfor %}
 
   {% if not requests%}
