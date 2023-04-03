@@ -95,6 +95,9 @@ li name {
 
           <p>Logged in as {{ user.username }} (admin)</p>
 		  <a href = "{%url 'addEquivCoursePage'%}">Add a Course Equivalency</a>
+      <p></p>
+      <a href = "{%url 'pendingRequests'%}">Respond to Class Requests</a>
+
     {%  else %}
         <p>Logged in as {{ user.username }} (student)</p>
 
@@ -103,7 +106,7 @@ li name {
         <ul>
 
 
-            {% for requestForm in requestForm_list %}
+            {% for requestForm in requests %}
                 <p></p>
                 {% if requestForm.studentEmail == user.email %}
                     <li>courseName - {{ requestForm.courseName}}</li>
@@ -113,7 +116,7 @@ li name {
                     {% if requestForm.pending %}
                         <li>Status - Pending</li>
                     {%  else %}
-                        {% if requestForm.reject %}
+                        {% if requestForm.approval %}
                             <li>Status - reject</li>
                         {%  else %}
                             <li>Status - approve</li>
