@@ -61,29 +61,86 @@ li name {
     </ul>
 </nav>
 <body>
-  <p>Student Email & Name; Course Name, Number, Subject; University</p>
-  <p></p>
+<h2>Pending Requests</h2>
+{#          <p>Student Email & Name; Course Name, Number, Subject; University</p>#}
+          <p></p>
   {%for request in requests%}
-  <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
-  <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
-  <p>University: {{request.university}}</p>
-
-
-  <p>Status: {{ request.status }}</p>
-    <form action="{% url 'pendingRequests' %}" method="GET">
-{#      {% csrf_token %}#}
-      <label for="status">Change Status:</label>
-      <select name="status" id="status">
-        <option value="pending">Pending</option>
-        <option value="rejected">Rejected</option>
-        <option value="accepted">Accepted</option>
-      </select>
-      <br><br>
-      <input type="hidden" name="request_id" value="{{ request.id }}">
-      <input type="submit" value="Submit">
-    </form>
+      {% if request.status == "Pending" %}
+          {% for request2 in requests %}
+            {% if request2.id == request.id %}
+              <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
+              <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
+              <p>University: {{request.university}}</p>
+                <p>Status: {{ request.status }}</p>
+                <form action="{% url 'pendingRequests' %}" method="GET">
+            {#      {% csrf_token %}#}
+                  <label for="status">Change Status:</label>
+                  <select name="status" id="status">
+                    <option value="Pending">Pending</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Accepted">Accepted</option>
+                  </select>
+                  <br><br>
+                  <input type="hidden" name="request_id" value="{{ request.id }}">
+                  <input type="submit" value="Submit">
+                </form>
+            {% endif %}
+          {% endfor %}
+      {% endif %}
   {% endfor %}
-
+<h2>Completed Requests</h2>
+{#          <p>Student Email & Name; Course Name, Number, Subject; University</p>#}
+          <p></p>
+<h3>Approved Requests</h3>
+{%for request in requests %}
+    {% if request.status == "Accepted" %}
+        {% for request2 in requests %}
+            {% if request2.id == request.id %}
+              <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
+              <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
+              <p>University: {{request.university}}</p>
+                <p>Status: {{ request.status }}</p>
+                <form action="{% url 'pendingRequests' %}" method="GET">
+            {#      {% csrf_token %}#}
+                  <label for="status">Change Status:</label>
+                  <select name="status" id="status">
+                    <option value="Pending">Pending</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Accepted">Accepted</option>
+                  </select>
+                  <br><br>
+                  <input type="hidden" name="request_id" value="{{ request.id }}">
+                  <input type="submit" value="Submit">
+                </form>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endfor %}
+<h3>Rejected Requests</h3>
+{%for request in requests %}
+    {% if request.status == "Rejected" %}
+        {% for request2 in requests %}
+            {% if request2.id == request.id %}
+              <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
+              <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
+              <p>University: {{request.university}}</p>
+                <p>Status: {{ request.status }}</p>
+                <form action="{% url 'pendingRequests' %}" method="GET">
+            {#      {% csrf_token %}#}
+                  <label for="status">Change Status:</label>
+                  <select name="status" id="status">
+                    <option value="Pending">Pending</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Accepted">Accepted</option>
+                  </select>
+                  <br><br>
+                  <input type="hidden" name="request_id" value="{{ request.id }}">
+                  <input type="submit" value="Submit">
+                </form>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endfor %}
   {% if not requests%}
   <p>No Class Requests</p>
   {% endif %}
