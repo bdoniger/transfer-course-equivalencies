@@ -65,24 +65,17 @@ li name {
   <p></p>
   {%for request in requests%}
   <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
-  <p>Course: {{request.courseName}}, {{request.courseNumber}}, {{request.courseSubject}}</p>
+  <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
   <p>University: {{request.university}}</p>
 
-  {% if request.rejected %}
-  <p>Status: rejected</p>
-  {% endif %}
-  {% if request.pending %}
-  <p>Status: pending</p>
-  {% endif %}
-  {% if request.accepted %}
-  <p>Status: accepted</p>
-  {% endif %}
+
+  <p>Status: {{ request.status }}</p>
     <form action="{% url 'pendingRequests' %}" method="GET">
 {#      {% csrf_token %}#}
       <label for="status">Change Status:</label>
       <select name="status" id="status">
-        <option value="rejected">Rejected</option>
         <option value="pending">Pending</option>
+        <option value="rejected">Rejected</option>
         <option value="accepted">Accepted</option>
       </select>
       <br><br>
