@@ -1,5 +1,5 @@
 from django.test import RequestFactory, TestCase
-from .models import Course
+from .models import Course, requestForm
 from .views import SearchResultsView
 
 '''
@@ -50,3 +50,18 @@ class CourseDisplay(TestCase):
         number = course.courseNumber
         subject = course.courseSubject
         self.assertEqual(subject + number + name, "BRUH" + "123456" + "name")
+
+class Requests(TestCase):
+    def test_request_creation(self):
+        request = requestForm()
+        name = request.courseName
+        number = request.courseNumber
+        subject = request.courseSubject
+        self.assertEqual(name + number + subject, request.courseName + request.courseNumber + request.courseSubject)
+
+    def test_request_creation2(self):
+        request = requestForm(courseName="name", courseNumber="101", courseSubject="lol")
+        name = request.courseName
+        number = request.courseNumber
+        subject = request.courseSubject
+        self.assertEqual(name + number + subject, "name" + "101" + "lol")
