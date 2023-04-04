@@ -246,21 +246,8 @@ class SearchResultsView(generic.ListView):
         if university_query is None:
             university_query = ''
 
-            if (courses_got != '') & (courses_got is not None):
-                courses_count = len(queryset.get('courses'))
-            else:
-                courses_count = 0
-            if (subjects_got != '') & (subjects_got is not None):
-                subjects_count = len(queryset.get('subjects'))
-            else:
-                subjects_count = 0
+        return make_query(subject_query, number_query, name_query, university_query)
 
-            if (courses_count == 0) & (subjects_count == 0):
-                return {}
-            else:
-                return queryset
-        else:
-            return queryset
 
 
 class CourseInfo(generic.ListView):
