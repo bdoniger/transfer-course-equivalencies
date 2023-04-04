@@ -122,15 +122,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                     <li>courseNumber - {{ requestForm.courseNumber}}</li>
                     <li>courseSubject - {{ requestForm.courseSubject}}</li>
                     <li>university - {{ requestForm.university}}</li>
-                    {% if requestForm.pending %}
-                        <li>Status - Pending</li>
-                    {%  else %}
-                        {% if requestForm.reject %}
-                            <li>Status - reject</li>
-                        {%  else %}
-                            <li>Status - approve</li>
-                        {% endif %}
-                    {% endif %}
+                    <li>status - {{ requestForm.status }}</li>
                 {% endif %}
             {% endfor %}
         </ul>
