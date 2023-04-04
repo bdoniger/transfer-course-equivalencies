@@ -23,7 +23,7 @@ class requestForm(models.Model):
     url = models.CharField(max_length=1000, default="N/A")  # url to class webpage
     studentName = models.ForeignKey(User, on_delete=models.CASCADE)
     studentEmail = models.CharField(max_length=1000, default="N/A")
-    status = models.CharField(max_length=8, default="Pending")
+    status = models.CharField(max_length=50, default="Pending")
 
     def __str__(self):
         return '{} {} {}, {}, {}, {}, {}, {}'.format(self.courseSubject, self.courseNumber,
