@@ -82,7 +82,7 @@ li name {
      <li><a href="{% url 'index' %}">Home</a></li>
      <li><a href="{% url 'allCourses' %}">All Courses</a></li>
      <li><a href="{% url 'search_results' %}">Course Search</a></li>
-     <li><a href="{% url 'student_request' %}">Request1 center</a></li>
+     <li><a href="{% url 'student_request' %}">Request Center</a></li>
         {% if user.is_authenticated %}
         <li><name>Welcome {{ user.username }}!</name></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
@@ -91,6 +91,7 @@ li name {
         {% endif %}
     </ul>
 </nav>
+
     {% if user.is_superuser %}
 
           <p>Logged in as {{ user.username }} (admin)</p>
