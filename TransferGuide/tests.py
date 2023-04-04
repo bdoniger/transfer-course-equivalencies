@@ -58,3 +58,10 @@ class Requests(TestCase):
         number = request.courseNumber
         subject = request.courseSubject
         self.assertEqual(name + number + subject, request.courseName + request.courseNumber + request.courseSubject)
+
+    def test_request_creation2(self):
+        request = requestForm(courseName="name", courseNumber="101", courseSubject="lol")
+        name = request.courseName
+        number = request.courseNumber
+        subject = request.courseSubject
+        self.assertEqual(name + number + subject, "name" + "101" + "lol")
