@@ -60,17 +60,17 @@ li name {
 
     <div style="text-align:center;vertical-align:middle;">
     <label for="ccourseName">Course Name: </label><br>
-    <input type="text" id="ccourseName" name="courseName"><br>
+    <input type="text" id="ccourseName" name="courseName" required><br>
     <label for="ccourseNumber">Course Number: </label><br>
-    <input type="text" id="ccourseNumber" name="courseNumber"><br>
+    <input type="number" id="ccourseNumber" name="courseNumber" min=0 oninput="validity.valid||(value='');" required><br>
     <label for="ccourseSubject">Course Subject: </label><br>
-    <input type="text" id="ccourseSubject" name="courseSubject"><br>
+    <input type="text" id="ccourseSubject" name="courseSubject" required><br>
     <label for="uuniversity">University: </label><br>
-    <input type="text" id="uuniversity" name="university"><br>
+    <input type="text" id="uuniversity" name="university" required><br>
 	<label for="uurl"> URL (format: <b>http://</b>example.com): </label><br>
-    <input type="text" id="uurl" name="url" pattern="https?://.+">
+    <input type="text" id="uurl" name="url" pattern="https?://.+" required>
         <p> </p>
-        <div style="text-align:center;vertical-align:middle;"><input type="submit" class="btn btn-primary" value="Post"></div>
+        <div style="text-align:center;vertical-align:middle;"><input type="submit" class="btn btn-primary" value="Submit Request"></div>
     </div>
 
 </form>
