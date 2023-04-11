@@ -59,18 +59,18 @@ li name {
 {% csrf_token %}
 
     <div style="text-align:center;vertical-align:middle;">
-    <label for="ccourseName">CourseName: </label><br>
-    <input type="text" id="ccourseName" name="courseName"><br>
-    <label for="ccourseNumber">CourseNumber: </label><br>
-    <input type="text" id="ccourseNumber" name="courseNumber"><br>
-    <label for="ccourseSubject">CourseSubject: </label><br>
-    <input type="text" id="ccourseSubject" name="courseSubject"><br>
-    <label for="uuniversity">university: </label><br>
-    <input type="text" id="uuniversity" name="university"><br>
-    <label for="uurl"> url: </label><br>
-    <input type="text" id="uurl" name="url">
+    <label for="ccourseName">Course Name: </label><br>
+    <input type="text" id="ccourseName" name="courseName" required><br>
+    <label for="ccourseNumber">Course Number: </label><br>
+    <input type="number" id="ccourseNumber" name="courseNumber" min=0 oninput="validity.valid||(value='');" required><br>
+    <label for="ccourseSubject">Course Subject: </label><br>
+    <input type="text" id="ccourseSubject" name="courseSubject" required><br>
+    <label for="uuniversity">University: </label><br>
+    <input type="text" id="uuniversity" name="university" required><br>
+	<label for="uurl"> URL (format: <b>http://</b>example.com): </label><br>
+    <input type="text" id="uurl" name="url" pattern="https?://.+" required>
         <p> </p>
-        <div style="text-align:center;vertical-align:middle;"><input type="submit" class="btn btn-primary" value="Post"></div>
+        <div style="text-align:center;vertical-align:middle;"><input type="submit" class="btn btn-primary" value="Submit Request"></div>
     </div>
 
 </form>
