@@ -2,6 +2,8 @@ import requests
 from .models import Course
 from django.core.exceptions import ObjectDoesNotExist 
 from django.core.exceptions import MultipleObjectsReturned
+from django.db import models
+
 
 
 def sisBackground(semester, subject, pageNum):
@@ -22,7 +24,7 @@ def sisBackground(semester, subject, pageNum):
             
             
             try:#an excpetion is thrown if the object is not in the database yet, so that we don't get repeats
-                Course.objects.get(courseNumber=catalogNum, courseSubject=subject) 
+                Course.objects.get(models.Q(courseNumber=catalogNum), models.Q(courseSubject=subject), models.Q(universityShort__iexact="UVA") | models.Q(universityLong__iexact="University Of Virginia")) 
                 inDB = True
             except ObjectDoesNotExist:
                 inDB = False
