@@ -86,6 +86,9 @@ li name {
         {% if user.is_authenticated %}
         <li><name>Welcome {{ user.username }}!</name></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% if user.is_superuser %}
+        <li><a href="sisUpdate/0/1/0/">Update SIS Database</a></li>
+        {% endif %}
         {%  else %}
             <li><a href="{% provider_login_url 'google'%}?next=/">Login with Google</a></li>
         {% endif %}

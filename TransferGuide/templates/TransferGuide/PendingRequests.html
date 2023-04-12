@@ -70,7 +70,7 @@ li name {
             {% if request2.id == request.id %}
               <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
               <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
-              <p>University: {{request.university}}</p>
+              <p>University: {{request.university}}, {{request.universityShort}}</p>
                 <p>Status: {{ request.status }}</p>
                 <form action="{% url 'pendingRequests' %}" method="GET">
             {#      {% csrf_token %}#}
@@ -98,7 +98,7 @@ li name {
             {% if request2.id == request.id %}
               <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
               <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
-              <p>University: {{request.university}}</p>
+              <p>University: {{request.university}}, {{request.universityShort}}</p>
                 <p>Status: {{ request.status }}</p>
                 <form action="{% url 'pendingRequests' %}" method="GET">
             {#      {% csrf_token %}#}
@@ -123,7 +123,7 @@ li name {
             {% if request2.id == request.id %}
               <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
               <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
-              <p>University: {{request.university}}</p>
+              <p>University: {{request.university}}, {{request.universityShort}}</p>
                 <p>Status: {{ request.status }}</p>
                 <form action="{% url 'pendingRequests' %}" method="GET">
             {#      {% csrf_token %}#}

@@ -10,6 +10,60 @@
         return false; 
     } 
 </SCRIPT>
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<style>
+nav {
+    background-color: #232D4B;
+    height: 50px;
+    overflow: clip;
+}
+
+nav ul{
+
+}
+
+nav ul li{
+    list-style-type: none;
+    width: 150px;
+    float: left;
+    border-right: 1px solid #ccc;
+    text-align: center;
+}
+
+li a {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+li a:hover {
+    background-color: #E57200;
+    color: #141E3C;
+
+}
+
+li name {
+    text-decoration: none;
+    color:#EB5F0C;
+    line-height: 50px;
+}
+
+
+</style>
+
+<nav>
+    <ul>
+     <li><a href="{% url 'index' %}">Home</a></li>
+     <li><a href="{% url 'allCourses' %}">All Courses</a></li>
+     <li><a href="{% url 'search_results' %}">Course Search</a></li>
+    </ul>
+</nav>
+
+
 <header>
     <h1>Updating classes from SIS, this may take a while</h1>
 </header>
