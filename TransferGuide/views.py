@@ -304,7 +304,7 @@ class CourseFilter(generic.ListView):
         subject_query = subject_query.split(',')
 
         all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
-        all_universities_queryset = Course.objects.all().values('university').order_by('university').distinct()
+        all_universities_queryset = Course.objects.all().values('universityLong').order_by('universityLong').distinct()
 
         all_subjects_queryset = all_subjects_queryset.values_list()
         all_universities_queryset = all_universities_queryset.values_list()
@@ -323,10 +323,10 @@ class CourseFilter(generic.ListView):
             "json": json_subjects,
             "courses": Course.objects.filter(
                 Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list) & Q(
-                    university__in=university_query)),
+                    universityLong__in=university_query)),
             "filteredSubjects": Course.objects.filter(
                 Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list) & Q(
-                    university__in=university_query)).values('courseSubject').order_by(
+                    universityLong__in=university_query)).values('courseSubject').order_by(
                 'courseSubject').distinct(),
             "allSubjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct(),
             "universitiesJSON": json_universities
@@ -373,7 +373,7 @@ class AddEquivalency(generic.ListView):
 
 
 class Test(generic.ListView):
-    template_name = 'TransferGuide/newAddEquivCourse.html'
+    template_name = 'TransferGuide/login.html'
     context_object_name = 'all_courses_list'
 
     def get_queryset(self):
@@ -402,7 +402,26 @@ def requests_database(request):
         return HttpResponse("You Have submit your requests")
 
 
-def autoEmail_database(request):
+# def autoEmail_database(request):
+#     requests = requestForm.objects.all()
+#
+#     form_id = request.GET.get("request_id")
+#     status = request.GET.get("status")
+#
+#     if form_id is not None:
+#         form = requestForm.objects.all().filter(id=form_id)[0]
+#         time = datetime.datetime.now()
+#         content1 = "You class:" + request.GET.get("request_courseSubject") + request.GET.get("request_courseNumber") + request.GET.get("request_courseName") + " from " + request.GET.get("request_University") + " status from " + form.status + " to " + request.GET.get("status") + " at " + time.strftime("%Y-%m-%d %H:%M:%S")
+#         autoReply = AutoReplyEmail.objects.create(content=content1, studentEmail=request.GET.get("request.studentEmail"))
+#         form.status = status
+#         form.save()
+#
+#     # return render(request, "TransferGuide/newPendingRequests.html", context={"requests": requests})
+
+
+def pending_requests(request):
+    # requests = requestForm.objects.all()
+
     requests = requestForm.objects.all()
 
     form_id = request.GET.get("request_id")
@@ -411,29 +430,17 @@ def autoEmail_database(request):
     if form_id is not None:
         form = requestForm.objects.all().filter(id=form_id)[0]
         time = datetime.datetime.now()
-        content1 = "You class:" + request.GET.get("request_courseSubject") + request.GET.get("request_courseNumber") + request.GET.get("request_courseName") + " from " + request.GET.get("request_University") + " status from " + form.status + " to " + request.GET.get("status") + " at " + time.strftime("%Y-%m-%d %H:%M:%S")
-        autoReply = AutoReplyEmail.objects.create(content=content1, studentEmail=request.GET.get("request.studentEmail"))
+        # content1 = "You class:" + request.GET.get("request_courseSubject") + request.GET.get(
+        #     "request_courseNumber") + request.GET.get("request_courseName") + " from " + request.GET.get(
+        #     "request_University") + " status from " + form.status + " to " + request.GET.get(
+        #     "status") + " at " + time.strftime("%Y-%m-%d %H:%M:%S")
+        # autoReply = AutoReplyEmail.objects.create(content=content1,
+        #                                           studentEmail=request.GET.get("request.studentEmail"))
         form.status = status
         form.save()
 
-    return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
-
-
-def pending_requests(request):
-    requests = requestForm.objects.all()
-
-    # requests = requestForm.objects.all()
-    #
-    # form_id = request.GET.get("request_id")
-    # status = request.GET.get("status")
-    #
-    # if form_id is not None:
-    #     form = requestForm.objects.all().filter(id=form_id)[0]
-    #     form.status = status
-    #     form.save()
-    #
+    return render(request, "TransferGuide/newPendingRequests.html", context={"requests": requests})
     # return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
-    return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
 
 
 def mail_box(request):
