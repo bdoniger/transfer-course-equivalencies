@@ -430,12 +430,12 @@ def pending_requests(request):
     if form_id is not None:
         form = requestForm.objects.all().filter(id=form_id)[0]
         time = datetime.datetime.now()
-        # content1 = "You class:" + request.GET.get("request_courseSubject") + request.GET.get(
-        #     "request_courseNumber") + request.GET.get("request_courseName") + " from " + request.GET.get(
-        #     "request_University") + " status from " + form.status + " to " + request.GET.get(
-        #     "status") + " at " + time.strftime("%Y-%m-%d %H:%M:%S")
-        # autoReply = AutoReplyEmail.objects.create(content=content1,
-        #                                           studentEmail=request.GET.get("request.studentEmail"))
+        content1 = "You class:" + request.GET.get("request_courseSubject") + request.GET.get(
+            "request_courseNumber") + request.GET.get("request_courseName") + " from " + request.GET.get(
+            "request_University") + " status from " + form.status + " to " + request.GET.get(
+            "status") + " at " + time.strftime("%Y-%m-%d %H:%M:%S")
+        autoReply = AutoReplyEmail.objects.create(content=content1,
+                                                  studentEmail=request.GET.get("request.studentEmail"))
         form.status = status
         form.save()
 
