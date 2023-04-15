@@ -38,3 +38,21 @@ class user(models.Model):
 
 class acronym(models.Model):
     nameAcronymTable = models.JSONField(encoder=None, decoder=None, default=dict, null=True, blank=True)
+
+
+class Emails(models.Model):
+    title = models.CharField(max_length=200, default="N/A")
+    content = models.CharField(max_length=5000, default="N/A")
+    studentName = models.ForeignKey(User, on_delete=models.CASCADE)
+    studentEmail = models.CharField(max_length=1000, default="N/A")
+    status = models.CharField(max_length=7, default="Unread")
+
+
+class AutoReplyEmail(models.Model):
+    title = models.CharField(max_length=200, default="Auto-reply Status changed")
+    content = models.CharField(max_length=5000, default="N/A")
+    studentEmail = models.CharField(max_length=1000, default="N/A")
+    status = models.CharField(max_length=7, default="Unread")
+    def __str__(self):
+        return '{} {} {}, {} '.format(self.title, self.content,
+                                                     self.studentEmail, self.status)
