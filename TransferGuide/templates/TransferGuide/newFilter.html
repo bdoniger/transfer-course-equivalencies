@@ -26,7 +26,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 .parent {
   width: 100%;
   text-align: left; /* centers the child elements horizontally */
-  margin-left:260px;
 
 }
 
@@ -165,9 +164,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         });
     });
 </script>
-</div>
-</div>
-    <div class="parent" style="width: 100%; margin-left:260px; display: inline-block">
+
+    <div class="parent" >
         <h2>Filter Courses</h2>
         <h6>All Fields are Required</h6>
 {#        <br>#}
@@ -190,9 +188,9 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         <button id="submitBtn" type="submit" value="Submit">Submit</button>
         <button><a href="{% url 'course_filter' %}" style="color: #000000; text-decoration: none;">Clear Filters</a></button>
     </div>
+</div>
 
 <div class="w3-main" style="margin-left:260px">
-<div class="container">
 <br>
     {% if filtered_courses.courses > 0 %}
         <h1>Search Results</h1>
@@ -237,7 +235,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         <tr>
         </tbody>
         {% else %}
-        <h2>No courses found.</h2>
+            <h2>No courses found.</h2>
         {% endif %}
     </table>
 
@@ -252,7 +250,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 {#      <a class="w3-button w3-hover-black" href="#">»</a>#}
 {#    </div>#}
 {#  </div>#}
-</div>
+
 
 </div>
 
