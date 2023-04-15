@@ -385,7 +385,7 @@ class Test(generic.ListView):
 
 class RequestForms(generic.ListView):
     model = requestForm
-    template_name = 'TransferGuide/Requests.html'
+    template_name = 'TransferGuide/newRequests.html'
 
 
 def requests_database(request):
