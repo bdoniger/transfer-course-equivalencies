@@ -17,5 +17,10 @@ urlpatterns = [
     path('requestForm/', views.RequestForms.as_view(), name='student_request'),
     path('requestForm/database', views.requests_database, name='dataForRequests'),
     path('pendingRequests/', views.pending_requests, name='pendingRequests'),
+    path('mailBox/', views.mail_box, name='boxMail'),
+    path('sendMail/', views.send_email, name='sendEmail'),
+    path('sendMail/database', views.email_database, name='dataforEmails'),
+    path('autoDatabase', views.autoEmail_database, name='dataforAutoEmails')
+    path('pendingRequests/', views.pending_requests, name='pendingRequests'),
     path('test/', views.AddEquivalency.as_view(), name="test")
 ]

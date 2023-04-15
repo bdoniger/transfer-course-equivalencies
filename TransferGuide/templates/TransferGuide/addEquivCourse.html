@@ -83,7 +83,7 @@ li name {
     </tr>
     <tr>
       	<td align="right">Number:</td>
-      	<td align="left"><input type="number" name="UVANumber" placeholder="1110" required /></td>
+      	<td align="left"><input type="number" name="UVANumber" placeholder="1110" min=0 oninput="validity.valid||(value='');" required /></td>
     </tr>
    	<tr>
   		<td align="right">Department/Subject:</td>
@@ -98,12 +98,16 @@ li name {
       	<td align="left"><input type="text" name="university" placeholder="United States Naval Academy" required /></td>
     </tr>
     <tr>
+      	<td align="right">Institution Acronym:</td>
+      	<td align="left"><input type="text" name="universityShort" placeholder="USNA" required /></td>
+    </tr>
+    <tr>
       	<td align="right">Name:</td>
       	<td align="left"><input type="text" name="name" placeholder="Intro to Comp Sci" required /></td>
     </tr>
     <tr>
       	<td align="right">Number:</td>
-      	<td align="left"><input type="number" name="number" placeholder="204" required /></td>
+      	<td align="left"><input type="number" name="number" placeholder="204" min=0 oninput="validity.valid||(value='');" required /></td>
     </tr>
    	<tr>
   		<td align="right">Department/Subject:</td>

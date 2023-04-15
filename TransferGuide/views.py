@@ -1,5 +1,7 @@
 import json
 
+import datetime
+
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import logout
@@ -8,7 +10,7 @@ from django.views import generic
 from django.contrib import messages
 
 from .tasks import sisBackground
-from .models import Course, requestForm
+from .models import Course, requestForm, Emails, AutoReplyEmail
 from django.shortcuts import redirect
 import requests
 
@@ -100,7 +102,8 @@ def addEquivCourse(request):
     if request.method == 'POST':
         form = request.POST
 
-        existingCourse = Course.objects.filter(university=form.get('university')).filter(
+        existingCourse = Course.objects.filter(Q(universityLong__iexact=form.get('university')) | Q(
+            universityShort__iexact=form.get('universityShort'))).filter(
             courseSubject=form.get('department')).filter(courseNumber=form.get('number'))
 
         if not existingCourse:
@@ -109,9 +112,11 @@ def addEquivCourse(request):
             oCourse.courseName = form.get('name')
             oCourse.courseNumber = form.get('number')
             oCourse.courseSubject = form.get('department')
-            oCourse.university = form.get('university')
+            oCourse.universityShort = form.get('universityShort')
+            oCourse.universityLong = form.get('university')
             equivCourseDict = {
-                "university": "UVA",
+                "universityShort": "UVA",
+                "universityLong": "University of Virginia",
                 "subject": form.get('UVADepartment'),
                 "number": form.get('UVANumber'),
                 "name": form.get('UVAName')
@@ -126,7 +131,8 @@ def addEquivCourse(request):
                 courseNumber=form.get('UVANumber')).get()
             oldEquivList = uvaCourse.equivalentCourse
             UVAEquivCourseDict = {
-                "university": form.get('university'),
+                "universityShort": form.get('universityShort'),
+                "universityLong": form.get('university'),
                 "subject": form.get('department'),
                 "number": form.get('number'),
                 "name": form.get('name')
@@ -387,14 +393,16 @@ def requests_database(request):
         requestForm1 = requestForm.objects.create(courseName=request.POST['courseName'],
                                                   courseNumber=request.POST['courseNumber'],
                                                   courseSubject=request.POST['courseSubject'],
-                                                  university=request.POST['university'], url=request.POST['url'],
-                                                  studentName=request.user, studentEmail=request.user.email)
+                                                  university=request.POST['university'],
+                                                  universityShort=request.POST['universityShort'],
+                                                  url=request.POST['url'],
+                                                  studentName=request.user,
+                                                  studentEmail=request.user.email)
 
         return HttpResponse("You Have submit your requests")
 
 
-
-def pending_requests(request):
+def autoEmail_database(request):
     requests = requestForm.objects.all()
 
     form_id = request.GET.get("request_id")
@@ -402,7 +410,53 @@ def pending_requests(request):
 
     if form_id is not None:
         form = requestForm.objects.all().filter(id=form_id)[0]
+        time = datetime.datetime.now()
+        content1 = "You class:" + request.GET.get("request_courseSubject") + request.GET.get("request_courseNumber") + request.GET.get("request_courseName") + " from " + request.GET.get("request_University") + " status from " + form.status + " to " + request.GET.get("status") + " at " + time.strftime("%Y-%m-%d %H:%M:%S")
+        autoReply = AutoReplyEmail.objects.create(content=content1, studentEmail=request.GET.get("request.studentEmail"))
         form.status = status
         form.save()
 
     return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
+
+
+def pending_requests(request):
+    requests = requestForm.objects.all()
+
+    # requests = requestForm.objects.all()
+    #
+    # form_id = request.GET.get("request_id")
+    # status = request.GET.get("status")
+    #
+    # if form_id is not None:
+    #     form = requestForm.objects.all().filter(id=form_id)[0]
+    #     form.status = status
+    #     form.save()
+    #
+    # return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
+    return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
+
+
+def mail_box(request):
+    emails = Emails.objects.all()
+    AutoReplys = AutoReplyEmail.objects.all()
+    #email_id = request.GET.get("request_id")
+    #status = request.GET.get("status")
+
+    #if email_id is not None:
+        #email = requestForm.objects.all().filter(id=email_id)[0]
+        #email.status = status
+        #email.save()
+
+    return render(request, "TransferGuide/MailBox.html", context={"requests": emails, "Autos": AutoReplys})
+
+
+def send_email(request):
+    return render(request, "TransferGuide/SendBox.html")
+
+
+def email_database(request):
+    if request.method == "POST":
+        emailS1 = Emails.objects.create(title=request.POST['title'], content=request.POST['content'],
+                                        studentName=request.user,
+                                        studentEmail=request.user.email)
+    return HttpResponse("You Have submit your requests")

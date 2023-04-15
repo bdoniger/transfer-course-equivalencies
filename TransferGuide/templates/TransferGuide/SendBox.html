@@ -1,0 +1,15 @@
+<form action="{% url 'dataforEmails'%}" method="post">
+{% csrf_token %}
+
+    <div style="text-align:center;vertical-align:middle;">
+    <label for="ttitle">Email Title: </label><br>
+    <input type="text" size="100" id="ttitle" name="title" required><br>
+    <label for="ccontent">Email content: </label><br>
+    <textarea class="form-control" style="width:1000px; height:100px;" id="ccontent" name="content" row = "3"  oninput="validity.valid||(value='');" required> </textarea><br>
+
+
+        <p> </p>
+        <div style="text-align:center;vertical-align:middle;"><input type="submit" class="btn btn-primary" value="Send Email"></div>
+    </div>
+
+</form>

@@ -70,9 +70,9 @@ li name {
             {% if request2.id == request.id %}
               <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
               <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
-              <p>University: {{request.university}}</p>
+              <p>University: {{request.university}}, {{request.universityShort}}</p>
                 <p>Status: {{ request.status }}</p>
-                <form action="{% url 'pendingRequests' %}" method="GET">
+                <form action="{% url 'dataforAutoEmails' %}" method="GET">
             {#      {% csrf_token %}#}
                   <label for="status">Change Status:</label>
                   <select name="status" id="status">
@@ -81,6 +81,11 @@ li name {
                     <option value="Accepted">Accepted</option>
                   </select>
                   <br><br>
+                  <input type="hidden" name="request_courseSubject" value="{{ request.courseSubject }}">
+                  <input type="hidden" name="request_courseNumber" value="{{ request.courseNumber }}">
+                  <input type="hidden" name="request_courseName" value="{{ request.courseName }}">
+                  <input type="hidden" name="request_University" value="{{ request.university }}">
+                  <input type="hidden" name="request.studentEmail" value="{{ request.studentEmail }}">
                   <input type="hidden" name="request_id" value="{{ request.id }}">
                   <input type="submit" value="Submit">
                 </form>
@@ -98,9 +103,9 @@ li name {
             {% if request2.id == request.id %}
               <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
               <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
-              <p>University: {{request.university}}</p>
+              <p>University: {{request.university}}, {{request.universityShort}}</p>
                 <p>Status: {{ request.status }}</p>
-                <form action="{% url 'pendingRequests' %}" method="GET">
+                <form action="{% url 'dataforAutoEmails' %}" method="GET">
             {#      {% csrf_token %}#}
                   <label for="status">Change Status:</label>
                   <select name="status" id="status">
@@ -109,6 +114,11 @@ li name {
                     <option value="Accepted">Accepted</option>
                   </select>
                   <br><br>
+                  <input type="hidden" name="request_courseSubject" value="{{ request.courseSubject }}">
+                  <input type="hidden" name="request_courseNumber" value="{{ request.courseNumber }}">
+                  <input type="hidden" name="request_courseName" value="{{ request.courseName }}">
+                  <input type="hidden" name="request_University" value="{{ request.university }}">
+                  <input type="hidden" name="request.studentEmail" value="{{ request.studentEmail }}">
                   <input type="hidden" name="request_id" value="{{ request.id }}">
                   <input type="submit" value="Submit">
                 </form>
@@ -123,9 +133,9 @@ li name {
             {% if request2.id == request.id %}
               <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
               <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
-              <p>University: {{request.university}}</p>
+              <p>University: {{request.university}}, {{request.universityShort}}</p>
                 <p>Status: {{ request.status }}</p>
-                <form action="{% url 'pendingRequests' %}" method="GET">
+                <form action="{% url 'dataforAutoEmails' %}" method="GET">
             {#      {% csrf_token %}#}
                   <label for="status">Change Status:</label>
                   <select name="status" id="status">
@@ -134,6 +144,11 @@ li name {
                     <option value="Accepted">Accepted</option>
                   </select>
                   <br><br>
+                  <input type="hidden" name="request_courseSubject" value="{{ request.courseSubject }}">
+                  <input type="hidden" name="request_courseNumber" value="{{ request.courseNumber }}">
+                  <input type="hidden" name="request_courseName" value="{{ request.courseName }}">
+                  <input type="hidden" name="request_University" value="{{ request.university }}">
+                  <input type="hidden" name="request.studentEmail" value="{{ request.studentEmail }}">
                   <input type="hidden" name="request_id" value="{{ request.id }}">
                   <input type="submit" value="Submit">
                 </form>
