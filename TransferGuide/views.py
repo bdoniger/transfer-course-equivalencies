@@ -5,7 +5,7 @@ import datetime
 from django.db.models.functions import Length, Substr
 from django.utils import timezone
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotAllowed
 from django.contrib.auth import logout
 from django.template import loader
 from django.views import generic
@@ -507,18 +507,21 @@ def pending_requests(request):
     # return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
 
 
+def update_email_status(request, email_id):
+    if request.method == 'POST':
+        email = Emails.objects.get(id=email_id)
+        email.status = request.POST.get('status')
+        email.save()
+        return redirect('mailBox')
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+
 def mail_box(request):
     emails = Emails.objects.all()
     AutoReplys = AutoReplyEmail.objects.all()
-    #email_id = request.GET.get("request_id")
-    #status = request.GET.get("status")
 
-    #if email_id is not None:
-        #email = requestForm.objects.all().filter(id=email_id)[0]
-        #email.status = status
-        #email.save()
-
-    return render(request, "TransferGuide/MailBox.html", context={"requests": emails, "Autos": AutoReplys})
+    return render(request, "TransferGuide/newMailBox.html", context={"requests": emails, "Autos": AutoReplys})
 
 
 def send_email(request):
