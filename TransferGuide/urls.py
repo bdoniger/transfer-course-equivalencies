@@ -21,5 +21,6 @@ urlpatterns = [
     path('sendMail/', views.send_email, name='sendEmail'),
     path('sendMail/database', views.email_database, name='dataforEmails'),
     # path('autoDatabase', views.autoEmail_database, name='dataforAutoEmails'),
-    path('test/', views.Test.as_view(), name="test")
+    # path('test/', views.ChangePriv.as_view(), name="test"),
+    # path('change_superuser_status/', views.change_superuser_status, name='change_superuser_status'),
 ]

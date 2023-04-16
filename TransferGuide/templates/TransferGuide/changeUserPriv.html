@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Superuser Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        label, input, select {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Change Superuser Status</h1>
+        <form id="superuser-form">
+            <label for="user-id">User ID:</label>
+            <input type="text" name="user_id" id="user-id" required>
+            <label for="superuser-status">Superuser Status:</label>
+            <select name="superuser_status" id="superuser-status">
+                <option value="add">Add Superuser</option>
+                <option value="remove">Remove Superuser</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('superuser-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const userId = document.getElementById('user-id').value;
+            const superuserStatus = document.getElementById('superuser-status').value;
+
+            // Make an AJAX request to the server to update the user's superuser status
+            fetch('/change_superuser_status/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    superuser_status: superuserStatus,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Superuser status changed successfully.');
+                } else {
+                    alert('An error occurred while changing superuser status.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

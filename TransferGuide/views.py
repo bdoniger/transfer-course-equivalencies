@@ -6,10 +6,11 @@ from django.db.models.functions import Length, Substr
 from django.utils import timezone
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotAllowed
-from django.contrib.auth import logout
+from django.contrib.auth import logout, get_user_model
 from django.template import loader
 from django.views import generic
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
 
 from .tasks import sisBackground
 from .models import Course, requestForm, Emails, AutoReplyEmail
@@ -436,7 +437,7 @@ class AddEquivalency(generic.ListView):
 
 
 class Test(generic.ListView):
-    template_name = 'TransferGuide/login.html'
+    template_name = 'TransferGuide/changeUserPriv.html'
     context_object_name = 'all_courses_list'
 
     def get_queryset(self):
@@ -535,3 +536,42 @@ def email_database(request):
                                         studentEmail=request.user.email)
     # return HttpResponse("You Have submit your requests")
     return redirect('index')
+#
+#
+# @csrf_exempt
+# def change_superuser_status(request):
+#     if request.method == 'POST':
+#         data = json.loads(request.body)
+#         user_id = data.get('user_id')
+#         superuser_status = data.get('superuser_status')
+#
+#         try:
+#             # user = User.objects.get(pk=user_id)
+#             User = get_user_model()
+#             user = User.objects.all().filter(user_id)
+#             print(user)
+#
+#             if superuser_status == 'add':
+#                 user.is_superuser = True
+#             elif superuser_status == 'remove':
+#                 user.is_superuser = False
+#
+#             user.save()
+#             return JsonResponse({'success': True})
+#         except User.DoesNotExist:
+#             return JsonResponse({'success': False, 'error': 'User does not exist'})
+#
+#     return JsonResponse({'success': False, 'error': 'Invalid request method'})
+#
+#
+# class ChangePriv(generic.ListView):
+#     template_name = 'TransferGuide/changeUserPriv.html'
+#     model = get_user_model()
+#
+#     def get_queryset(self):
+#         User = get_user_model()
+#         user_ids = {"user_ids": User.objects.all()}
+#         print(user_ids)
+#         return user_ids
+#
+
