@@ -231,8 +231,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
             <th>Subject</th>
             <th>Number</th>
             <th>Name</th>
-            <th>Details</th>
             <th>University</th>
+            <th>Details</th>
         </tr>
         </thead>
             {% for course in all_courses_list.courses %}
@@ -241,8 +241,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                         <td>{{ course.courseSubject }}</td>
                         <td>{{ course.courseNumber }}</td>
                         <td style="text-align: left">{{ course.courseName }}</td>
-                        <td><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }} >Info</a></td>
-                        <td>{{ course.university }}</td>
+                        <td>{{ course.universityLong }}</td>
+                        <td style="text-align: center"><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }}&university={{ course.universityShort}} >Info</a></td>
                     </tr>
                 {% endif %}
             {% endfor %}
