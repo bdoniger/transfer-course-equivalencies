@@ -46,7 +46,7 @@ li name {
      <li><a href="{% url 'allCourses' %}">All Courses</a></li>
      <li><a href="{% url 'search_results' %}">Course Search</a></li>
      <li><a href="{% url 'student_request' %}">Request center</a></li>
-     <li><a href="{% url 'boxMail' %}">Mail Box</a></li>
+     <li><a href="{% url 'mailBox' %}">Mail Box</a></li>
         {% if user.is_authenticated %}
         <li><name>Welcome {{ user.username }}!</name></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
