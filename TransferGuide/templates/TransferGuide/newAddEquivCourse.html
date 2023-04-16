@@ -110,16 +110,16 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     </style>
     <br />
     <div class=".ui-widget-overlay"></div>
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
-		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-		{{ message }}
-	</div>
-    {% endfor %}
-</ul>
-{% endif %}
+{#{% if messages %}#}
+{#<ul class="messages">#}
+{#    {% for message in messages %}#}
+{#    <div class="alert {{ message.tags }} alert-dismissible" role="alert">#}
+{#		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>#}
+{#		{{ message }}#}
+{#	</div>#}
+{#    {% endfor %}#}
+{#</ul>#}
+{#{% endif %}#}
 
 <div class="w3-main">
 <form action="" method="POST">
