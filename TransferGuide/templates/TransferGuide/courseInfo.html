@@ -76,6 +76,7 @@ li name {
     <a>Course:</a>
     {% if course_info %}
         {% for course in course_info %}
+            {{ course.universityLong }}
             {{ course.courseSubject }}
             {{ course.courseNumber }}
             {{ course.courseName }}
