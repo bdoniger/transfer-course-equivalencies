@@ -313,28 +313,40 @@ class CourseFilter(generic.ListView):
         subject_query = self.request.GET.get("subject")
         number_query = self.request.GET.get("number")
         university_query = self.request.GET.getlist("universities")
-
-        if subject_query is None:
-            subject_query = ''
-        if (number_query == '') | (number_query is None):
-            number_query = -1
-        if university_query is None:
-            university_query = ''
+        if university_query == ['']:
+            university_query = None
+        # if subject_query is None:
+        #     subject_query = ''
+        # if (number_query == '') | (number_query is None):
+        #     number_query = -1
+        # if university_query is None:
+        #     university_query = ''
         number_query_list = []
+        subject_query = [subject_query]
         if not isinstance(number_query, int):
-            number_query = list(number_query)
-            count = number_query.count(',')
-            for i in range(count):
-                number_query.remove(',')
-            for i in range(len(number_query)):
-                if number_query[i] != '':
-                    number_query[i] = eval(number_query[i])
-            if len(number_query) > 0:
-                number_query_list = make_number_query(number_query)
-
-        subject_query = subject_query.split(',')
-        if len(university_query) > 0:
-            university_query = university_query[0].split(',')
+            if number_query is not None:
+                number_query = list(number_query)
+                count = number_query.count(',')
+                for i in range(count):
+                    number_query.remove(',')
+                for i in range(len(number_query)):
+                    if number_query[i] != '':
+                        number_query[i] = eval(number_query[i])
+                if len(number_query) > 0:
+                    number_query_list = make_number_query(number_query)
+        if subject_query == ' ':
+            subject_query = None
+        if university_query is not None:
+            if len(university_query) > 0:
+                university_query = university_query[0].split(',')
+        if university_query == '':
+            university_query = None
+        if subject_query == ['']:
+            subject_query = None
+        if subject_query == [None]:
+            subject_query = None
+        if university_query == []:
+            university_query = None
 
         all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
         all_universities_queryset = Course.objects.all().values('universityLong').order_by('universityLong').distinct()
@@ -352,9 +364,26 @@ class CourseFilter(generic.ListView):
         json_subjects = json.dumps(subjects)
         json_universities = json.dumps(universities)
 
-        courses = Course.objects.filter(
-                Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list) & Q(
-                    universityLong__in=university_query)).order_by('courseNumber')
+        filters = Q()
+        if (subject_query != '') & (subject_query is not None):
+            filters &= Q(courseSubject__in=subject_query)
+        if len(number_query_list) > 0:
+            filters &= Q(courseNumber__in=number_query_list)
+        if university_query is not None:
+            filters &= Q(universityLong__in=university_query)
+
+        # courses = Course.objects.filter(
+        #         Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list) & Q(
+        #             universityLong__in=university_query)).order_by('courseNumber')
+        if len(filters) < 1:
+            courses = []
+        else:
+            courses = Course.objects.filter(
+                filters).order_by('courseNumber')
+
+        subjects = Course.objects.filter(
+                filters).values('courseSubject').order_by(
+                'courseSubject').distinct()
 
         if number_query is not None:
             courses = courses.annotate(
@@ -365,10 +394,7 @@ class CourseFilter(generic.ListView):
         return_set = {
             "json": json_subjects,
             "courses": courses,
-            "filteredSubjects": Course.objects.filter(
-                Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list) & Q(
-                    universityLong__in=university_query)).values('courseSubject').order_by(
-                'courseSubject').distinct(),
+            "filteredSubjects": subjects,
             "allSubjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct(),
             "universitiesJSON": json_universities
         }
