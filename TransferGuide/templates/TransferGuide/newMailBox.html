@@ -203,7 +203,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                             </td>
                         </tr>
                     </table>
-                    <form action="{% url 'update_email_status' request.id %}" method="POST">
+                    <form action="{% url 'update_email_status' auto.id %}" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="status" value="Read">
                         <button type="submit">Mark as Read</button>
