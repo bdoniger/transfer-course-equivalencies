@@ -121,8 +121,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
             {% if user.is_authenticated %}
                 <h2>Your Requests</h2>
             {% endif %}
-            <details>
             {% for request in requestForm_list %}
+                <details>
                 {% if request.studentEmail == user.email %}
                     <summary>{{ request.courseName }}</summary>
                     <table>
@@ -151,8 +151,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                     </tr>
                     </table>
                 {% endif %}
+                </details>
             {% endfor %}
-            </details>
         {% endif %}
     </div>
 
