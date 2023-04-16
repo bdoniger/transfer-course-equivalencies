@@ -29,10 +29,6 @@ class index(generic.ListView):
     context_object_name = 'requestForm_list'
 
 
-def Info(request):
-    return render(request, 'TransferGuide/ClassInfo.html')
-
-
 def logoutt(request):
     logout(request)
 
@@ -265,7 +261,6 @@ class SearchResultsView(generic.ListView):
             university_query = ''
 
         return make_query(subject_query, number_query, name_query, university_query)
-
 
 
 class CourseInfo(generic.ListView):
