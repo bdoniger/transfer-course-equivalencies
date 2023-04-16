@@ -167,15 +167,18 @@ class CoursesViewAll(generic.ListView):
 def make_query(subject_query, number_query, name_query, university_query):
     all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
     all_universities_queryset = Course.objects.all().values('universityLong').order_by('universityLong').distinct()
+    all_universities_short_queryset = Course.objects.all().values('universityShort').order_by('universityShort').distinct()
     all_numbers_queryset = Course.objects.all().values("courseNumber").order_by("courseNumber").distinct()
     all_names_queryset = Course.objects.all().values("courseName").order_by("courseName").distinct()
 
     all_subjects_queryset = all_subjects_queryset.values_list()
     all_universities_queryset = all_universities_queryset.values_list()
+    all_universities_short_queryset = all_universities_short_queryset.values_list()
     all_numbers_queryset = all_numbers_queryset.values_list()
     all_names_queryset = all_names_queryset.values_list()
     subjects = []
     universities = []
+    universities_short = []
     numbers = []
     names = []
 
@@ -194,15 +197,19 @@ def make_query(subject_query, number_query, name_query, university_query):
                 names.append(item[1].replace("\"", ''))
             else:
                 names.append(item[1])
+    for item in all_universities_short_queryset:
+        if item[3] not in universities_short:
+            universities_short.append(item[3])
 
     json_subjects = json.dumps(subjects)
     json_universities = json.dumps(universities)
+    json_universities_short = json.dumps(universities_short)
     json_numbers = json.dumps(numbers)
     json_names = json.dumps(names)
 
     if (subject_query == '') & ((number_query == -1) | (number_query == '')) & (name_query == '') & (
             university_query == ''):
-        return {"json": json_subjects, "universitiesJSON": json_universities, "numbersJSON": json_numbers,
+        return {"json": json_subjects, "universitiesJSON": json_universities, "universitiesShortJSON": json_universities_short, "numbersJSON": json_numbers,
                 "namesJSON": json_names}
 
     courses = Course.objects.all().order_by('courseSubject', 'courseNumber')
@@ -227,7 +234,7 @@ def make_query(subject_query, number_query, name_query, university_query):
                 subjects = subjects.filter(Q(universityLong__icontains=university_query))
 
     return {"courses": courses, "subjects": subjects, "json": json_subjects, "universitiesJSON": json_universities,
-            "numbersJSON": json_numbers, "namesJSON": json_names}
+            "universitiesShortJSON": json_universities_short, "numbersJSON": json_numbers, "namesJSON": json_names}
 
 
 class SearchResultsView(generic.ListView):
@@ -258,7 +265,7 @@ class SearchResultsView(generic.ListView):
 
 class CourseInfo(generic.ListView):
     model = Course
-    template_name = 'TransferGuide/courseInfo.html'
+    template_name = 'TransferGuide/newCourseInfo.html'
     context_object_name = 'course_info'
 
     def get_queryset(self):
