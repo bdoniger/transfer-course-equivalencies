@@ -222,7 +222,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                         <td>{{ course.courseNumber }}</td>
                         <td style="text-align: left">{{ course.courseName }}</td>
                         <td><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }} >Info</a></td>
-                        <td>{{ course.university }}</td>
+                        <td>{{ course.universityLong }}</td>
                     </tr>
                 {% endif %}
             {% endfor %}
