@@ -274,7 +274,10 @@ class CourseInfo(generic.ListView):
         number_query = self.request.GET.get("number")
         university_query = self.request.GET.get("university")
 
-        queryset = Course.objects.filter(courseNumber=number_query, courseSubject=subject_query, universityShort__icontains=university_query)
+        if (subject_query is None) & (number_query is None) & (university_query is None):
+            queryset = []
+        else:
+            queryset = Course.objects.filter(courseNumber=number_query, courseSubject=subject_query, universityShort__icontains=university_query)
         return queryset
 
 

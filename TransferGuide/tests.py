@@ -9,9 +9,9 @@ class URLTests(TestCase):
         response = self.client.get('')
         self.assertTrue(response.status_code == 200)
 
-    def test_ClassInfos(self):
-        response = self.client.get('/ClassInfos/')
-        self.assertTrue(response.status_code == 200)
+    # def test_ClassInfos(self): # no longer exists
+    #     response = self.client.get('/ClassInfos/')
+    #     self.assertTrue(response.status_code == 200)
 
     #def test_accounts_logout(self):
      #   response = self.client.get('/accounts/logout')
@@ -57,9 +57,9 @@ class URLTests(TestCase):
         response = self.client.get('/sendMail/')
         self.assertTrue(response.status_code == 200)
 
-    def test_autoDatabase(self):
-        response = self.client.get('/autoDatabase')
-        self.assertTrue(response.status_code == 200)
+    # def test_autoDatabase(self): # no longer exists
+    #     response = self.client.get('/autoDatabase')
+    #     self.assertTrue(response.status_code == 200)
 
 
 class CourseDisplay(TestCase):
