@@ -74,7 +74,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
       <a class="w3-bar-item w3-button w3-hover-black" href="{%url 'addEquivCoursePage'%}">Add a Course Equivalency</a>
       <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'mailBox' %}">Admin Mail</a>
       <a class="w3-bar-item w3-button w3-hover-black" href="{%url 'pendingRequests'%}">Handle Requests</a>
-      <a class="w3-bar-item w3-button w3-hover-black" href="sisUpdate/0/1/0/">Update SIS Database</a>
+      <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'sisUpdate' 0 1 0%}">Update SIS Database</a>
   {% else %}
       {% if user.is_authenticated %}
           <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'sendEmail' %}">Email the Admins</a>
