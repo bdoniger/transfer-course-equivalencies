@@ -113,6 +113,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TransferCreditGuide.wsgi.application'
 
+# DEFAULT_FROM_EMAIL = 'transferguideb24@gmail.com'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'transferguideb24@gmail.com'
+# EMAIL_HOST_PASSWORD = 'zpepkepvoppgidrf'
+
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
