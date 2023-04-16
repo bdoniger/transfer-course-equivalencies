@@ -17,6 +17,7 @@ urlpatterns = [
     path('requestForm/database', views.requests_database, name='dataForRequests'),
     path('pendingRequests/', views.pending_requests, name='pendingRequests'),
     path('mailBox/', views.mail_box, name='mailBox'),
+    path('update_email_status/<int:email_id>/', views.update_email_status, name='update_email_status'),
     path('sendMail/', views.send_email, name='sendEmail'),
     path('sendMail/database', views.email_database, name='dataforEmails'),
     # path('autoDatabase', views.autoEmail_database, name='dataforAutoEmails'),
