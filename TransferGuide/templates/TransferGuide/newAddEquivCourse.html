@@ -26,7 +26,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 .parent {
   width: 100%;
   text-align: left; /* centers the child elements horizontally */
-  margin-left:260px;
+  {#margin-left:260px;#}
 
 }
 
@@ -101,98 +101,68 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     </style>
     <br />
     <div class=".ui-widget-overlay"></div>
-<h2>Add a Course Equivalency</h2>
-    <div>
-    <h4>UVA Course Info</h4>
-    <script>
-    var subjects = JSON.parse('{{ all_courses_list.json }}'.replace(/&quot;/g,'"'));
-    var course_numbers = JSON.parse('{{ all_courses_list.numbersJSON }}'.replace(/&quot;/g,'"'));
-    var course_names = JSON.parse('{{ all_courses_list.namesJSON }}'.replace(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&#x27;/g, "'"));
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+		{{ message }}
+	</div>
+    {% endfor %}
+</ul>
+{% endif %}
 
-    $(function () {
-        // Set up the combo box for selecting subjects
-        $("#checkboxSelectCombo").igCombo({
-            width: 300,
-            dataSource: subjects,
-            textKey: "Name",
-            valueKey: "Name",
-            dropDownOrientation: "bottom",
-            placeHolder: "Select Subjects"
-        });
+<div class="w3-main">
+<form action="" method="POST">
+{% csrf_token %}
+<h2 align="left">UVA Course Details</h2>
+<table>
+    <tr>
+  		<td align="right">Department/Subject:</td>
+     	<td align="left"><input type="text" name="UVADepartment" placeholder="CS" required /></td>
+   	</tr>
+    <tr>
+      	<td align="right">Number:</td>
+      	<td align="left"><input type="number" name="UVANumber" placeholder="1110" min=0 oninput="validity.valid||(value='');" required /></td>
+    </tr>
+	<tr>
+		<td align="right">Name:</td>
+      	<td align="left"><input type="text" name="UVAName" placeholder="Introduction to Programming" required /></td>
+    </tr>
+</table>
 
-
-        $("#checkboxNumberSelectCombo").igCombo({
-            width: 300,
-            dataSource: course_numbers,
-            textKey: "Name",
-            valueKey: "Name",
-            dropDownOrientation: "bottom",
-            placeHolder: "Select Subjects"
-        });
-
-        $("#checkboxName").igCombo({
-            width: 300,
-            dataSource: course_names,
-            textKey: "Name",
-            valueKey: "Name",
-            dropDownOrientation: "bottom",
-            placeHolder: "Select Course Name"
-        });
-
-
-        // Handle the submit button click event
-        $("#submitBtn").click(function() {
-            var selectedValues = $("#checkboxSelectCombo").igCombo("value");
-            var numberValue = $("#checkboxNumberSelectCombo").igCombo("value");
-            var nameValue = $("#checkboxName").igCombo("value");
-
-        });
-    });
-</script>
+<div class="parent">
+<h2>Outside Institution Course Details</h2>
+    <table>
+    <tr>
+      	<td align="right">Institution:</td>
+      	<td align="left"><input type="text" name="university" placeholder="United States Naval Academy" required /></td>
+    </tr>
+    <tr>
+      	<td align="right">Institution Acronym:</td>
+      	<td align="left"><input type="text" name="universityShort" placeholder="USNA" required /></td>
+    </tr>
+    <tr>
+  		<td align="right">Department/Subject:</td>
+     	<td align="left"><input type="text" name="department" placeholder="SI" required /></td>
+   	</tr>
+    <tr>
+      	<td align="right">Number:</td>
+      	<td align="left"><input type="number" name="number" placeholder="204" min=0 oninput="validity.valid||(value='');" required /></td>
+    </tr>
+    <tr>
+      	<td align="right">Name:</td>
+      	<td align="left"><input type="text" name="name" placeholder="Intro to Comp Sci" required /></td>
+    </tr>
+    </table>
 </div>
-</div>
-    <div class="parent" style="width: 100%; margin-left:260px; display: inline-block">
-        <br>
-        <div class="child">
-            <a class="combo-label">Select Subject</a>
-            <br>
-            <div id="checkboxSelectCombo" style="width: 25%"></div>
-        </div>
-        <div class="child">
-            <a class="combo-label">Course Number</a>
-            <br>
-            <div id="checkboxNumberSelectCombo" style="width: 25%"></div>
-        </div>
-        <div class="child">
-            <a class="combo-label">Course Name</a>
-            <br>
-            <div id="checkboxName" style="width: 25%"></div>
-        </div>
-        <br>
-        <button id="submitBtn" type="submit" value="Submit">Submit</button>
-    </div>
-
-
-<div class="w3-main" style="margin-left:260px">
-<div class="container">
-{#    <form action="{% url 'search_results' %}">#}
-{#      <label for="subject" aria-hidden="true"></label>#}
-{#      <input id="subject" name="subject" type="text" placeholder="Course Subject">#}
-{#      <label for="number" aria-hidden="true"></label>#}
-{#      <input id="number" name="number" type="text" placeholder="Course Number">#}
-{#      <label for="name" aria-hidden="true"></label>#}
-{#      <input id="name" name="name" type="text" placeholder="Course Name">#}
-{#      <label for="university" aria-hidden="true"></label>#}
-{#      <input id="university" name="university" type="text" placeholder="Course University">#}
-{#      <input type="submit" value="Submit">#}
-{##}
-{#      <a href="{% url 'search_results' %}">Clear Results</a>#}
-{#    </form>#}
-
-
+<p>
+	<input type="submit" value="Add Course">
+</p>
+</form>
 </div>
 
-</div>
+
 {#<footer id="myFooter" style="padding-left: 250px">#}
 {#    <div class="w3-container w3-theme-l2 w3-padding-32">#}
 {#      <h4>Footer</h4>#}
