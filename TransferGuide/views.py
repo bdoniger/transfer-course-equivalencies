@@ -2,6 +2,7 @@ import json
 
 import datetime
 
+from django.db.models.functions import Length, Substr
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import logout
@@ -212,7 +213,10 @@ def make_query(subject_query, number_query, name_query, university_query):
         return {"json": json_subjects, "universitiesJSON": json_universities, "universitiesShortJSON": json_universities_short, "numbersJSON": json_numbers,
                 "namesJSON": json_names}
 
-    courses = Course.objects.all().order_by('courseSubject', 'courseNumber')
+    courses = Course.objects.annotate(
+        course_number_length=Length('courseNumber'),
+        starting_digit=Substr('courseNumber', 1, 1),
+    ).order_by('courseSubject', 'starting_digit', 'course_number_length', 'courseNumber')
     subjects = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
 
     criteria = [subject_query, number_query, name_query, university_query]
@@ -277,6 +281,28 @@ class CourseInfo(generic.ListView):
         return queryset
 
 
+def make_number_query(numbers):
+    new_numbers = []
+    for i in range(len(numbers)):
+        num = numbers[i]
+        tens = num * 10
+        tens_upper = (num+1) * 10 - 1
+        hundreds = num * 100
+        hundreds_upper = (num+1) * 100 - 1
+        thousands = num * 1000
+        thousands_upper = (num+1) * 1000 - 1
+        numbers_to_compute = [tens, tens_upper, hundreds, hundreds_upper, thousands, thousands_upper]
+        index = 0
+        while index < len(numbers_to_compute):
+            lower = numbers_to_compute[index]
+            index += 1
+            upper = numbers_to_compute[index]
+            index += 1
+            for j in range(lower, upper+1):
+                new_numbers.append(j)
+    return new_numbers
+
+
 # maybe add approved/disapproved courses filter alter
 class CourseFilter(generic.ListView):
     model = Course
@@ -304,13 +330,11 @@ class CourseFilter(generic.ListView):
                 if number_query[i] != '':
                     number_query[i] = eval(number_query[i])
             if len(number_query) > 0:
-                number_query_list.append(min(number_query) * 1000)
-                lower_bound = min(number_query) * 1000
-                upper_bound = (max(number_query) + 1) * 1000
-                for i in range(lower_bound, upper_bound, 1):
-                    number_query_list.append(i)
+                number_query_list = make_number_query(number_query)
 
         subject_query = subject_query.split(',')
+        if len(university_query) > 0:
+            university_query = university_query[0].split(',')
 
         all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
         all_universities_queryset = Course.objects.all().values('universityLong').order_by('universityLong').distinct()
@@ -328,11 +352,19 @@ class CourseFilter(generic.ListView):
         json_subjects = json.dumps(subjects)
         json_universities = json.dumps(universities)
 
+        courses = Course.objects.filter(
+                Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list) & Q(
+                    universityLong__in=university_query)).order_by('courseNumber')
+
+        if number_query is not None:
+            courses = courses.annotate(
+                course_number_length=Length('courseNumber'),
+                starting_digit=Substr('courseNumber', 1, 1),
+            ).order_by('courseSubject', 'starting_digit', 'course_number_length', 'courseNumber')
+
         return_set = {
             "json": json_subjects,
-            "courses": Course.objects.filter(
-                Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list) & Q(
-                    universityLong__in=university_query)),
+            "courses": courses,
             "filteredSubjects": Course.objects.filter(
                 Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list) & Q(
                     universityLong__in=university_query)).values('courseSubject').order_by(
