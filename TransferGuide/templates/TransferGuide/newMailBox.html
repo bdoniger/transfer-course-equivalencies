@@ -183,7 +183,9 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                 </details>
             {% endif %}
         {% endfor %}
-    {%  else %}
+    {%  endif %}
+    {% if user.is_authenticated %}
+        {% if not user.is_superuser %}
         <h3>Emails from Admins</h3>
         <h4>Unread Emails</h4>
         {%for auto in Autos%}
@@ -240,6 +242,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
             {% endif %}
         {% endfor %}
     {% endif %}
+{% endif %}
 </div>
 
 
