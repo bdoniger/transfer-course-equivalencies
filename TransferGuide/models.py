@@ -36,6 +36,7 @@ class requestForm(models.Model):
 class user(models.Model):
     isAdmin = models.BooleanField(default=True)
 
+
 class acronym(models.Model):
     nameAcronymTable = models.JSONField(encoder=None, decoder=None, default=dict, null=True, blank=True)
 
@@ -53,6 +54,7 @@ class AutoReplyEmail(models.Model):
     content = models.CharField(max_length=5000, default="N/A")
     studentEmail = models.CharField(max_length=1000, default="N/A")
     status = models.CharField(max_length=7, default="Unread")
+
     def __str__(self):
         return '{} {} {}, {} '.format(self.title, self.content,
                                                      self.studentEmail, self.status)
