@@ -26,7 +26,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 .parent {
   width: 100%;
   text-align: left; /* centers the child elements horizontally */
-  margin-left:260px;
+  {#margin-left:260px;#}
 
 }
 
@@ -106,19 +106,31 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     <form action="{% url 'dataForRequests'%}" method="post">
     {% csrf_token %}
 
-        <div>
-        <label for="ccourseName">Course Name: </label><br>
-        <input type="text" id="ccourseName" name="courseName" required><br>
-        <label for="ccourseNumber">Course Number: </label><br>
-        <input type="number" id="ccourseNumber" name="courseNumber" min=0 oninput="validity.valid||(value='');" required><br>
-        <label for="ccourseSubject">Course Subject: </label><br>
-        <input type="text" id="ccourseSubject" name="courseSubject" required><br>
-        <label for="uuniversity">University: </label><br>
-        <input type="text" id="uuniversity" name="university" required><br>
-        <label for="uuniversity">University Acronym: </label><br>
-        <input type="text" id="universitySHort" name="universityShort" required><br>
-        <label for="uurl"> URL (format: <b>https://</b>example.com): </label><br>
-        <input type="text" id="uurl" name="url" pattern="https?://.+" required>
+        <div class="parent">
+            <div class="child">
+                <label for="courseName">Course Name: </label><br>
+                <input type="text" id="courseName" name="courseName" required><br>
+            </div>
+            <div class="child">
+                <label for="courseNumber">Course Number: </label><br>
+                <input type="number" id="courseNumber" name="courseNumber" min=0 oninput="validity.valid||(value='');" required><br>
+            </div>
+            <div class="child">
+                <label for="courseSubject">Course Subject: </label><br>
+                <input type="text" id="courseSubject" name="courseSubject" required><br>
+            </div>
+            <div class="child">
+                <label for="university">University: </label><br>
+                <input type="text" id="university" name="university" required><br>
+            </div>
+            <div class="child">
+                <label for="universityShort">University Acronym: </label><br>
+                <input type="text" id="universityShort" name="universityShort" required><br>
+            </div>
+            <div class="child">
+                <label for="url"> URL (format: <b>https://</b>example.com): </label><br>
+                <input type="text" id="url" name="url" pattern="https?://.+" required>
+            </div>
             <p> </p>
             <div><input type="submit" class="btn btn-primary" value="Submit Request"></div>
         </div>
