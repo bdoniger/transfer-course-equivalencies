@@ -115,24 +115,66 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
 <div class="w3-main" style="margin-left:260px">
 
-    {% if user.is_superuser %}
-    {% else %}
-        {% if user.is_authenticated %}
-        Your Request(s):
-         {% endif %}
-        <ul>
-            {% for requestForm in requestForm_list %}
-                <p></p>
-                {% if requestForm.studentEmail == user.email %}
-                    <li>courseName - {{ requestForm.courseName}}</li>
-                    <li>courseNumber - {{ requestForm.courseNumber}}</li>
-                    <li>courseSubject - {{ requestForm.courseSubject}}</li>
-                    <li>university - {{ requestForm.university}}</li>
-                    <li>status - {{ requestForm.status }}</li>
+    <div>
+        {% if user.is_superuser %}
+        {% else %}
+            {% if user.is_authenticated %}
+                <h2>Your Requests</h2>
+            {% endif %}
+            <details>
+            {% for request in requestForm_list %}
+                {% if request.studentEmail == user.email %}
+                    <summary>{{ request.courseName }}</summary>
+                    <table>
+                    <tr>
+                        <td>University: {{ request.university }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Subject: {{ request.courseSubject }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Number: {{ request.courseNumber }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Name: {{ request.courseName }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Status:</b> {{ request.status }}
+                        </td>
+                    </tr>
+                    </table>
                 {% endif %}
             {% endfor %}
-        </ul>
-    {% endif %}
+            </details>
+        {% endif %}
+    </div>
+
+
+{#    {% if user.is_superuser %}#}
+{#    {% else %}#}
+{#        {% if user.is_authenticated %}#}
+{#        Your Request(s):#}
+{#         {% endif %}#}
+{#        <ul>#}
+{#            {% for requestForm in requestForm_list %}#}
+{#                <p></p>#}
+{#                {% if requestForm.studentEmail == user.email %}#}
+{#                    <li>courseName - {{ requestForm.courseName}}</li>#}
+{#                    <li>courseNumber - {{ requestForm.courseNumber}}</li>#}
+{#                    <li>courseSubject - {{ requestForm.courseSubject}}</li>#}
+{#                    <li>university - {{ requestForm.university}}</li>#}
+{#                    <li>status - {{ requestForm.status }}</li>#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{#        </ul>#}
+{#    {% endif %}#}
 
 {#<footer id="myFooter" style="padding-left: 250px">#}
 {#    <div class="w3-container w3-theme-l2 w3-padding-32">#}
