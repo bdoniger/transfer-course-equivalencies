@@ -113,7 +113,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     <div>
 
 
-<div class="w3-main" style="margin-left:260px">
+<div class="w3-main">
 
     <div>
         {% if user.is_superuser %}
@@ -122,8 +122,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                 <h2>Your Requests</h2>
             {% endif %}
             {% for request in requestForm_list %}
-                <details>
                 {% if request.studentEmail == user.email %}
+                    <details>
                     <summary>{{ request.courseName }}</summary>
                     <table>
                     <tr>
@@ -150,8 +150,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                         </td>
                     </tr>
                     </table>
+                    </details>
                 {% endif %}
-                </details>
             {% endfor %}
         {% endif %}
     </div>
