@@ -185,115 +185,25 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         {% endfor %}
     {%  else %}
         <h3>Emails From Admins</h3>
-        <h4>Unread Emails</h4>
         {%for auto in Autos%}
             {% if auto.studentEmail == user.email %}
-                {% if auto.status == 'Unread' %}
-                    <details>
-                    <summary>{{ auto.title }}</summary>
-                    <table>
-                        <tr>
-                            <td>
-                                <b>Email Title:</b> {{ auto.title }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Email Content:</b> {{ auto.content }}
-                            </td>
-                        </tr>
-                    </table>
-                    <form action="{% url 'update_email_status' auto.id %}" method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" name="status" value="Read">
-                        <button type="submit">Mark as Read</button>
-                    </form>
-                    </details>
-                {% endif %}
+                <details>
+                <summary>{{ auto.title }}</summary>
+                <table>
+                    <tr>
+                        <td>
+                            <b>Email Title:</b> {{ auto.title }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Email Content:</b> {{ auto.content }}
+                        </td>
+                    </tr>
+                </table>
+                </details>
             {% endif %}
         {% endfor %}
-        <h4>Read Emails</h4>
-        {%for auto in Autos%}
-            {% if auto.studentEmail == user.email %}
-                {% if auto.status == 'Read' %}
-                    <details>
-                    <summary>{{ auto.title }}</summary>
-                    <table>
-                        <tr>
-                            <td>
-                                <b>Email Title:</b> {{ auto.title }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Email Content:</b> {{ auto.content }}
-                            </td>
-                        </tr>
-                    </table>
-                    <form action="{% url 'update_email_status' auto.id %}" method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" name="status" value="Unread">
-                        <button type="submit">Mark as Read</button>
-                    </form>
-                    </details>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-{#        <h3>Emails from Admins</h3>#}
-{#        <h4>Unread Emails</h4>#}
-{#        {%for auto in Autos%}#}
-{#            {% if auto.studentEmail == user.email %}#}
-{#                {% if request.status == 'Unread' %}#}
-{#                    <details>#}
-{#                        <summary>{{ auto.title }}</summary>#}
-{#                        <table>#}
-{#                        <tr>#}
-{#                            <td>#}
-{#                                <b>Email Title:</b> {{auto.title}}#}
-{#                            </td>#}
-{#                        </tr>#}
-{#                        <tr>#}
-{#                            <td>#}
-{#                                <b>Email Content:</b> {{auto.content}}#}
-{#                            </td>#}
-{#                        </tr>#}
-{#                        </table>#}
-{#                        <form action="{% url 'update_email_status' request.id %}" method="POST">#}
-{#                            {% csrf_token %}#}
-{#                            <input type="hidden" name="status" value="Read">#}
-{#                            <button type="submit">Mark as Read</button>#}
-{#                        </form>#}
-{#                    </details>#}
-{#                {% endif %}#}
-{#            {% endif %}#}
-{#        {% endfor %}#}
-{#        <h4>Read Emails</h4>#}
-{#        {%for auto in Autos%}#}
-{#            {% if auto.studentEmail == user.email %}#}
-{#                {% if request.status == 'Read' %}#}
-{#                    <details>#}
-{#                        <summary>{{ auto.title }}</summary>#}
-{#                        <table>#}
-{#                        <tr>#}
-{#                            <td>#}
-{#                                <b>Email Title:</b> {{auto.title}}#}
-{#                            </td>#}
-{#                        </tr>#}
-{#                        <tr>#}
-{#                            <td>#}
-{#                                <b>Email Content:</b> {{auto.content}}#}
-{#                            </td>#}
-{#                        </tr>#}
-{#                        </table>#}
-{#                        <form action="{% url 'update_email_status' request.id %}" method="POST">#}
-{#                            {% csrf_token %}#}
-{#                            <input type="hidden" name="status" value="Unread">#}
-{#                            <button type="submit">Mark as Read</button>#}
-{#                        </form>#}
-{#                    </details>#}
-{#                {% endif %}#}
-{#            {% endif %}#}
-{#        {% endfor %}#}
     {% endif %}
 </div>
 

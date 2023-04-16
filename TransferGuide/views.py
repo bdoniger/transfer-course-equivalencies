@@ -494,9 +494,9 @@ def pending_requests(request):
     if form_id is not None:
         form = requestForm.objects.all().filter(id=form_id)[0]
         time = timezone.localtime()
-        content1 = "You class:" + request.GET.get("request_courseSubject") + request.GET.get(
-            "request_courseNumber") + request.GET.get("request_courseName") + " from " + request.GET.get(
-            "request_University") + " status from " + form.status + " to " + request.GET.get(
+        content1 = "You request form for: " + request.GET.get("request_courseSubject") + " " + request.GET.get(
+            "request_courseNumber") + " " + request.GET.get("request_courseName") + " at " + request.GET.get(
+            "request_University") + " has had its status changed from " + form.status + " to " + request.GET.get(
             "status") + " at " + time.strftime("%Y-%m-%d %H:%M:%S")
         autoReply = AutoReplyEmail.objects.create(content=content1,
                                                   studentEmail=request.GET.get("request.studentEmail"))
@@ -525,7 +525,7 @@ def mail_box(request):
 
 
 def send_email(request):
-    return render(request, "TransferGuide/SendBox.html")
+    return render(request, "TransferGuide/newSendBox.html")
 
 
 def email_database(request):
