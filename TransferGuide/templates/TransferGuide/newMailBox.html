@@ -210,11 +210,33 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                     </form>
                     </details>
                 {% endif %}
-
-                <p></p>
-                <li>Email From: Admin</li>
-                <li>Email Title: {{auto.title}}</li>
-                <li>Email content: {{auto.content}}</li>
+            {% endif %}
+        {% endfor %}
+        <h4>Read Emails</h4>
+        {%for auto in Autos%}
+            {% if auto.studentEmail == user.email %}
+                {% if auto.status == 'Read' %}
+                    <details>
+                    <summary>{{ auto.title }}</summary>
+                    <table>
+                        <tr>
+                            <td>
+                                <b>Email Title:</b> {{ auto.title }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Email Content:</b> {{ auto.content }}
+                            </td>
+                        </tr>
+                    </table>
+                    <form action="{% url 'update_email_status' auto.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="Unread">
+                        <button type="submit">Mark as Read</button>
+                    </form>
+                    </details>
+                {% endif %}
             {% endif %}
         {% endfor %}
 {#        <h3>Emails from Admins</h3>#}
