@@ -145,12 +145,12 @@ def addEquivCourse(request):
             uvaCourse.save()
 
             messages.success(request, 'Course Equivalency Added!')
-            return render(request, 'TransferGuide/addEquivCourse.html')
+            return render(request, 'TransferGuide/newAddEquivCourse.html')
         else:
             messages.error(request, 'class equivalency already exists in database')
-            return render(request, 'TransferGuide/addEquivCourse.html')
+            return render(request, 'TransferGuide/newAddEquivCourse.html')
 
-    return render(request, 'TransferGuide/addEquivCourse.html')
+    return render(request, 'TransferGuide/newAddEquivCourse.html')
 
 
 class CoursesViewAll(generic.ListView):
@@ -166,7 +166,7 @@ class CoursesViewAll(generic.ListView):
 
 def make_query(subject_query, number_query, name_query, university_query):
     all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
-    all_universities_queryset = Course.objects.all().values('university').order_by('university').distinct()
+    all_universities_queryset = Course.objects.all().values('universityLong').order_by('universityLong').distinct()
     all_numbers_queryset = Course.objects.all().values("courseNumber").order_by("courseNumber").distinct()
     all_names_queryset = Course.objects.all().values("courseName").order_by("courseName").distinct()
 
@@ -183,8 +183,8 @@ def make_query(subject_query, number_query, name_query, university_query):
         if item[3] not in subjects:
             subjects.append(item[3])
     for item in all_universities_queryset:
-        if item[4] not in universities:
-            universities.append(item[4])
+        if item[5] not in universities:
+            universities.append(item[5])
     for item in all_numbers_queryset:
         if item[2] not in numbers:
             numbers.append(item[2])
@@ -223,8 +223,8 @@ def make_query(subject_query, number_query, name_query, university_query):
                 courses = courses.filter(Q(courseName__icontains=name_query))
                 subjects = subjects.filter(Q(courseName__icontains=name_query))
             elif filter_criteria == university_query:
-                courses = courses.filter(Q(university__icontains=university_query))
-                subjects = subjects.filter(Q(university__icontains=university_query))
+                courses = courses.filter(Q(universityLong__icontains=university_query))
+                subjects = subjects.filter(Q(universityLong__icontains=university_query))
 
     return {"courses": courses, "subjects": subjects, "json": json_subjects, "universitiesJSON": json_universities,
             "numbersJSON": json_numbers, "namesJSON": json_names}
@@ -264,7 +264,9 @@ class CourseInfo(generic.ListView):
     def get_queryset(self):
         subject_query = self.request.GET.get("subject")
         number_query = self.request.GET.get("number")
-        queryset = Course.objects.filter(courseNumber=number_query, courseSubject=subject_query)
+        university_query = self.request.GET.get("university")
+
+        queryset = Course.objects.filter(courseNumber=number_query, courseSubject=subject_query, universityShort__icontains=university_query)
         return queryset
 
 
@@ -314,8 +316,8 @@ class CourseFilter(generic.ListView):
             if item[3] not in subjects:
                 subjects.append(item[3])
         for item in all_universities_queryset:
-            if item[4] not in universities:
-                universities.append(item[4])
+            if item[5] not in universities:
+                universities.append(item[5])
         json_subjects = json.dumps(subjects)
         json_universities = json.dumps(universities)
 
@@ -369,7 +371,7 @@ class AddEquivalency(generic.ListView):
         json_subjects = json.dumps(subjects)
         json_numbers = json.dumps(numbers)
         json_names = json.dumps(names)
-        return {"json": json_subjects, "numbersJSON": json_numbers, "namesJSON": json_names}
+        return {"json": json_subjects, "numbersJSON": json_numbers, "namesJSON": json_names, "courses": all_subjects_queryset}
 
 
 class Test(generic.ListView):
@@ -398,8 +400,9 @@ def requests_database(request):
                                                   url=request.POST['url'],
                                                   studentName=request.user,
                                                   studentEmail=request.user.email)
+    return redirect('index')
+    # return HttpResponseRedirect('https://transfer-credit-guide.herokuapp.com/')
 
-        return HttpResponse("You Have submit your requests")
 
 
 # def autoEmail_database(request):
@@ -466,4 +469,5 @@ def email_database(request):
         emailS1 = Emails.objects.create(title=request.POST['title'], content=request.POST['content'],
                                         studentName=request.user,
                                         studentEmail=request.user.email)
-    return HttpResponse("You Have submit your requests")
+    # return HttpResponse("You Have submit your requests")
+    return redirect('index')
