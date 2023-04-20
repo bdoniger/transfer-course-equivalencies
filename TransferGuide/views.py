@@ -458,9 +458,9 @@ def handle_post_request(request):
             return redirect('addEquivCoursePage')
         else:
             messages.error(request, 'class equivalency already exists in database')
-            return render(request, 'TransferGuide/newAddEquivCourse.html')
+            return redirect('addEquivCoursePage')
 
-    return render(request, 'TransferGuide/newAddEquivCourse.html')
+    return redirect('addEquivCoursePage')
 
 
 class AddEquivalency(generic.ListView):
