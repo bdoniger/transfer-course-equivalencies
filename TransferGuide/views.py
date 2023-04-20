@@ -409,11 +409,9 @@ def handle_post_request(request):
             universityShort__iexact=form.get('outsideAcronym'))).filter(
             courseSubject=form.get('outsideSubject')).filter(courseNumber=form.get('outsideNumber'))
 
-        print("outerform", form)
+        # print("outerform", form)
         if not existingCourse:
             # queryset is empty
-
-            print(form)
 
             oCourse = Course()
             oCourse.courseName = form.get('outsideName')
@@ -436,8 +434,7 @@ def handle_post_request(request):
 
             # add outside course to uva course's equivalency list
             uvaCourse = Course.objects.filter(courseSubject=form.get('uvaSubject')).filter(
-                courseNumber=form.get('uvaNumber')).get()
-            print("failed")
+                courseNumber=form.get('uvaNumber')).filter(courseName=form.get('uvaName')).get()
             oldEquivList = uvaCourse.equivalentCourse
             UVAEquivCourseDict = {
                 "universityShort": form.get('outsideAcronym'),
