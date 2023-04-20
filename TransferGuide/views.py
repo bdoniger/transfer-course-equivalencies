@@ -475,7 +475,7 @@ class AddEquivalency(generic.ListView):
                 # uvaCourse = Course.objects.filter(courseSubject=form.get('uvaSubject')).filter(
                 #     courseNumber=form.get('uvaNumber')).filter(courseName=form.get('uvaName')).get()
 
-                uvaCourse = Course.objects.filter(Q(courseSubject=form.get('uvaSubject'), courseNumber=form.get('uvaNumber'), courseName=form.get('uvaName'))).get()
+                uvaCourse = Course.objects.filter(Q(courseSubject=form.get('uvaSubject'), courseNumber=form.get('uvaNumber'), courseName=form.get('uvaName'), universityLong='University of Virginia')).get()
                 oldEquivList = uvaCourse.equivalentCourse
                 UVAEquivCourseDict = {
                     "universityShort": form.get('outsideAcronym'),
