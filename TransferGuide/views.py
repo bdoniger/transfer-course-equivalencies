@@ -401,65 +401,6 @@ class CourseFilter(generic.ListView):
         return return_set
 
 
-def handle_post_request(request):
-    if request.method == 'POST':
-        form = request.POST
-
-        existingCourse = Course.objects.filter(Q(universityLong__iexact=form.get('outsideUniversity')) | Q(
-            universityShort__iexact=form.get('outsideAcronym'))).filter(
-            courseSubject=form.get('outsideSubject')).filter(courseNumber=form.get('outsideNumber'))
-
-        # print("outerform", form)
-        if not existingCourse:
-            # queryset is empty
-
-            oCourse = Course()
-            oCourse.courseName = form.get('outsideName')
-            oCourse.courseNumber = form.get('outsideNumber')
-            oCourse.courseSubject = form.get('outsideSubject')
-            oCourse.universityShort = form.get('outsideAcronym')
-            oCourse.universityLong = form.get('outsideUniversity')
-            equivCourseDict = {
-                "universityShort": "UVA",
-                "universityLong": "University of Virginia",
-                "subject": form.get('uvaSubject'),
-                "number": form.get('uvaNumber'),
-                "name": form.get('uvaName')
-            }
-            equivCourseList = list()
-            equivCourseList.append(equivCourseDict)
-            oCourse.equivalentCourse = equivCourseList
-
-            oCourse.save()
-
-            # add outside course to uva course's equivalency list
-            uvaCourse = Course.objects.filter(courseSubject=form.get('uvaSubject')).filter(
-                courseNumber=form.get('uvaNumber')).filter(courseName=form.get('uvaName')).get()
-            oldEquivList = uvaCourse.equivalentCourse
-            UVAEquivCourseDict = {
-                "universityShort": form.get('outsideAcronym'),
-                "universityLong": form.get('outsideUniversity'),
-                "subject": form.get('outsideSubject'),
-                "number": form.get('outsideNumber'),
-                "name": form.get('outsideName')
-            }
-            if (len(oldEquivList) == 0):
-                oldEquivList = list()
-
-            oldEquivList.append(UVAEquivCourseDict)
-            uvaCourse.equivalentCourse = oldEquivList
-            uvaCourse.save()
-
-            messages.success(request, 'Course Equivalency Added!')
-            # return render(request, 'TransferGuide/newAddEquivCourse.html')
-            return redirect('addEquivCoursePage')
-        else:
-            messages.error(request, 'class equivalency already exists in database')
-            return redirect('addEquivCoursePage')
-
-    return redirect('addEquivCoursePage')
-
-
 class AddEquivalency(generic.ListView):
     model = Course
     template_name = 'TransferGuide/newAddEquivCourse.html'
@@ -500,7 +441,62 @@ class AddEquivalency(generic.ListView):
 
     @staticmethod
     def post(request, *args, **kwargs):
-        return handle_post_request(request)
+        if request.method == 'POST':
+            form = request.POST
+
+            existingCourse = Course.objects.filter(Q(universityLong__iexact=form.get('outsideUniversity')) | Q(
+                universityShort__iexact=form.get('outsideAcronym'))).filter(
+                courseSubject=form.get('outsideSubject')).filter(courseNumber=form.get('outsideNumber'))
+
+            # print("outerform", form)
+            if not existingCourse:
+                # queryset is empty
+
+                oCourse = Course()
+                oCourse.courseName = form.get('outsideName')
+                oCourse.courseNumber = form.get('outsideNumber')
+                oCourse.courseSubject = form.get('outsideSubject')
+                oCourse.universityShort = form.get('outsideAcronym')
+                oCourse.universityLong = form.get('outsideUniversity')
+                equivCourseDict = {
+                    "universityShort": "UVA",
+                    "universityLong": "University of Virginia",
+                    "subject": form.get('uvaSubject'),
+                    "number": form.get('uvaNumber'),
+                    "name": form.get('uvaName')
+                }
+                equivCourseList = list()
+                equivCourseList.append(equivCourseDict)
+                oCourse.equivalentCourse = equivCourseList
+
+                oCourse.save()
+
+                # add outside course to uva course's equivalency list
+                uvaCourse = Course.objects.filter(courseSubject=form.get('uvaSubject')).filter(
+                    courseNumber=form.get('uvaNumber')).filter(courseName=form.get('uvaName')).get()
+                oldEquivList = uvaCourse.equivalentCourse
+                UVAEquivCourseDict = {
+                    "universityShort": form.get('outsideAcronym'),
+                    "universityLong": form.get('outsideUniversity'),
+                    "subject": form.get('outsideSubject'),
+                    "number": form.get('outsideNumber'),
+                    "name": form.get('outsideName')
+                }
+                if (len(oldEquivList) == 0):
+                    oldEquivList = list()
+
+                oldEquivList.append(UVAEquivCourseDict)
+                uvaCourse.equivalentCourse = oldEquivList
+                uvaCourse.save()
+
+                # messages.success(request, 'Course Equivalency Added!')
+                # return render(request, 'TransferGuide/newAddEquivCourse.html')
+                return redirect('addEquivCoursePage')
+            else:
+                messages.error(request, 'class equivalency already exists in database')
+                return redirect('addEquivCoursePage')
+
+        return redirect('addEquivCoursePage')
 
 
 class Test(generic.ListView):
