@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-lavbz$wk&8@o^!_%bxp5@7nnhk4#i01-t^b%*!$&dfee32b105'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # DONIGER: Added both the local host and herokuapp.com here to handled the DisallowedHost error as seen in Prof. Sherriff's additions.
 ALLOWED_HOSTS = ['localhost','127.0.0.1','transfer-credit-guide.herokuapp.com']
@@ -35,7 +35,7 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1','transfer-credit-guide.herokuapp.com']
 SITE_ID = 3
 
 
-# SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
