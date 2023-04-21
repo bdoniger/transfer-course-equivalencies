@@ -95,13 +95,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'csp.middleware.CSPMiddleware',
 ]
-
-# Content Security Policy
-CSP_IMG_SRC = ("'self'")
-CSP_STYLE_SRC = ("'self'")
-CSP_SCRIPT_SRC = ("'self'")
 
 ROOT_URLCONF = 'TransferCreditGuide.urls'
 
