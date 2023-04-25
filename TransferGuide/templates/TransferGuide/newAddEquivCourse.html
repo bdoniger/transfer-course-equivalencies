@@ -125,15 +125,16 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
 
     <script>
-    var subjects = JSON.parse('{{ all_courses_list.json }}'.replace(/&quot;/g,'"'));
-    var course_numbers = JSON.parse('{{ all_courses_list.numbersJSON }}'.replace(/&quot;/g,'"'));
-    var course_names = JSON.parse('{{ all_courses_list.namesJSON }}'.replace(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&#x27;/g, "'"));
+    {#var subjects = JSON.parse('{{ all_courses_list.json }}'.replace(/&quot;/g,'"'));#}
+    var all_info = JSON.parse('{{ all_courses_list.all_together }}'.replace(/&quot;Bad&quot;/g, '\'Bad\'').replaceAll(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&#x27;/g, "'"));
+    {#var course_numbers = JSON.parse('{{ all_courses_list.numbersJSON }}'.replace(/&quot;/g,'"'));#}
+    {#var course_names = JSON.parse('{{ all_courses_list.namesJSON }}'.replace(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&#x27;/g, "'"));#}
 
     $(function () {
         // Set up the combo box for selecting subjects
         $("#uvaSubject").igCombo({
             width: 300,
-            dataSource: subjects,
+            dataSource: all_info,
             textKey: "Name",
             valueKey: "Name",
             dropDownOrientation: "bottom",
@@ -141,25 +142,25 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
             name: "uvaSubject"
         });
 
-        $("#uvaNumber").igCombo({
-            width: 300,
-            dataSource: course_numbers,
-            textKey: "Name",
-            valueKey: "Name",
-            dropDownOrientation: "bottom",
-            placeHolder: "Select Number",
-            name: "uvaNumber"
-        });
+        {#$("#uvaNumber").igCombo({#}
+        {#    width: 300,#}
+        {#    dataSource: course_numbers,#}
+        {#    textKey: "Name",#}
+        {#    valueKey: "Name",#}
+        {#    dropDownOrientation: "bottom",#}
+        {#    placeHolder: "Select Number",#}
+        {#    name: "uvaNumber"#}
+        {# }); #}
 
-        $("#uvaName").igCombo({
-            width: 300,
-            dataSource: course_names,
-            textKey: "Name",
-            valueKey: "Name",
-            dropDownOrientation: "bottom",
-            placeHolder: "Select Course Name",
-            name: "uvaName"
-        });
+        {#$("#uvaName").igCombo({#}
+        {#    width: 300,#}
+        {#    dataSource: course_names,#}
+        {#    textKey: "Name",#}
+        {#    valueKey: "Name",#}
+        {#    dropDownOrientation: "bottom",#}
+        {#    placeHolder: "Select Course Name",#}
+        {#    name: "uvaName"#}
+        {# }); #}
 
         let outsideUniversity = '';
         let outsideAcronym = '';
@@ -233,22 +234,22 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 <h2 style="margin-left: 260px">UVA Course Details</h2>
     <div class="parent" style="width: 100%; margin-left:260px; display: inline-block">
         <div class="child">
-            <a class="combo-label">Select Subject</a>
+            <a class="combo-label">Select UVA Course</a>
             <br>
             <label for="uvaSubject"></label><select name="uvaSubject" id="uvaSubject" style="width: 25%"></select>
         </div>
-        <div class="child">
-            <a class="combo-label">Course Number</a>
-            <br>
-            <label for="uvaNumber"></label><select name="uvaNumber" id="uvaNumber" style="width: 25%"></select>
-        </div>
-        <div class="child">
-            <a class="combo-label">Course Name</a>
-            <br>
-            <label>
-            <select name="uvaName" id="uvaName" style="width: 25%"></select>
-                </label>
-        </div>
+{#        <div class="child">#}
+{#            <a class="combo-label">Course Number</a>#}
+{#            <br>#}
+{#            <label for="uvaNumber"></label><select name="uvaNumber" id="uvaNumber" style="width: 25%"></select>#}
+{#        </div>#}
+{#        <div class="child">#}
+{#            <a class="combo-label">Course Name</a>#}
+{#            <br>#}
+{#            <label>#}
+{#            <select name="uvaName" id="uvaName" style="width: 25%"></select>#}
+{#                </label>#}
+{#        </div>#}
         <br>
     </div>
     <br>
