@@ -8,6 +8,7 @@ from django.contrib.auth import logout, get_user_model
 from django.template import loader
 from django.views import generic
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
 
 from .tasks import sisBackground
 from .models import Course, requestForm, Emails, AutoReplyEmail
@@ -425,7 +426,7 @@ class AddEquivalency(generic.ListView):
                 uvaName = ''
                 for i in range(2, len(uvaInfo)):
                     uvaName += uvaInfo[i]
-                    if i != len(uvaInfo)-1:
+                    if i != len(uvaInfo) - 1:
                         uvaName += ' '
 
                 uvaUniversityLong = "University of Virginia"
@@ -492,8 +493,6 @@ def requests_database(request):
 
 
 def pending_requests(request):
-    # requests = requestForm.objects.all()
-
     requests = requestForm.objects.all()
 
     form_id = request.GET.get("request_id")
@@ -541,41 +540,44 @@ def email_database(request):
                                         studentName=request.user,
                                         studentEmail=request.user.email)
     return redirect('index')
-#
-#
-# @csrf_exempt
-# def change_superuser_status(request):
-#     if request.method == 'POST':
-#         data = json.loads(request.body)
-#         user_id = data.get('user_id')
-#         superuser_status = data.get('superuser_status')
-#
-#         try:
-#             # user = User.objects.get(pk=user_id)
-#             User = get_user_model()
-#             user = User.objects.all().filter(user_id)
-#             print(user)
-#
-#             if superuser_status == 'add':
-#                 user.is_superuser = True
-#             elif superuser_status == 'remove':
-#                 user.is_superuser = False
-#
-#             user.save()
-#             return JsonResponse({'success': True})
-#         except User.DoesNotExist:
-#             return JsonResponse({'success': False, 'error': 'User does not exist'})
-#
-#     return JsonResponse({'success': False, 'error': 'Invalid request method'})
-#
-#
-# class ChangePriv(generic.ListView):
-#     template_name = 'TransferGuide/changeUserPriv.html'
-#     model = get_user_model()
-#
-#     def get_queryset(self):
-#         User = get_user_model()
-#         user_ids = {"user_ids": User.objects.all()}
-#         print(user_ids)
-#         return user_ids
-#
+
+
+def change_superuser_status(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user_id = data.get('user_id')
+        superuser_status = data.get('superuser_status')
+
+        User = get_user_model()
+        usersAll = User.objects.all()
+        user = ''
+        for i in range(len(usersAll)):
+            if usersAll[i].id == int(user_id):
+                user = usersAll[i]
+        if user == '':
+            return JsonResponse({'success': False})
+        else:
+            if superuser_status == 'add':
+                user.is_superuser = True
+            elif superuser_status == 'remove':
+                user.is_superuser = False
+
+            user.save()
+            return JsonResponse({'success': True})
+
+
+class ChangePriv(generic.ListView):
+    template_name = 'TransferGuide/changeUserPriv.html'
+    model = get_user_model()
+    context_object_name = 'users_list'
+
+    def get_queryset(self):
+        User = get_user_model()
+        IDS = User.objects.all().values('username', 'id')
+        IDS_list = []
+        for i in range(len(IDS)):
+            IDS_list.append(str(IDS[i].get('id')) + ' ' + IDS[i].get('username'))
+        jsonIDS = json.dumps(IDS_list)
+
+        users_list = {"user_ids": User.objects.all(), "user_pks": User.objects.all().values("id"), "jsonIDS": jsonIDS}
+        return users_list

@@ -30,27 +30,73 @@
             cursor: pointer;
         }
     </style>
+    <style>
+    html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
+    .w3-sidebar {
+      z-index: 3;
+      width: 250px;
+      top: 43px;
+      bottom: 0;
+      height: inherit;
+    }
+
+    .parent {
+      width: 100%;
+      text-align: left; /* centers the child elements horizontally */
+      {#margin-left:260px;#}
+
+    }
+
+    .child {
+      display: inline-block;
+      {#width: 30%; /* adjust as needed */#}
+    }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Change Superuser Status</h1>
-        <form id="superuser-form">
-            <label for="user-id">User ID:</label>
-            <input type="text" name="user_id" id="user-id" required>
-            <label for="superuser-status">Superuser Status:</label>
-            <select name="superuser_status" id="superuser-status">
-                <option value="add">Add Superuser</option>
-                <option value="remove">Remove Superuser</option>
-            </select>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-    <script>
-        document.getElementById('superuser-form').addEventListener('submit', (event) => {
+
+<link href="http://cdn-na.infragistics.com/igniteui/2022.2/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link href="http://cdn-na.infragistics.com/igniteui/2022.2/latest/css/structure/infragistics.css" rel="stylesheet" />
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+    <!-- Ignite UI for jQuery Required Combined JavaScript Files -->
+    <script src="http://cdn-na.infragistics.com/igniteui/2022.2/latest/js/infragistics.core.js"></script>
+    <script src="http://cdn-na.infragistics.com/igniteui/2022.2/latest/js/infragistics.lob.js"></script>
+
+
+<script>
+    var all_info = JSON.parse('{{ users_list.jsonIDS }}'.replaceAll(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&#x27;/g, "'"));
+
+    $(function () {
+        // Set up the combo box for selecting subjects
+        $("#userInfo").igCombo({
+            width: 300,
+            dataSource: all_info,
+            textKey: "Name",
+            valueKey: "Name",
+            dropDownOrientation: "bottom",
+            placeHolder: "Select Subjects",
+            name: "uvaSubject"
+        });
+
+        $("#userStatus").igCombo({
+            width: 300,
+            dataSource: ['Make Admin', 'Remove Admin'],
+            textKey: "Name",
+            valueKey: "Name",
+            dropDownOrientation: "bottom",
+            placeHolder: "Select Subjects",
+            name: "uvaSubject"
+        });
+
+        $("#courseForm").submit(function(event) {
+           document.getElementById('superuser-form').addEventListener('submit', (event) => {
             event.preventDefault();
 
-            const userId = document.getElementById('user-id').value;
-            const superuserStatus = document.getElementById('superuser-status').value;
+            const userId = document.getElementById('userInfo').value;
+            const superuserStatus = document.getElementById('userStatus').value;
 
             // Make an AJAX request to the server to update the user's superuser status
             fetch('/change_superuser_status/', {
@@ -69,13 +115,99 @@
                 if (data.success) {
                     alert('Superuser status changed successfully.');
                 } else {
-                    alert('An error occurred while changing superuser status.');
+                    alert('An error occurred while changing superuser status, most likely the provided User ID does not exist.');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
             });
+            });
         });
-    </script>
+    });
+</script>
+
+<body>
+    <div class="container">
+        <h1>Change Superuser Status</h1>
+{#        <form id="superuser-form">#}
+{#            <label for="user-id">User ID:</label>#}
+{#            <input type="text" name="user_id" id="user-id" required>#}
+{#            <label for="superuser-status">Superuser Status:</label>#}
+{#            <select name="superuser_status" id="superuser-status">#}
+{#                <option value="add">Add Superuser</option>#}
+{#                <option value="remove">Remove Superuser</option>#}
+{#            </select>#}
+{#            <button type="submit">Submit</button>#}
+{#        </form>#}
+    <form id="superuser-form" action="" method="POST">
+    {% csrf_token %}
+        <div class="parent">
+            <div class="child">
+                <a class="combo-label">Select User</a>
+                <br>
+                <label for="userInfo"></label><select name="userInfo" id="userInfo" style="width: 25%"></select>
+            </div>
+            <div class="child">
+                <br>
+                <a class="combo-label">Select Status</a>
+                <br>
+                <label for="userStatus"></label><select name="userStatus" id="userStatus" style="width: 25%"></select>
+            </div>
+            <br>
+            <br>
+            <button id="submitBtn" type="submit" value="Submit">Submit</button>
+        </div>
+
+        <h2>Usernames, IDs, and Status</h2>
+        <table style="align-content: center">
+            <th>ID</th>
+            <th>Username</th>
+            <th>Status</th>
+            {% for user in users_list.user_ids %}
+                <tr style="align-content: center">
+                    <td style="text-align: left">{{ user.id }}</td>
+                    <td style="text-align: left">{{ user.username }}</td>
+                    {% if user.is_superuser %}
+                        <td style="text-align: left">Admin</td>
+                    {% else %}
+                        <td style="text-align: left">Normal User</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
+    </div>
+{#    <script>#}
+{#        document.getElementById('superuser-form').addEventListener('submit', (event) => {#}
+{#            event.preventDefault();#}
+{##}
+{#            const userId = document.getElementById('user-id').value;#}
+{#            const superuserStatus = document.getElementById('superuser-status').value;#}
+{##}
+{#            // Make an AJAX request to the server to update the user's superuser status#}
+{#            fetch('/change_superuser_status/', {#}
+{#                method: 'POST',#}
+{#                headers: {#}
+{#                    'Content-Type': 'application/json',#}
+{#                    'X-CSRFToken': '{{ csrf_token }}'#}
+{#                },#}
+{#                body: JSON.stringify({#}
+{#                    user_id: userId,#}
+{#                    superuser_status: superuserStatus,#}
+{#                }),#}
+{#            })#}
+{#            .then(response => response.json())#}
+{#            .then(data => {#}
+{#                if (data.success) {#}
+{#                    alert('Superuser status changed successfully.');#}
+{#                } else {#}
+{#                    alert('An error occurred while changing superuser status, most likely the provided User ID does not exist.');#}
+{#                }#}
+{#            })#}
+{#            .catch(error => {#}
+{#                console.error('Error:', error);#}
+{#            });#}
+{#        });#}
+{#    </script>#}
 </body>
 </html>
