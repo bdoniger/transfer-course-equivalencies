@@ -1,7 +1,5 @@
 import json
 
-import datetime
-
 from django.db.models.functions import Length, Substr
 from django.utils import timezone
 from django.shortcuts import render
@@ -10,7 +8,6 @@ from django.contrib.auth import logout, get_user_model
 from django.template import loader
 from django.views import generic
 from django.contrib import messages
-from django.views.decorators.csrf import csrf_exempt
 
 from .tasks import sisBackground
 from .models import Course, requestForm, Emails, AutoReplyEmail
@@ -18,8 +15,6 @@ from django.shortcuts import redirect
 import requests
 
 from django.db.models import Q
-
-from django.core import serializers
 
 subjectList = []
 
@@ -35,7 +30,6 @@ def logoutt(request):
 
     response = redirect('https://transfer-credit-guide.herokuapp.com/')
     return response
-    # return render(request, 'TransferGuide/login.html')
 
 
 def displayUpdate(request, semester, page, subjectNum):
@@ -90,66 +84,10 @@ def sisUpdate(request, semester, page, subjectNum):
         semester = semester + 1
 
     if (semester == 4):
-        return render(request, 'TransferGuide/ClassInfo.html')
+        return render(request, 'TransferGuide/newCourseInfo.html')
 
     response = redirect('/displayUpdate/' + str(semester) + '/' + str(page) + '/' + str(subjectNum) + '/')
     return response
-    # return render(request, 'TransferGuide/ClassInfo.html')
-
-
-# def addEquivCourse(request):
-#     if request.method == 'POST':
-#         form = request.POST
-#
-#         existingCourse = Course.objects.filter(Q(universityLong__iexact=form.get('university')) | Q(
-#             universityShort__iexact=form.get('universityShort'))).filter(
-#             courseSubject=form.get('department')).filter(courseNumber=form.get('number'))
-#
-#         if not existingCourse:
-#             # queryset is empty
-#             oCourse = Course()
-#             oCourse.courseName = form.get('name')
-#             oCourse.courseNumber = form.get('number')
-#             oCourse.courseSubject = form.get('department')
-#             oCourse.universityShort = form.get('universityShort')
-#             oCourse.universityLong = form.get('university')
-#             equivCourseDict = {
-#                 "universityShort": "UVA",
-#                 "universityLong": "University of Virginia",
-#                 "subject": form.get('UVADepartment'),
-#                 "number": form.get('UVANumber'),
-#                 "name": form.get('UVAName')
-#             }
-#             equivCourseList = list()
-#             equivCourseList.append(equivCourseDict)
-#             oCourse.equivalentCourse = equivCourseList
-#             oCourse.save()
-#
-#             # add outside course to uva course's equivalency list
-#             uvaCourse = Course.objects.filter(courseSubject=form.get('UVADepartment')).filter(
-#                 courseNumber=form.get('UVANumber')).get()
-#             oldEquivList = uvaCourse.equivalentCourse
-#             UVAEquivCourseDict = {
-#                 "universityShort": form.get('universityShort'),
-#                 "universityLong": form.get('university'),
-#                 "subject": form.get('department'),
-#                 "number": form.get('number'),
-#                 "name": form.get('name')
-#             }
-#             if (len(oldEquivList) == 0):
-#                 oldEquivList = list()
-#
-#             oldEquivList.append(UVAEquivCourseDict)
-#             uvaCourse.equivalentCourse = oldEquivList
-#             uvaCourse.save()
-#
-#             messages.success(request, 'Course Equivalency Added!')
-#             return render(request, 'TransferGuide/newAddEquivCourse.html')
-#         else:
-#             messages.error(request, 'class equivalency already exists in database')
-#             return render(request, 'TransferGuide/newAddEquivCourse.html')
-#
-#     return render(request, 'TransferGuide/newAddEquivCourse.html')
 
 
 class CoursesViewAll(generic.ListView):
@@ -318,12 +256,6 @@ class CourseFilter(generic.ListView):
         university_query = self.request.GET.getlist("universities")
         if university_query == ['']:
             university_query = None
-        # if subject_query is None:
-        #     subject_query = ''
-        # if (number_query == '') | (number_query is None):
-        #     number_query = -1
-        # if university_query is None:
-        #     university_query = ''
         number_query_list = []
         subject_query = [subject_query]
         if not isinstance(number_query, int):
@@ -375,9 +307,6 @@ class CourseFilter(generic.ListView):
         if university_query is not None:
             filters &= Q(universityLong__in=university_query)
 
-        # courses = Course.objects.filter(
-        #         Q(courseSubject__in=subject_query) & Q(courseNumber__in=number_query_list) & Q(
-        #             universityLong__in=university_query)).order_by('courseNumber')
         if len(filters) < 1:
             courses = []
         else:
@@ -525,8 +454,6 @@ class AddEquivalency(generic.ListView):
 
                 UVACourse.save(force_update=True)
 
-                # messages.success(request, 'Course Equivalency Added!')
-                # return render(request, 'TransferGuide/newAddEquivCourse.html')
                 return redirect('addEquivCoursePage')
             else:
                 messages.error(request, 'class equivalency already exists in database')
@@ -562,24 +489,6 @@ def requests_database(request):
                                                   studentName=request.user,
                                                   studentEmail=request.user.email)
     return redirect('index')
-    # return HttpResponseRedirect('https://transfer-credit-guide.herokuapp.com/')
-
-
-# def autoEmail_database(request):
-#     requests = requestForm.objects.all()
-#
-#     form_id = request.GET.get("request_id")
-#     status = request.GET.get("status")
-#
-#     if form_id is not None:
-#         form = requestForm.objects.all().filter(id=form_id)[0]
-#         time = datetime.datetime.now()
-#         content1 = "You class:" + request.GET.get("request_courseSubject") + request.GET.get("request_courseNumber") + request.GET.get("request_courseName") + " from " + request.GET.get("request_University") + " status from " + form.status + " to " + request.GET.get("status") + " at " + time.strftime("%Y-%m-%d %H:%M:%S")
-#         autoReply = AutoReplyEmail.objects.create(content=content1, studentEmail=request.GET.get("request.studentEmail"))
-#         form.status = status
-#         form.save()
-#
-#     # return render(request, "TransferGuide/newPendingRequests.html", context={"requests": requests})
 
 
 def pending_requests(request):
@@ -603,7 +512,6 @@ def pending_requests(request):
         form.save()
 
     return render(request, "TransferGuide/newPendingRequests.html", context={"requests": requests})
-    # return render(request, "TransferGuide/PendingRequests.html", context={"requests": requests})
 
 
 def update_email_status(request, email_id):
@@ -632,7 +540,6 @@ def email_database(request):
         emailS1 = Emails.objects.create(title=request.POST['title'], content=request.POST['content'],
                                         studentName=request.user,
                                         studentEmail=request.user.email)
-    # return HttpResponse("You Have submit your requests")
     return redirect('index')
 #
 #
