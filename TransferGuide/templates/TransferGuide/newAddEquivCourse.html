@@ -202,7 +202,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         {#   }); #}
 
         $("#courseForm").submit(function(event) {
-            {#event.preventDefault(); // Prevent the default form submission behavior#}
+            event.preventDefault(); // Prevent the default form submission behavior
 
             var formData = $(this).serialize(); // Serialize the form data
 
@@ -210,9 +210,9 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
             var numberValue = $("#uvaNumber").igCombo("value");
             var nameValue = $("#uvaName").igCombo("value");
 
-            formData += "&outsideSubject=" + encodeURIComponent(subjectValue);
-            formData += "&outsideNumber=" + encodeURIComponent(numberValue);
-            formData += "&outsideName=" + encodeURIComponent(nameValue);
+            {#formData += "&outsideSubject=" + encodeURIComponent(subjectValue);#}
+            {#formData += "&outsideNumber=" + encodeURIComponent(numberValue);#}
+            {#formData += "&outsideName=" + encodeURIComponent(nameValue);#}
 
             console.log(formData);
 
@@ -220,8 +220,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
             $.post("", formData, function(response) {
                 // Handle the response from the server (e.g., display a success message, redirect, etc.)
                 alert("Form submitted successfully!"); // Display a success message
-                window.location.href = "";
-            });
+              });
+            window.location.href=''
         });
     });
 </script>

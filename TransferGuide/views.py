@@ -166,7 +166,8 @@ class CoursesViewAll(generic.ListView):
 def make_query(subject_query, number_query, name_query, university_query):
     all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
     all_universities_queryset = Course.objects.all().values('universityLong').order_by('universityLong').distinct()
-    all_universities_short_queryset = Course.objects.all().values('universityShort').order_by('universityShort').distinct()
+    all_universities_short_queryset = Course.objects.all().values('universityShort').order_by(
+        'universityShort').distinct()
     all_numbers_queryset = Course.objects.all().values("courseNumber").order_by("courseNumber").distinct()
     all_names_queryset = Course.objects.all().values("courseName").order_by("courseName").distinct()
 
@@ -208,7 +209,8 @@ def make_query(subject_query, number_query, name_query, university_query):
 
     if (subject_query == '') & ((number_query == -1) | (number_query == '')) & (name_query == '') & (
             university_query == ''):
-        return {"json": json_subjects, "universitiesJSON": json_universities, "universitiesShortJSON": json_universities_short, "numbersJSON": json_numbers,
+        return {"json": json_subjects, "universitiesJSON": json_universities,
+                "universitiesShortJSON": json_universities_short, "numbersJSON": json_numbers,
                 "namesJSON": json_names}
 
     courses = Course.objects.annotate(
@@ -277,7 +279,8 @@ class CourseInfo(generic.ListView):
         if (subject_query is None) & (number_query is None) & (university_query is None):
             queryset = []
         else:
-            queryset = Course.objects.filter(courseNumber=number_query, courseSubject=subject_query, universityShort__icontains=university_query)
+            queryset = Course.objects.filter(courseNumber=number_query, courseSubject=subject_query,
+                                             universityShort__icontains=university_query)
         return queryset
 
 
@@ -286,11 +289,11 @@ def make_number_query(numbers):
     for i in range(len(numbers)):
         num = numbers[i]
         tens = num * 10
-        tens_upper = (num+1) * 10 - 1
+        tens_upper = (num + 1) * 10 - 1
         hundreds = num * 100
-        hundreds_upper = (num+1) * 100 - 1
+        hundreds_upper = (num + 1) * 100 - 1
         thousands = num * 1000
-        thousands_upper = (num+1) * 1000 - 1
+        thousands_upper = (num + 1) * 1000 - 1
         numbers_to_compute = [tens, tens_upper, hundreds, hundreds_upper, thousands, thousands_upper]
         index = 0
         while index < len(numbers_to_compute):
@@ -298,7 +301,7 @@ def make_number_query(numbers):
             index += 1
             upper = numbers_to_compute[index]
             index += 1
-            for j in range(lower, upper+1):
+            for j in range(lower, upper + 1):
                 new_numbers.append(j)
     return new_numbers
 
@@ -382,8 +385,8 @@ class CourseFilter(generic.ListView):
                 filters).order_by('courseNumber')
 
         subjects = Course.objects.filter(
-                filters).values('courseSubject').order_by(
-                'courseSubject').distinct()
+            filters).values('courseSubject').order_by(
+            'courseSubject').distinct()
 
         if number_query is not None:
             courses = courses.annotate(
@@ -437,19 +440,25 @@ class AddEquivalency(generic.ListView):
         json_subjects = json.dumps(subjects)
         json_numbers = json.dumps(numbers)
         json_names = json.dumps(names)
-        return {"json": json_subjects, "numbersJSON": json_numbers, "namesJSON": json_names, "courses": all_subjects_queryset}
+        return {"json": json_subjects, "numbersJSON": json_numbers, "namesJSON": json_names,
+                "courses": all_subjects_queryset}
 
     @staticmethod
     def post(request, *args, **kwargs):
         if request.method == 'POST':
+            print("In if")
             form = request.POST
 
-            existingCourse = Course.objects.filter(Q(universityLong__iexact=form.get('outsideUniversity')) | Q(
-                universityShort__iexact=form.get('outsideAcronym'))).filter(
+            # existingCourse = Course.objects.filter(Q(universityLong__iexact=form.get('outsideUniversity')) | Q(
+            #     universityShort__iexact=form.get('outsideAcronym'))).filter(
+            #     courseSubject=form.get('outsideSubject')).filter(courseNumber=form.get('outsideNumber'))
+
+            existingCourseSet = Course.objects.filter(Q(universityLong__iexact=form.get('outsideUniversity'))).filter(
                 courseSubject=form.get('outsideSubject')).filter(courseNumber=form.get('outsideNumber'))
 
+
             # print("outerform", form)
-            if not existingCourse:
+            if len(existingCourseSet) <= 0:
                 # queryset is empty
 
                 oCourse = Course()
@@ -475,8 +484,25 @@ class AddEquivalency(generic.ListView):
                 # uvaCourse = Course.objects.filter(courseSubject=form.get('uvaSubject')).filter(
                 #     courseNumber=form.get('uvaNumber')).filter(courseName=form.get('uvaName')).get()
 
-                uvaCourse = Course.objects.filter(Q(courseSubject=form.get('uvaSubject'), courseNumber=form.get('uvaNumber'), courseName=form.get('uvaName'), universityLong='University of Virginia')).get()
-                oldEquivList = uvaCourse.equivalentCourse
+                print(form)
+
+                uvaSubject = form.get('uvaSubject')
+                uvaNumber = form.get('uvaNumber')
+                uvaName = form.get('uvaName')
+                uvaUniversityLong = "University of Virginia"
+                uvaUniversityShort = "UVA"
+
+                print("UVASUBJECT", uvaSubject, "UVANUMBER", uvaNumber, "UVANAME", uvaName)
+
+                # uvaCourse = Course.objects.all().filter(Q(courseSubject=form.get('uvaSubject')) & Q(courseNumber=form.get('uvaNumber')) & Q(courseName=form.get('uvaName')) & Q(universityLong='University of Virginia'))
+
+                uvaCourse = Course.objects.all().filter(Q(courseSubject__iexact=uvaSubject) & Q(courseNumber__iexact=
+                                                                                                uvaNumber) & Q(
+                    courseName__iexact=uvaName) & Q(universityLong__iexact=uvaUniversityLong) &
+                                                        Q(universityShort__iexact=uvaUniversityShort))
+
+                print("UvaCourse", uvaCourse)
+                oldEquivList = uvaCourse[0].equivalentCourse
                 UVAEquivCourseDict = {
                     "universityShort": form.get('outsideAcronym'),
                     "universityLong": form.get('outsideUniversity'),
@@ -488,13 +514,14 @@ class AddEquivalency(generic.ListView):
                     oldEquivList = list()
 
                 oldEquivList.append(UVAEquivCourseDict)
-                uvaCourse.equivalentCourse = oldEquivList
-                uvaCourse.save()
+                uvaCourse[0].equivalentCourse = oldEquivList
+                uvaCourse[0].save()
 
                 # messages.success(request, 'Course Equivalency Added!')
                 # return render(request, 'TransferGuide/newAddEquivCourse.html')
                 return redirect('addEquivCoursePage')
             else:
+                print("In else")
                 messages.error(request, 'class equivalency already exists in database')
                 return redirect('addEquivCoursePage')
 
@@ -529,7 +556,6 @@ def requests_database(request):
                                                   studentEmail=request.user.email)
     return redirect('index')
     # return HttpResponseRedirect('https://transfer-credit-guide.herokuapp.com/')
-
 
 
 # def autoEmail_database(request):
@@ -639,4 +665,3 @@ def email_database(request):
 #         print(user_ids)
 #         return user_ids
 #
-
