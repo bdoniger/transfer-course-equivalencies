@@ -92,35 +92,35 @@
         });
 
         $("#courseForm").submit(function(event) {
-           document.getElementById('superuser-form').addEventListener('submit', (event) => {
-            event.preventDefault();
+            document.getElementById('superuser-form').addEventListener('submit', (event) => {
+                event.preventDefault();
 
-            const userId = document.getElementById('userInfo').value;
-            const superuserStatus = document.getElementById('userStatus').value;
+                const userId = document.getElementById('userInfo').value;
+                const superuserStatus = document.getElementById('userStatus').value;
 
-            // Make an AJAX request to the server to update the user's superuser status
-            fetch('/change_superuser_status/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({
-                    user_id: userId,
-                    superuser_status: superuserStatus,
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Superuser status changed successfully.');
-                } else {
-                    alert('An error occurred while changing superuser status, most likely the provided User ID does not exist.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                // Make an AJAX request to the server to update the user's superuser status
+                fetch('/change_superuser_status/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        superuser_status: superuserStatus,
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Superuser status changed successfully.');
+                        } else {
+                            alert('An error occurred while changing superuser status, most likely the provided User ID does not exist.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             });
         });
     });
