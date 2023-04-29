@@ -76,7 +76,7 @@
     <script>
         var all_info = JSON.parse('{{ users_list.jsonIDS }}'.replaceAll(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&#x27;/g, "'"));
 
-        $(function () {
+        jQuery(document).ready(function () {
             // Set up the combo box for selecting subjects
             $("#userInfo").igCombo({
                 width: 300,
@@ -88,7 +88,7 @@
                 name: "uvaSubject"
             });
 
-            $("#userStatus").igCombo({
+            jQuery("#userStatus").igCombo({
                 width: 300,
                 dataSource: ['Make Admin', 'Remove Admin'],
                 textKey: "Name",
@@ -98,7 +98,7 @@
                 name: "uvaSubject"
             });
 
-            $("#courseForm").submit(function(event) {
+            jQuery("#courseForm").submit(function(event) {
                 document.getElementById('superuser-form').addEventListener('submit', (event) => {
                     event.preventDefault();
 
