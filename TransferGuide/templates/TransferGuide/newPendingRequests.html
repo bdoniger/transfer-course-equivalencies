@@ -116,6 +116,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
 <div class="w3-main">
 <div class="parent" style="width: 100%; margin-left:260px; display: inline-block">
+{% if user.is_superuser %}
     <h2>Pending Requests</h2>
 {#          <p>Student Email & Name; Course Name, Number, Subject; University</p>#}
           <p></p>
@@ -224,6 +225,15 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   <p>No Class Requests</p>
   {% endif %}
 </div>
+{% else %}
+        <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 1); // Redirects after 1 millisecond
+        };
+    </script>
+    {% endif %}
 </div>
 
 

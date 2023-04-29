@@ -63,7 +63,7 @@ li name {
     </ul>
 </nav>
 
-
+{% if user.is_superuser %}
 <header>
     <h1>Updating classes from SIS, this may take a while</h1>
 </header>
@@ -71,3 +71,12 @@ li name {
     <label for="file">Updating Progress: {{percent}}%</label>
     <progress id="file" value="{{percent}}" max="100"> {{percent}}% </progress>
 </BODY>
+{% else %}
+        <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 1); // Redirects after 1 millisecond
+        };
+    </script>
+    {% endif %}

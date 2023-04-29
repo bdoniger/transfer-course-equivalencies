@@ -227,7 +227,8 @@
     <br />
     <div class=".ui-widget-overlay"></div>
 
-        <h1>Change Superuser Status</h1>
+    {% if user.is_superuser %}
+    <h1>Change Superuser Status</h1>
     <form id="superuser-form" action="" method="POST">
     {% csrf_token %}
         <div class="parent">
@@ -265,6 +266,15 @@
             {% endfor %}
         </table>
     </form>
+    {% else %}
+        <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 1); // Redirects after 1 millisecond
+        };
+    </script>
+    {% endif %}
     </div>
 <script>
 // Get the Sidebar

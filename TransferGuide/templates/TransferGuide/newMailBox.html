@@ -182,7 +182,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                 </details>
             {% endif %}
         {% endfor %}
-    {%  else %}
+    {%  elif user.is_authenticated %}
         <h3>Emails From Admins</h3>
         {%for auto in Autos%}
             {% if auto.studentEmail == user.email %}
@@ -203,6 +203,14 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                 </details>
             {% endif %}
         {% endfor %}
+        {% else %}
+        <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 1); // Redirects after 1 millisecond
+        };
+    </script>
     {% endif %}
 </div>
 
