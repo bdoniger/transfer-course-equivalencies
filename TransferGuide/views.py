@@ -255,6 +255,39 @@ class CourseFilter(generic.ListView):
         subject_query = self.request.GET.get("subject")
         number_query = self.request.GET.get("number")
         university_query = self.request.GET.getlist("universities")
+
+        print("subject", subject_query)
+        print("number", number_query)
+        print("university", university_query)
+
+        if (subject_query == '') & (number_query == '') & (university_query == ['']):
+            all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+            all_universities_queryset = Course.objects.all().values('universityLong').order_by(
+                'universityLong').distinct()
+
+            all_subjects_queryset = all_subjects_queryset.values_list()
+            all_universities_queryset = all_universities_queryset.values_list()
+            subjects = []
+            universities = []
+            for item in all_subjects_queryset:
+                if item[3] not in subjects:
+                    subjects.append(item[3])
+            for item in all_universities_queryset:
+                if item[5] not in universities:
+                    universities.append(item[5])
+            json_subjects = json.dumps(subjects)
+            json_universities = json.dumps(universities)
+
+            courses = []
+            return_set = {
+                "json": json_subjects,
+                "courses": courses,
+                "filteredSubjects": subjects,
+                "allSubjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct(),
+                "universitiesJSON": json_universities
+            }
+            return return_set
+
         if university_query == ['']:
             university_query = None
         number_query_list = []
