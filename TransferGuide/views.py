@@ -34,7 +34,7 @@ def logoutt(request):
 
 
 def displayUpdate(request, semester, page, subjectNum):
-    template = loader.get_template('TransferGuide/update.html')
+    template = loader.get_template('TransferGuide/newUpdate.html')
     param = str(semester) + '/' + str(page) + '/' + str(subjectNum) + '/'
     num = (int(semester) * 202 + int(subjectNum)) * 100
     percent = int(num / 808)
@@ -522,6 +522,7 @@ def requests_database(request):
                                                   url=request.POST['url'],
                                                   studentName=request.user,
                                                   studentEmail=request.user.email)
+        messages.add_message(request, messages.SUCCESS, "Request submitted")
     return redirect('index')
 
 
