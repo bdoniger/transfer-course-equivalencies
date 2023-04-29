@@ -12,7 +12,6 @@ urlpatterns = [
     path('search/', views.SearchResultsView.as_view(), name='search_results'),
     path('info/', views.CourseInfo.as_view(), name='course_info'),
     path('filter/', views.CourseFilter.as_view(), name='course_filter'),
-    # path('addEquivalentCourse/', views.addEquivCourse, name='addEquivCoursePage'),
     path('addEquivalentCourse/', views.AddEquivalency.as_view(), name='addEquivCoursePage'),
     path('requestForm/', views.RequestForms.as_view(), name='student_request'),
     path('requestForm/database', views.requests_database, name='dataForRequests'),
@@ -21,7 +20,5 @@ urlpatterns = [
     path('update_email_status/<int:email_id>/', views.update_email_status, name='update_email_status'),
     path('sendMail/', views.send_email, name='sendEmail'),
     path('sendMail/database', views.email_database, name='dataforEmails'),
-    # path('autoDatabase', views.autoEmail_database, name='dataforAutoEmails'),
-    path('test/', views.ChangePriv.as_view(), name="test"),
-    path('change_superuser_status/', views.change_superuser_status, name='change_superuser_status'),
+    path('changeUserStatus/', views.ChangePriv.as_view(), name="change_user_status"),
 ]

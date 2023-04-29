@@ -542,34 +542,40 @@ def email_database(request):
     return redirect('index')
 
 
-def change_superuser_status(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        user_id = data.get('user_id')
-        superuser_status = data.get('superuser_status')
-
-        User = get_user_model()
-        usersAll = User.objects.all()
-        user = ''
-        for i in range(len(usersAll)):
-            if usersAll[i].id == int(user_id):
-                user = usersAll[i]
-        if user == '':
-            return JsonResponse({'success': False})
-        else:
-            if superuser_status == 'add':
-                user.is_superuser = True
-            elif superuser_status == 'remove':
-                user.is_superuser = False
-
-            user.save()
-            return JsonResponse({'success': True})
-
-
 class ChangePriv(generic.ListView):
     template_name = 'TransferGuide/changeUserPriv.html'
     model = get_user_model()
     context_object_name = 'users_list'
+
+    @staticmethod
+    def post(request):
+        if request.method == 'POST':
+            body = str(request.body)
+
+            id_start_index = body.find("&userInfo=")
+            id_end_index = body.find("&userStatus=")
+
+            user_id = body[id_start_index:id_end_index].replace("&userInfo=", '').replace('+', ' ')
+            user_id = user_id[0:user_id.find(' ')]
+            superuser_status = body[id_end_index:].replace("&userStatus=", '').replace('\'', '').replace('+', ' ')
+            User = get_user_model()
+            usersAll = User.objects.all()
+            user = ''
+            for i in range(len(usersAll)):
+                if usersAll[i].id == int(user_id):
+                    user = usersAll[i]
+            if user == '':
+                messages.add_message(request, messages.SUCCESS, "User not found")
+                return redirect('change_user_status')
+            else:
+                if superuser_status == 'Make Admin':
+                    user.is_superuser = True
+                elif superuser_status == 'Remove Admin':
+                    user.is_superuser = False
+
+                user.save()
+                messages.add_message(request, messages.SUCCESS, "Successfully changed user status")
+                return redirect('change_user_status')
 
     def get_queryset(self):
         User = get_user_model()
