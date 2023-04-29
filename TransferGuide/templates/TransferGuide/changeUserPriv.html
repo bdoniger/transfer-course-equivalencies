@@ -227,7 +227,7 @@
     <br />
     <div class=".ui-widget-overlay"></div>
 
-    {% if user.is_superuser %}
+    {% if user.is_superuser and user.is_authenticated %}
     <h1>Change Superuser Status</h1>
     <form id="superuser-form" action="" method="POST">
     {% csrf_token %}

@@ -171,7 +171,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 </div>
 </div>
 <div class="w3-main">
-    {% if user.is_superuser %}
+    {% if user.is_superuser and user.is_authenticated %}
 <form id="courseForm" action="" method="POST">
 {% csrf_token %}
 <h2 style="margin-left: 260px">UVA Course Details</h2>

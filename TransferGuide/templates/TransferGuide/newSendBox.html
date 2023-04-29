@@ -110,6 +110,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     <br />
     <div class=".ui-widget-overlay"></div>
 <h2>Send an Email</h2>
+    {% if user.is_authenticated %}
 <div>
     <form action="{% url 'dataforEmails'%}" method="post">
     {% csrf_token %}
@@ -128,6 +129,15 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         </div>
     </form>
 </div>
+    {% else %}
+        <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 1); // Redirects after 1 millisecond
+        };
+    </script>
+    {% endif %}
 
 
 
