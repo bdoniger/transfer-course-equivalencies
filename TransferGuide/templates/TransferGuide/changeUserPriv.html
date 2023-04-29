@@ -86,7 +86,9 @@
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
             {% for message in messages %}
-                alert('{{ message }}');
+                {% if message == "Successfully changed user status" or message == "User not found" %}
+                    alert('{{ message }}');
+                {% endif %}
             {% endfor %}
         });
     </script>
