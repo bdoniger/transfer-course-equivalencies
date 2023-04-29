@@ -579,7 +579,7 @@ class ChangePriv(generic.ListView):
 
     def get_queryset(self):
         User = get_user_model()
-        IDS = User.objects.all().values('username', 'id')
+        IDS = User.objects.all().values('username', 'id').order_by('id')
         IDS_list = []
         for i in range(len(IDS)):
             IDS_list.append(str(IDS[i].get('id')) + ' ' + IDS[i].get('username'))
