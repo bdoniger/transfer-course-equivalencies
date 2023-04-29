@@ -585,5 +585,5 @@ class ChangePriv(generic.ListView):
             IDS_list.append(str(IDS[i].get('id')) + ' ' + IDS[i].get('username'))
         jsonIDS = json.dumps(IDS_list)
 
-        users_list = {"user_ids": User.objects.all().order_by('user_id'), "user_pks": User.objects.all().values("id"), "jsonIDS": jsonIDS}
+        users_list = {"user_ids": User.objects.all().order_by('id'), "user_pks": User.objects.all().values("id"), "jsonIDS": jsonIDS}
         return users_list
