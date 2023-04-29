@@ -114,19 +114,18 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 <div>
     <form action="{% url 'dataforEmails'%}" method="post">
     {% csrf_token %}
-
-        <div>
-        <label for="title">Email Title: </label><br>
-        <input type="text" size="100" id="title" name="title" required>
+    <div>
+    <label for="title">Email Title: </label><br>
+    <input type="text" size="100" id="title" name="title" required>
+    <br>
+    <br>
+    <label for="content" >Email content: </label><br>
+    <textarea class="form-control" style="width:1000px; height:100px;" id="content" name="content" row="3" required></textarea><br>
+    <div>
         <br>
-        <br>
-        <label for="content">Email content: </label><br>
-        <textarea class="form-control" style="width:1000px; height:100px;" id="content" name="content" row = "3"  oninput="validity.valid||(value='');" required> </textarea><br>
-        <div>
-            <br>
-            <input type="submit" class="btn btn-primary" value="Send Email">
-        </div>
-        </div>
+        <input type="submit" class="btn btn-primary" value="Send Email">
+    </div>
+    </div>
     </form>
 </div>
     {% else %}
