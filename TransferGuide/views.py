@@ -96,9 +96,17 @@ class CoursesViewAll(generic.ListView):
     context_object_name = 'all_courses_list'
 
     def get_queryset(self):
+        all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+        all_subjects_queryset = all_subjects_queryset.values_list()
+        subjects = []
+        for item in all_subjects_queryset:
+            if item[3] not in subjects:
+                subjects.append(item[3])
+        json_subjects = json.dumps(subjects)
         return {
             "courses": Course.objects.all().order_by('courseSubject', 'courseNumber'),
-            "subjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+            "subjects": Course.objects.all().values('courseSubject').order_by('courseSubject').distinct(),
+            "jsonSubjects": json_subjects
         }
 
 
@@ -164,8 +172,14 @@ def make_query(subject_query, number_query, name_query, university_query):
         filter_criteria = criteria[i]
         if (filter_criteria is not None) & (filter_criteria != '') & (filter_criteria != -1):
             if filter_criteria == subject_query:
-                courses = courses.filter(Q(courseSubject__icontains=filter_criteria))
-                subjects = subjects.filter(Q(courseSubject__icontains=filter_criteria))
+                exact_match = Q(courseSubject__iexact=filter_criteria)
+                partial_match = Q(courseSubject__icontains=filter_criteria) & ~exact_match
+                courses = courses.filter(exact_match | partial_match)
+                # courses = courses.filter(Q(courseSubject__icontains=filter_criteria))
+                exact_match = Q(courseSubject__iexact=filter_criteria)
+                partial_match = Q(courseSubject__icontains=filter_criteria) & ~exact_match
+                subjects = subjects.filter(exact_match | partial_match)
+                # subjects = subjects.filter(Q(courseSubject__icontains=filter_criteria))
             elif filter_criteria == number_query:
                 courses &= courses.filter(Q(courseNumber=number_query))
                 subjects &= subjects.filter(Q(courseNumber=number_query))
@@ -256,10 +270,6 @@ class CourseFilter(generic.ListView):
         number_query = self.request.GET.get("number")
         university_query = self.request.GET.getlist("universities")
 
-        print("subject", subject_query)
-        print("number", number_query)
-        print("university", university_query)
-
         if (subject_query == '') & (number_query == '') & (university_query == ['']):
             all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
             all_universities_queryset = Course.objects.all().values('universityLong').order_by(
@@ -333,8 +343,12 @@ class CourseFilter(generic.ListView):
         json_subjects = json.dumps(subjects)
         json_universities = json.dumps(universities)
 
+        if subject_query is not None:
+            subject_query = subject_query[0]
+            subject_query = subject_query.split(',')
+
         filters = Q()
-        if (subject_query != '') & (subject_query is not None):
+        if (subject_query != '') and (subject_query is not None):
             filters &= Q(courseSubject__in=subject_query)
         if len(number_query_list) > 0:
             filters &= Q(courseNumber__in=number_query_list)
@@ -345,10 +359,10 @@ class CourseFilter(generic.ListView):
             courses = []
         else:
             courses = Course.objects.filter(
-                filters).order_by('courseNumber')
+                Q(filters)).order_by('courseNumber')
 
-        subjects = Course.objects.filter(
-            filters).values('courseSubject').order_by(
+        subjects = Course.objects.filter(Q(
+            filters)).values('courseSubject').order_by(
             'courseSubject').distinct()
 
         if number_query is not None:
