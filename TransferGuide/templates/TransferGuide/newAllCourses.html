@@ -151,17 +151,17 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 </script>
     </div>
 </div>
-    <div class="parent" style="width: 100%; margin-left:260px; display: inline-block">
-        <br>
-        <div class="child">
-            <a class="combo-label">Select Subject</a>
-            <br>
-            <div id="checkboxSelectCombo" style="width: 25%"></div>
-        </div>
-        <br>
-        <button class="w3-button w3-theme" id="submitBtn" type="submit" value="Submit">Submit</button>
-        <button class="w3-button w3-theme"><a href="{% url 'search_results' %}" style="text-decoration: none;">Clear Search</a></button>
-    </div>
+{#    <div class="parent" style="width: 100%; margin-left:260px; display: inline-block">#}
+{#        <br>#}
+{#        <div class="child">#}
+{#            <a class="combo-label">Select Subject</a>#}
+{#            <br>#}
+{#            <div id="checkboxSelectCombo" style="width: 25%"></div>#}
+{#        </div>#}
+{#        <br>#}
+{#        <button class="w3-button w3-theme" id="submitBtn" type="submit" value="Submit">Submit</button>#}
+{#        <button class="w3-button w3-theme"><a href="{% url 'search_results' %}" style="text-decoration: none;">Clear Search</a></button>#}
+{#    </div>#}
 
 <div class="parent" style="width: 85%; margin-left:260px; display: inline-block">
     {% if all_courses_list.courses%}
