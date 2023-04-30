@@ -34,6 +34,18 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   display: inline-block;
   {#width: 30%; /* adjust as needed */#}
 }
+.email-card {
+    width: 90%;
+    margin: 0 auto 1em;
+    display: block;
+    alignment: center;
+
+        }
+
+.email-title {
+            display: block;
+            width: 100%;
+        }
 </style>
 
     <meta charset="UTF-8">
@@ -168,57 +180,95 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
 
 <div class="w3-main">
-
-{#    {% if messages %}#}
-{#    <script>#}
-{#        window.addEventListener('DOMContentLoaded', (event) => {#}
-{#            {% for message in messages %}#}
-{#                alert('{{ message }}');#}
-{#            {% endfor %}#}
-{#        });#}
-{#    </script>#}
-{#    {% endif %}#}
-
     <div>
-        {% if user.is_superuser %}
-        {% else %}
-            {% if user.is_authenticated %}
-                <h2>Your Requests</h2>
-            {% endif %}
+    {% if not user.is_superuser and user.is_authenticated %}
+        <h2>Your Requests</h2>
+        <h3>Pending Requests</h3>
+        <div class="w3-row">
             {% for request in requestForm_list %}
-                {% if request.studentEmail == user.email %}
-                    <details>
-                    <summary>{{ request.courseName }}</summary>
-                    <table>
-                    <tr>
-                        <td>University: {{ request.university }}</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Subject: {{ request.courseSubject }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Number: {{ request.courseNumber }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Name: {{ request.courseName }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Status:</b> {{ request.status }}
-                        </td>
-                    </tr>
-                    </table>
-                    </details>
+                {% if request.studentEmail == user.email and request.status == 'Pending' %}
+                    <div class="w3-col m4">
+                        <div class="w3-card w3-container w3-margin email-card email-card-container">
+                            <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('request-{{ request.id }}').style.display='block'">{{ request.courseName }}</h5>
+                            <div id="request-{{ request.id }}" class="w3-modal">
+                                <div class="w3-modal-content w3-animate-top">
+                                    <header class="w3-container w3-theme">
+                                        <span onclick="document.getElementById('request-{{ request.id }}').style.display='none'"
+                                            class="w3-button w3-display-topright">&times;</span>
+                                        <h5>{{ request.courseName }}</h5>
+                                    </header>
+                                    <div class="w3-container">
+                                        <p><b>University:</b> {{ request.university }}</p>
+                                        <p><b>Subject:</b> {{ request.courseSubject }}</p>
+                                        <p><b>Number:</b> {{ request.courseNumber }}</p>
+                                        <p><b>Name:</b> {{ request.courseName }}</p>
+                                        <p><b>Status:</b> {{ request.status }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 {% endif %}
             {% endfor %}
-        {% endif %}
-    </div>
+        </div>
+        <h3>Accepted Requests</h3>
+        <div class="w3-row">
+            {% for request in requestForm_list %}
+                {% if request.studentEmail == user.email and request.status == 'Accepted' %}
+                    <div class="w3-col m4">
+                        <div class="w3-card w3-container w3-margin email-card email-card-container">
+                            <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('request-{{ request.id }}').style.display='block'">{{ request.courseName }}</h5>
+                            <div id="request-{{ request.id }}" class="w3-modal">
+                                <div class="w3-modal-content w3-animate-top">
+                                    <header class="w3-container w3-theme">
+                                        <span onclick="document.getElementById('request-{{ request.id }}').style.display='none'"
+                                            class="w3-button w3-display-topright">&times;</span>
+                                        <h5>{{ request.courseName }}</h5>
+                                    </header>
+                                    <div class="w3-container">
+                                        <p><b>University:</b> {{ request.university }}</p>
+                                        <p><b>Subject:</b> {{ request.courseSubject }}</p>
+                                        <p><b>Number:</b> {{ request.courseNumber }}</p>
+                                        <p><b>Name:</b> {{ request.courseName }}</p>
+                                        <p><b>Status:</b> {{ request.status }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <h3>Rejected Requests</h3>
+        <div class="w3-row">
+            {% for request in requestForm_list %}
+                {% if request.studentEmail == user.email and request.status == 'Rejected' %}
+                    <div class="w3-col m4">
+                        <div class="w3-card w3-container w3-margin email-card email-card-container">
+                            <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('request-{{ request.id }}').style.display='block'">{{ request.courseName }}</h5>
+                            <div id="request-{{ request.id }}" class="w3-modal">
+                                <div class="w3-modal-content w3-animate-top">
+                                    <header class="w3-container w3-theme">
+                                        <span onclick="document.getElementById('request-{{ request.id }}').style.display='none'"
+                                            class="w3-button w3-display-topright">&times;</span>
+                                        <h5>{{ request.courseName }}</h5>
+                                    </header>
+                                    <div class="w3-container">
+                                        <p><b>University:</b> {{ request.university }}</p>
+                                        <p><b>Subject:</b> {{ request.courseSubject }}</p>
+                                        <p><b>Number:</b> {{ request.courseNumber }}</p>
+                                        <p><b>Name:</b> {{ request.courseName }}</p>
+                                        <p><b>Status:</b> {{ request.status }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
 
 
 <script>
