@@ -47,6 +47,30 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
             width: 100%;
         }
 </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-blocking Alert</title>
+    <style>
+        .message-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            z-index: 9999;
+            font-size: 16px;
+            transform: translateX(-50%);
+        }
+
+        .message {
+            background-color: teal;
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+    </style>
+
 </head>
 <body>
 
@@ -116,6 +140,38 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     <br>
     <br>
     <div class=".ui-widget-overlay"></div>
+
+<div class="message-container" id="messageContainer" style="justify-content: center">
+        <!-- The message will be added here -->
+    </div>
+
+    <script>
+        function showSuccessMessage(message, duration = 3000) {
+            const messageContainer = document.getElementById('messageContainer');
+
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.textContent = message;
+            messageContainer.appendChild(messageElement);
+
+            setTimeout(() => {
+                messageElement.remove();
+            }, duration);
+        }
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Example: Show a success message when the page loads
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    showSuccessMessage("{{ message }}", 5000);
+                {% endif %}
+            {% endfor %}
+        });
+
+        // You can call the 'showSuccessMessage' function whenever you want to show a success message.
+    </script>
+
+
 <h2>Your Mailbox</h2>
 <div class="container">
     {% if user.is_authenticated %}
