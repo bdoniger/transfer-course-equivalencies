@@ -399,7 +399,7 @@ class AddEquivalency(generic.ListView):
         names = []
 
         all_together = []
-        all_together_query = Course.objects.all().values().distinct()
+        all_together_query = Course.objects.all().values().distinct().order_by('courseSubject', 'courseNumber')
         # print(all_together_query)
         for course in all_together_query:
             if course.get('universityShort') == 'UVA':
