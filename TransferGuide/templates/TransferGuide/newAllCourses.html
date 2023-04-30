@@ -80,38 +80,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
 <br>
 {% for subject in all_courses_list.subjects %}
-{#    {% if subject.courseSubject == "AIRS" %}#}
-{#        <div class="w3-row" style="margin-top: 40px">#}
-{#        <div class="w3-twothird w3-container">#}
-{#            <h1 class="w3-text-teal">{{ subject.courseSubject }}</h1>#}
-{#            <details>#}
-{#            <summary>View Courses</summary>#}
-{#            <table>#}
-{#                <thead>#}
-{#                <tr>#}
-{#                    <th>Subject</th>#}
-{#                    <th>Number</th>#}
-{#                    <th>Name</th>#}
-{#                    <th>University</th>#}
-{#                    <th>Details</th>#}
-{#                </tr>#}
-{#                </thead>#}
-{#                    {% for course in all_courses_list.courses %}#}
-{#                        {% if course.courseSubject == subject.courseSubject %}#}
-{#                            <tr>#}
-{#                                <td>{{ course.courseSubject }}</td>#}
-{#                                <td>{{ course.courseNumber }}</td>#}
-{#                                <td style="text-align: left">{{ course.courseName }}</td>#}
-{#                                <td>{{ course.universityLong }}</td>#}
-{#                                <td style="text-align: center"><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }} >Info</a></td>#}
-{#                            </tr>#}
-{#                        {% endif %}#}
-{#                    {% endfor %}#}
-{#            </table>#}
-{#            </details>#}
-{#        </div>#}
-{#    </div>#}
-{#    {% else %}#}
     <div class="w3-row">
         <div class="w3-twothird w3-container">
 {#            <h4 class="w3-text-teal">{{ subject.courseSubject }}</h4>#}
