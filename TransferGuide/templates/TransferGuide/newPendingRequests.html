@@ -34,7 +34,41 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   display: inline-block;
   {#width: 30%; /* adjust as needed */#}
 }
+.email-card {
+    width: 90%;
+    margin: 0 auto 1em;
+    display: block;
+    alignment: center;
+
+        }
+
+.email-title {
+            display: block;
+            width: 100%;
+        }
 </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-blocking Alert</title>
+    <style>
+        .message-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            z-index: 9999;
+            font-size: 16px;
+            transform: translateX(-50%);
+        }
+
+        .message {
+            background-color: teal;
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
 
@@ -115,126 +149,273 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
 
 <div class="w3-main">
+{#<div class="parent" style="width: 100%; margin-left:260px; display: inline-block">#}
+{#{% if user.is_superuser and user.is_authenticated %}#}
+{#    <h2>Pending Requests</h2>#}
+{#          <p>Student Email & Name; Course Name, Number, Subject; University</p>#}
+{#          <p></p>#}
+{#<details>#}
+{#    <summary>View All Pending Requests</summary>#}
+{#  {%for request in requests%}#}
+{#      {% if request.status == "Pending" %}#}
+{#          {% for request2 in requests %}#}
+{#            {% if request2.id == request.id %}#}
+{#              <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>#}
+{#              <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>#}
+{#              <p>University: {{request.university}}, {{request.universityShort}}</p>#}
+{#                <p>Status: {{ request.status }}</p>#}
+{#                <form action="{% url 'pendingRequests' %}" method="GET">#}
+            {#      {% csrf_token %}#}
+{#                  <label for="status">Change Status:</label>#}
+{#                  <select name="status" id="status">#}
+{#                    <option value="Pending">Pending</option>#}
+{#                    <option value="Rejected">Rejected</option>#}
+{#                    <option value="Accepted">Accepted</option>#}
+{#                  </select>#}
+{#                  <br><br>#}
+{#                  <input type="hidden" name="request_courseSubject" value="{{ request.courseSubject }}">#}
+{#                  <input type="hidden" name="request_courseNumber" value="{{ request.courseNumber }}">#}
+{#                  <input type="hidden" name="request_courseName" value="{{ request.courseName }}">#}
+{#                  <input type="hidden" name="request_University" value="{{ request.university }}">#}
+{#                  <input type="hidden" name="request.studentEmail" value="{{ request.studentEmail }}">#}
+{#                  <input type="hidden" name="request_id" value="{{ request.id }}">#}
+{#                  <input type="submit" value="Submit">#}
+{#                </form>#}
+{#            {% endif %}#}
+{#          {% endfor %}#}
+{#      {% endif %}#}
+{#  {% endfor %}#}
+{#</details>#}
+{#<h2>Completed Requests</h2>#}
+{#          <p>Student Email & Name; Course Name, Number, Subject; University</p>#}
+{#          <p></p>#}
+{#<h4>Approved Requests</h4>#}
+{#<details>#}
+{#<summary>View All Accepted Requests</summary>#}
+{#{%for request in requests %}#}
+{#    {% if request.status == "Accepted" %}#}
+{#        {% for request2 in requests %}#}
+{#            {% if request2.id == request.id %}#}
+{#              <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>#}
+{#              <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>#}
+{#              <p>University: {{request.university}}, {{request.universityShort}}</p>#}
+{#                <p>Status: {{ request.status }}</p>#}
+{#                <form action="{% url 'pendingRequests' %}" method="GET">#}
+            {#      {% csrf_token %}#}
+{#                  <label for="status">Change Status:</label>#}
+{#                  <select name="status" id="status">#}
+{#                    <option value="Pending">Pending</option>#}
+{#                    <option value="Rejected">Rejected</option>#}
+{#                    <option value="Accepted">Accepted</option>#}
+{#                  </select>#}
+{#                  <br><br>#}
+{#                  <input type="hidden" name="request_courseSubject" value="{{ request.courseSubject }}">#}
+{#                  <input type="hidden" name="request_courseNumber" value="{{ request.courseNumber }}">#}
+{#                  <input type="hidden" name="request_courseName" value="{{ request.courseName }}">#}
+{#                  <input type="hidden" name="request_University" value="{{ request.university }}">#}
+{#                  <input type="hidden" name="request.studentEmail" value="{{ request.studentEmail }}">#}
+{#                  <input type="hidden" name="request_id" value="{{ request.id }}">#}
+{#                  <input type="submit" value="Submit">#}
+{#                </form>#}
+{#            {% endif %}#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
+{#{% endfor %}#}
+{#</details>#}
+{#<h4>Rejected Requests</h4>#}
+{#<details>#}
+{#<summary>View All Rejected Requests</summary>#}
+{#{%for request in requests %}#}
+{#    {% if request.status == "Rejected" %}#}
+{#        {% for request2 in requests %}#}
+{#            {% if request2.id == request.id %}#}
+{#              <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>#}
+{#              <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>#}
+{#              <p>University: {{request.university}}, {{request.universityShort}}</p>#}
+{#                <p>Status: {{ request.status }}</p>#}
+{#                <form action="{% url 'pendingRequests' %}" method="GET">#}
+            {#      {% csrf_token %}#}
+{#                  <label for="status">Change Status:</label>#}
+{#                  <select name="status" id="status">#}
+{#                    <option value="Pending">Pending</option>#}
+{#                    <option value="Rejected">Rejected</option>#}
+{#                    <option value="Accepted">Accepted</option>#}
+{#                  </select>#}
+{#                  <br><br>#}
+{#                  <input type="hidden" name="request_courseSubject" value="{{ request.courseSubject }}">#}
+{#                  <input type="hidden" name="request_courseNumber" value="{{ request.courseNumber }}">#}
+{#                  <input type="hidden" name="request_courseName" value="{{ request.courseName }}">#}
+{#                  <input type="hidden" name="request_University" value="{{ request.university }}">#}
+{#                  <input type="hidden" name="request.studentEmail" value="{{ request.studentEmail }}">#}
+{#                  <input type="hidden" name="request_id" value="{{ request.id }}">#}
+{#                  <input type="submit" value="Submit">#}
+{#                </form>#}
+{#            {% endif %}#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
+{#{% endfor %}#}
+{#</details>#}
+{#  {% if not requests%}#}
+{#  <p>No Class Requests</p>#}
+{#  {% endif %}#}
+{#</div>#}
+{#{% else %}#}
+{#        <script>#}
+{#        window.onload = function() {#}
+{#            setTimeout(function() {#}
+{#                window.location.href = '/';#}
+{#            }, 1); // Redirects after 1 millisecond#}
+{#        };#}
+{#    </script>#}
+{#    {% endif %}#}
+{#</div>#}
+
 <div class="parent" style="width: 100%; margin-left:260px; display: inline-block">
 {% if user.is_superuser and user.is_authenticated %}
     <h2>Pending Requests</h2>
-{#          <p>Student Email & Name; Course Name, Number, Subject; University</p>#}
-          <p></p>
-<details>
-    <summary>View All Pending Requests</summary>
-  {%for request in requests%}
-      {% if request.status == "Pending" %}
-          {% for request2 in requests %}
-            {% if request2.id == request.id %}
-              <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
-              <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
-              <p>University: {{request.university}}, {{request.universityShort}}</p>
-                <p>Status: {{ request.status }}</p>
-                <form action="{% url 'pendingRequests' %}" method="GET">
-            {#      {% csrf_token %}#}
-                  <label for="status">Change Status:</label>
-                  <select name="status" id="status">
-                    <option value="Pending">Pending</option>
-                    <option value="Rejected">Rejected</option>
-                    <option value="Accepted">Accepted</option>
-                  </select>
-                  <br><br>
-                  <input type="hidden" name="request_courseSubject" value="{{ request.courseSubject }}">
-                  <input type="hidden" name="request_courseNumber" value="{{ request.courseNumber }}">
-                  <input type="hidden" name="request_courseName" value="{{ request.courseName }}">
-                  <input type="hidden" name="request_University" value="{{ request.university }}">
-                  <input type="hidden" name="request.studentEmail" value="{{ request.studentEmail }}">
-                  <input type="hidden" name="request_id" value="{{ request.id }}">
-                  <input type="submit" value="Submit">
-                </form>
-            {% endif %}
-          {% endfor %}
-      {% endif %}
-  {% endfor %}
-</details>
-<h2>Completed Requests</h2>
-{#          <p>Student Email & Name; Course Name, Number, Subject; University</p>#}
-          <p></p>
-<h4>Approved Requests</h4>
-<details>
-<summary>View All Accepted Requests</summary>
-{%for request in requests %}
-    {% if request.status == "Accepted" %}
-        {% for request2 in requests %}
-            {% if request2.id == request.id %}
-              <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
-              <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
-              <p>University: {{request.university}}, {{request.universityShort}}</p>
-                <p>Status: {{ request.status }}</p>
-                <form action="{% url 'pendingRequests' %}" method="GET">
-            {#      {% csrf_token %}#}
-                  <label for="status">Change Status:</label>
-                  <select name="status" id="status">
-                    <option value="Pending">Pending</option>
-                    <option value="Rejected">Rejected</option>
-                    <option value="Accepted">Accepted</option>
-                  </select>
-                  <br><br>
-                  <input type="hidden" name="request_courseSubject" value="{{ request.courseSubject }}">
-                  <input type="hidden" name="request_courseNumber" value="{{ request.courseNumber }}">
-                  <input type="hidden" name="request_courseName" value="{{ request.courseName }}">
-                  <input type="hidden" name="request_University" value="{{ request.university }}">
-                  <input type="hidden" name="request.studentEmail" value="{{ request.studentEmail }}">
-                  <input type="hidden" name="request_id" value="{{ request.id }}">
-                  <input type="submit" value="Submit">
-                </form>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-{% endfor %}
-</details>
-<h4>Rejected Requests</h4>
-<details>
-<summary>View All Rejected Requests</summary>
-{%for request in requests %}
-    {% if request.status == "Rejected" %}
-        {% for request2 in requests %}
-            {% if request2.id == request.id %}
-              <p>Request by: {{request.studentName}}, {{request.studentEmail}}</p>
-              <p>Course: {{request.courseSubject}}, {{request.courseNumber}}, {{request.courseName}}</p>
-              <p>University: {{request.university}}, {{request.universityShort}}</p>
-                <p>Status: {{ request.status }}</p>
-                <form action="{% url 'pendingRequests' %}" method="GET">
-            {#      {% csrf_token %}#}
-                  <label for="status">Change Status:</label>
-                  <select name="status" id="status">
-                    <option value="Pending">Pending</option>
-                    <option value="Rejected">Rejected</option>
-                    <option value="Accepted">Accepted</option>
-                  </select>
-                  <br><br>
-                  <input type="hidden" name="request_courseSubject" value="{{ request.courseSubject }}">
-                  <input type="hidden" name="request_courseNumber" value="{{ request.courseNumber }}">
-                  <input type="hidden" name="request_courseName" value="{{ request.courseName }}">
-                  <input type="hidden" name="request_University" value="{{ request.university }}">
-                  <input type="hidden" name="request.studentEmail" value="{{ request.studentEmail }}">
-                  <input type="hidden" name="request_id" value="{{ request.id }}">
-                  <input type="submit" value="Submit">
-                </form>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-{% endfor %}
-</details>
-  {% if not requests%}
-  <p>No Class Requests</p>
-  {% endif %}
-</div>
+    <div class="w3-row-padding">
+        <div class="w3-col m3">
+            <h4 class="w3-center">Pending</h4>
+            {% for request in requests %}
+                {% if request.status == "Pending" %}
+                    <div class="w3-card w3-container w3-margin w3-padding email-card email-card-container">
+                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('request-{{ request.id }}').style.display='block'">Request for: {{ request.courseSubject }} {{ request.courseNumber }} by {{ request.studentName }}</h5>
+                        <div id="request-{{ request.id }}" class="w3-modal">
+                            <div class="w3-modal-content w3-animate-top">
+                                <header class="w3-container w3-theme">
+                                    <span onclick="document.getElementById('request-{{ request.id }}').style.display='none'"
+                                        class="w3-button w3-display-topright">&times;</span>
+                                    <h5>Course: {{ request.courseSubject }}, {{ request.courseNumber }}, {{ request.courseName }}</h5>
+                                </header>
+                                <div class="w3-container">
+                                    <p><b>University (Long, Short):</b> {{ request.university }}, {{ request.universityShort }}</p>
+                                    <p><b>Course Subject: </b>{{ request.courseSubject }}</p>
+                                    <p><b>Course Number: </b>{{ request.courseNumber }}</p>
+                                    <p><b>Course Name: </b>{{ request.courseName }}</p>
+                                    <p><b>Status:</b> {{ request.status }}</p>
+                                    <form action="{% url 'pendingRequests' %}" method="GET">
+                                        <label for="status">Change Status: </label>
+                                        <select class="w3-button w3-theme w3-hover-black" name="status" id="status">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Rejected">Rejected</option>
+                                            <option value="Accepted">Accepted</option>
+                                        </select>
+                                        <br><br>
+                                        <input type="hidden" name="request_courseSubject" value="{{ request.courseSubject }}">
+                                        <input type="hidden" name="request_courseNumber" value="{{ request.courseNumber }}">
+                                        <input type="hidden" name="request_courseName" value="{{ request.courseName }}">
+                                        <input type="hidden" name="request_University" value="{{ request.university }}">
+                                        <input type="hidden" name="request.studentEmail" value="{{ request.studentEmail }}">
+                                        <input type="hidden" name="request_id" value="{{ request.id }}">
+                                        <input type="submit" value="Submit" class="w3-button w3-theme">
+                                        <br>
+                                        <br>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="w3-col m3">
+            <h4 class="w3-center">Accepted</h4>
+            {% for request in requests %}
+                {% if request.status == "Accepted" %}
+                    <div class="w3-card w3-container w3-margin w3-padding email-card email-card-container">
+                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('request-{{ request.id }}').style.display='block'">Request for: {{ request.courseSubject }} {{ request.courseNumber }} by {{ request.studentName }}</h5>
+                        <div id="request-{{ request.id }}" class="w3-modal">
+                            <div class="w3-modal-content w3-animate-top">
+                                <header class="w3-container w3-theme">
+                                    <span onclick="document.getElementById('request-{{ request.id }}').style.display='none'"
+                                        class="w3-button w3-display-topright">&times;</span>
+                                    <h5>Course: {{ request.courseSubject }}, {{ request.courseNumber }}, {{ request.courseName }}</h5>
+                                </header>
+                                <div class="w3-container">
+                                    <p><b>University (Long, Short):</b> {{ request.university }}, {{ request.universityShort }}</p>
+                                    <p><b>Course Subject: </b>{{ request.courseSubject }}</p>
+                                    <p><b>Course Number: </b>{{ request.courseNumber }}</p>
+                                    <p><b>Course Name: </b>{{ request.courseName }}</p>
+                                    <p><b>Status:</b> {{ request.status }}</p>
+                                    <form action="{% url 'pendingRequests' %}" method="GET">
+                                        <label for="status">Change Status: </label>
+                                        <select class="w3-button w3-theme w3-hover-black" name="status" id="status">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Rejected">Rejected</option>
+                                            <option value="Accepted">Accepted</option>
+                                        </select>
+                                        <br><br>
+                                        <input type="hidden" name="request_courseSubject" value="{{ request.courseSubject }}">
+                                        <input type="hidden" name="request_courseNumber" value="{{ request.courseNumber }}">
+                                        <input type="hidden" name="request_courseName" value="{{ request.courseName }}">
+                                        <input type="hidden" name="request_University" value="{{ request.university }}">
+                                        <input type="hidden" name="request.studentEmail" value="{{ request.studentEmail }}">
+                                        <input type="hidden" name="request_id" value="{{ request.id }}">
+                                        <input type="submit" value="Submit" class="w3-button w3-theme">
+                                        <br>
+                                        <br>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="w3-col m3">
+            <h4 class="w3-center">Rejected</h4>
+            {% for request in requests %}
+                {% if request.status == "Rejected" %}
+                    <div class="w3-card w3-container w3-margin w3-padding email-card email-card-container">
+                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('request-{{ request.id }}').style.display='block'">Request for: {{ request.courseSubject }} {{ request.courseNumber }} by {{ request.studentName }}</h5>
+                        <div id="request-{{ request.id }}" class="w3-modal">
+                            <div class="w3-modal-content w3-animate-top">
+                                <header class="w3-container w3-theme">
+                                    <span onclick="document.getElementById('request-{{ request.id }}').style.display='none'"
+                                        class="w3-button w3-display-topright">&times;</span>
+                                    <h5>Course: {{ request.courseSubject }}, {{ request.courseNumber }}, {{ request.courseName }} from {{ request.studentName }}</h5>
+                                </header>
+                                <div class="w3-container">
+                                    <p><b>University (Long, Short):</b> {{ request.university }}, {{ request.universityShort }}</p>
+                                    <p><b>Course Subject: </b>{{ request.courseSubject }}</p>
+                                    <p><b>Course Number: </b>{{ request.courseNumber }}</p>
+                                    <p><b>Course Name: </b>{{ request.courseName }}</p>
+                                    <p><b>Status:</b> {{ request.status }}</p>
+                                    <form action="{% url 'pendingRequests' %}" method="GET">
+                                        <label for="status">Change Status: </label>
+                                        <select class="w3-button w3-theme w3-hover-black" name="status" id="status">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Rejected">Rejected</option>
+                                            <option value="Accepted">Accepted</option>
+                                        </select>
+                                        <br><br>
+                                        <input type="hidden" name="request_courseSubject" value="{{ request.courseSubject }}">
+                                        <input type="hidden" name="request_courseNumber" value="{{ request.courseNumber }}">
+                                        <input type="hidden" name="request_courseName" value="{{ request.courseName }}">
+                                        <input type="hidden" name="request_University" value="{{ request.university }}">
+                                        <input type="hidden" name="request.studentEmail" value="{{ request.studentEmail }}">
+                                        <input type="hidden" name="request_id" value="{{ request.id }}">
+                                        <input type="submit" value="Submit" class="w3-button w3-theme">
+                                        <br>
+                                        <br>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 {% else %}
-        <script>
+<script>
         window.onload = function() {
             setTimeout(function() {
                 window.location.href = '/';
             }, 1); // Redirects after 1 millisecond
         };
     </script>
-    {% endif %}
-</div>
+{% endif %}
 
 
 <!-- END MAIN -->
