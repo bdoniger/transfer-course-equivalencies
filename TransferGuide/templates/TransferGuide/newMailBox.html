@@ -310,7 +310,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                     <div class="w3-col m3">
                         <h4 class="w3-center">Unread Emails</h4>
                         {% for request in requests %}
-                            {% if auto.studentEmail == user.email %}
+                            {% if request.studentEmail == user.email %}
                                 {% if request.status == 'Unread' %}
                                     <div class="w3-card w3-container w3-margin email-card email-card-container">
                                         <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }} from {{ request.studentName }}</h5>
@@ -342,7 +342,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                     <div class="w3-col m3">
                         <h4 class="w3-center">Read Emails</h4>
                         {% for request in requests %}
-                            {% if auto.studentEmail == user.email %}
+                            {% if request.studentEmail == user.email %}
                                 {% if request.status == 'Read' %}
                                     <div class="w3-card w3-container w3-margin email-card email-card-container">
                                         <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }} from {{ request.studentName }}</h5>
