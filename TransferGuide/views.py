@@ -541,14 +541,13 @@ def pending_requests(request):
             "status") + " at " + time.strftime("%Y-%m-%d %H:%M:%S")
         autoReply = AutoReplyEmail.objects.create(content=content1,
                                                   studentEmail=request.GET.get("request.studentEmail"))
-        print(autoReply)
         form.status = status
         form.save()
 
     return render(request, "TransferGuide/newPendingRequests.html", context={"requests": requests})
 
 
-def update_email_status(request, email_id, auto_reply):
+def update_email_status(request, email_id, auto_reply, for_admins):
     if request.method == 'POST':
         if auto_reply == 1:
             email = AutoReplyEmail.objects.get(id=email_id)
@@ -561,9 +560,30 @@ def update_email_status(request, email_id, auto_reply):
         return HttpResponseNotAllowed(['POST'])
 
 
+def send_reply(request, email_id, auto_reply, for_admins):
+    if request.method == 'POST':
+        if auto_reply == 1:
+            email = AutoReplyEmail.objects.get(id=email_id)
+        else:
+            email = Emails.objects.get(id=email_id)
+        if for_admins == 1:
+            for_admins_value = 'True'
+        else:
+            for_admins_value = 'False'
+        emailS1 = Emails.objects.create(title="Re: " + email.title, content=request.POST['reply_content'],
+                                        studentName=email.studentName,
+                                        studentEmail=email.studentEmail, studentName_id=email.studentName_id,
+                                        reply='True', for_admins=for_admins_value, send_time=timezone.now())
+        email.status = 'Read'
+        email.save()
+        return redirect('mailBox')
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+
 def mail_box(request):
-    emails = Emails.objects.all()
-    AutoReplys = AutoReplyEmail.objects.all()
+    emails = Emails.objects.all().order_by('pk').reverse()
+    AutoReplys = AutoReplyEmail.objects.all().order_by('pk').reverse()
 
     return render(request, "TransferGuide/newMailBox.html", context={"requests": emails, "Autos": AutoReplys})
 
@@ -576,7 +596,7 @@ def email_database(request):
     if request.method == "POST":
         emailS1 = Emails.objects.create(title=request.POST['title'], content=request.POST['content'],
                                         studentName=request.user,
-                                        studentEmail=request.user.email)
+                                        studentEmail=request.user.email, reply='False', for_admins='True', send_time=timezone.now)
     return redirect('index')
 
 

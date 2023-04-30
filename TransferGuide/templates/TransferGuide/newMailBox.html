@@ -125,7 +125,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                 <div class="w3-col m3">
                     <h4 class="w3-center">Unread Emails</h4>
                     {% for request in requests %}
-                        {% if request.status == 'Unread' %}
+                        {% if request.status == 'Unread' and request.for_admins == 'True' %}
                             <div class="w3-card w3-container w3-margin email-card email-card-container">
                                 <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }} from {{ request.studentName }}</h5>
                                 <div id="email-{{ request.id }}" class="w3-modal">
@@ -139,14 +139,23 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                                             <p><b>Student Email:</b> {{ request.studentEmail }}</p>
                                             <p><b>Student Name:</b> {{ request.studentName }}</p>
                                             <p><b>Email Title:</b> {{ request.title }}</p>
+                                            <p><b>Sent At: </b>{{ request.send_time }}</p>
                                             <p><b>Email Content:</b> {{ request.content }}</p>
-                                            <form action="{% url 'update_email_status' request.id 0 %}" method="POST">
+                                            <form action="{% url 'update_email_status' request.id 0 0 %}" method="POST">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="status" value="Read">
                                                 <button type="submit" class="w3-button w3-theme">Mark as Read</button>
                                                 <br>
                                                 <br>
                                             </form>
+                                            <form action="{% url 'send_reply' request.id 0 0 %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <label for="reply_content">Reply:</label>
+                                                        <textarea name="reply_content" id="reply_content" class="w3-input w3-border" rows="4" required></textarea>
+                                                        <br>
+                                                        <button type="submit" class="w3-button w3-theme">Send Reply</button>
+                                                    </form>
+                                                    <br>
                                         </div>
                                     </div>
                                 </div>
@@ -157,7 +166,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                 <div class="w3-col m3">
                     <h4 class="w3-center">Read Emails</h4>
                     {% for request in requests %}
-                        {% if request.status == 'Read' %}
+                        {% if request.status == 'Read' and request.for_admins == 'True' %}
                             <div class="w3-card w3-container w3-margin email-card email-card-container">
                                 <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }} from {{ request.studentName }}</h5>
                                 <div id="email-{{ request.id }}" class="w3-modal">
@@ -171,14 +180,23 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                                             <p><b>Student Email:</b> {{ request.studentEmail }}</p>
                                             <p><b>Student Name:</b> {{ request.studentName }}</p>
                                             <p><b>Email Title:</b> {{ request.title }}</p>
+                                            <p><b>Sent At: </b>{{ request.send_time }}</p>
                                             <p><b>Email Content:</b> {{ request.content }}</p>
-                                            <form action="{% url 'update_email_status' request.id 0 %}" method="POST">
+                                            <form action="{% url 'update_email_status' request.id 0 0 %}" method="POST">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="status" value="Unread">
                                                 <button type="submit" class="w3-button w3-theme">Mark as Unread</button>
                                                 <br>
                                                 <br>
                                             </form>
+                                            <form action="{% url 'send_reply' request.id 0 0 %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <label for="reply_content">Reply:</label>
+                                                        <textarea name="reply_content" id="reply_content" class="w3-input w3-border" rows="4" required></textarea>
+                                                        <br>
+                                                        <button type="submit" class="w3-button w3-theme">Send Reply</button>
+                                                    </form>
+                                                    <br>
                                         </div>
                                     </div>
                                 </div>
@@ -206,14 +224,53 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                                                 </header>
                                                 <div class="w3-container">
                                                     <p><b>Email Title:</b> {{ request.title }}</p>
+                                                    <p><b>Sent At: </b>{{ request.send_time }}</p>
                                                     <p><b>Email Content:</b> {{ request.content }}</p>
-                                                    <form action="{% url 'update_email_status' request.id 1 %}" method="POST">
+                                                    <form action="{% url 'update_email_status' request.id 1 1 %}" method="POST">
                                                         {% csrf_token %}
                                                         <input type="hidden" name="status" value="Read">
                                                         <button type="submit" class="w3-button w3-theme">Mark as Read</button>
                                                         <br>
                                                         <br>
                                                     </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for request in requests %}
+                            {% if request.studentEmail == user.email %}
+                                {% if request.status == 'Unread' and request.for_admins == 'False' %}
+                                    <div class="w3-card w3-container w3-margin email-card email-card-container">
+                                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }}</h5>
+                                        <div id="email-{{ request.id }}" class="w3-modal">
+                                            <div class="w3-modal-content w3-animate-top">
+                                                <header class="w3-container w3-theme">
+                                                    <span onclick="document.getElementById('email-{{ request.id }}').style.display='none'"
+                                                        class="w3-button w3-display-topright">&times;</span>
+                                                    <h5>{{ request.title }} from {{ request.studentName }}</h5>
+                                                </header>
+                                                <div class="w3-container">
+                                                    <p><b>Email Title:</b> {{ request.title }}</p>
+                                                    <p><b>Sent At: </b>{{ request.send_time }}</p>
+                                                    <p><b>Email Content:</b> {{ request.content }}</p>
+                                                    <form action="{% url 'update_email_status' request.id 0 1 %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="status" value="Read">
+                                                        <button type="submit" class="w3-button w3-theme">Mark as Read</button>
+                                                        <br>
+                                                        <br>
+                                                    </form>
+                                                    <form action="{% url 'send_reply' request.id 0 1 %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <label for="reply_content">Reply:</label>
+                                                        <textarea name="reply_content" id="reply_content" class="w3-input w3-border" rows="4" required></textarea>
+                                                        <br>
+                                                        <button type="submit" class="w3-button w3-theme">Send Reply</button>
+                                                    </form>
+                                                    <br>
                                                 </div>
                                             </div>
                                         </div>
@@ -238,8 +295,9 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                                                 </header>
                                                 <div class="w3-container">
                                                     <p><b>Email Title:</b> {{ request.title }}</p>
+                                                    <p><b>Sent At: </b>{{ request.send_time }}</p>
                                                     <p><b>Email Content:</b> {{ request.content }}</p>
-                                                    <form action="{% url 'update_email_status' request.id 1 %}" method="POST">
+                                                    <form action="{% url 'update_email_status' request.id 1 0%}" method="POST">
                                                         {% csrf_token %}
                                                         <input type="hidden" name="status" value="Unread">
                                                         <button type="submit" class="w3-button w3-theme">Mark as Unread</button>
@@ -253,6 +311,45 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
+                        {% for request in requests %}
+                            {% if request.studentEmail == user.email %}
+                                {% if request.status == 'Read' and request.for_admins == 'False'%}
+                                    <div class="w3-card w3-container w3-margin email-card email-card-container">
+                                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }}</h5>
+                                        <div id="email-{{ request.id }}" class="w3-modal">
+                                            <div class="w3-modal-content w3-animate-top">
+                                                <header class="w3-container w3-theme">
+                                                    <span onclick="document.getElementById('email-{{ request.id }}').style.display='none'"
+                                                        class="w3-button w3-display-topright">&times;</span>
+                                                    <h5>{{ request.title }} from {{ request.studentName }}</h5>
+                                                </header>
+                                                <div class="w3-container">
+                                                    <p><b>Email Title:</b> {{ request.title }}</p>
+                                                    <p><b>Sent At: </b>{{ request.send_time }}</p>
+                                                    <p><b>Email Content:</b> {{ request.content }}</p>
+                                                    <form action="{% url 'update_email_status' request.id 0 1 %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="status" value="Unread">
+                                                        <button type="submit" class="w3-button w3-theme">Mark as Unread</button>
+                                                        <br>
+                                                        <br>
+                                                    </form>
+                                                    <form action="{% url 'send_reply' request.id 0 1 %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <label for="reply_content">Reply:</label>
+                                                        <textarea name="reply_content" id="reply_content" class="w3-input w3-border" rows="4" required></textarea>
+                                                        <br>
+                                                        <button type="submit" class="w3-button w3-theme">Send Reply</button>
+                                                    </form>
+                                                    <br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                     </div>
                 </div>
         {% endif %}

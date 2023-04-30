@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -47,13 +49,17 @@ class Emails(models.Model):
     studentName = models.ForeignKey(User, on_delete=models.CASCADE)
     studentEmail = models.CharField(max_length=1000, default="N/A")
     status = models.CharField(max_length=7, default="Unread")
+    reply = models.CharField(max_length=5, default="False")
+    for_admins = models.CharField(max_length=5, default="False")
+    send_time = models.DateTimeField(default=timezone.now)
 
 
 class AutoReplyEmail(models.Model):
-    title = models.CharField(max_length=200, default="Auto-reply Status changed")
+    title = models.CharField(max_length=200, default="Auto-reply Status Changed")
     content = models.CharField(max_length=5000, default="N/A")
     studentEmail = models.CharField(max_length=1000, default="N/A")
     status = models.CharField(max_length=7, default="Unread")
+    send_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return '{} {} {}, {} '.format(self.title, self.content,
