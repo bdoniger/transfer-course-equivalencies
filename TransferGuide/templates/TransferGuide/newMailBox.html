@@ -35,8 +35,11 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   {#width: 30%; /* adjust as needed */#}
 }
 .email-card {
-    width: 40%;
-    {#margin: 0 auto 1em;#}
+    width: 90%;
+    margin: 0 auto 1em;
+    display: block;
+    alignment: center;
+
         }
 
 .email-title {
@@ -236,8 +239,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         {% if user.is_superuser %}
             <h3>Emails from Students</h3>
             <div class="w3-row">
-                <div class="w3-col s6">
-                    <h4>Unread Emails</h4>
+                <div class="w3-col m3">
+                    <h4 class="w3-center">Unread Emails</h4>
                     {% for request in requests %}
                         {% if request.status == 'Unread' %}
                             <div class="w3-card w3-container w3-margin email-card email-card-container">
@@ -268,8 +271,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="w3-col s6">
-                    <h4>Read Emails</h4>
+                <div class="w3-col m3">
+                    <h4 class="w3-center">Read Emails</h4>
                     {% for request in requests %}
                         {% if request.status == 'Read' %}
                             <div class="w3-card w3-container w3-margin email-card email-card-container">
@@ -297,6 +300,74 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                                     </div>
                                 </div>
                             </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+        <h3>Emails From Admins</h3>
+            <div class="w3-row">
+                <div class="w3-col m3">
+                    <h4 class="w3-center">Unread Emails</h4>
+                    {% for request in requests %}
+                        {% if auto.studentEmail == user.email %}
+                            {% if request.status == 'Unread' %}
+                                <div class="w3-card w3-container w3-margin email-card email-card-container">
+                                    <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }} from {{ request.studentName }}</h5>
+                                    <div id="email-{{ request.id }}" class="w3-modal">
+                                        <div class="w3-modal-content w3-animate-top">
+                                            <header class="w3-container w3-theme">
+                                                <span onclick="document.getElementById('email-{{ request.id }}').style.display='none'"
+                                                    class="w3-button w3-display-topright">&times;</span>
+                                                <h5>{{ request.title }} from {{ request.studentName }}</h5>
+                                            </header>
+                                            <div class="w3-container">
+                                                <p><b>Email Title:</b> {{ request.title }}</p>
+                                                <p><b>Email Content:</b> {{ request.content }}</p>
+                                                <form action="{% url 'update_email_status' request.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="status" value="Read">
+                                                    <button type="submit" class="w3-button w3-theme">Mark as Read</button>
+                                                    <br>
+                                                    <br>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="w3-col m3">
+                    <h4 class="w3-center">Read Emails</h4>
+                    {% for request in requests %}
+                        {% if auto.studentEmail == user.email %}
+                            {% if request.status == 'Read' %}
+                                <div class="w3-card w3-container w3-margin email-card email-card-container">
+                                    <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }} from {{ request.studentName }}</h5>
+                                    <div id="email-{{ request.id }}" class="w3-modal">
+                                        <div class="w3-modal-content w3-animate-top">
+                                            <header class="w3-container w3-theme">
+                                                <span onclick="document.getElementById('email-{{ request.id }}').style.display='none'"
+                                                    class="w3-button w3-display-topright">&times;</span>
+                                                <h5>{{ request.title }} from {{ request.studentName }}</h5>
+                                            </header>
+                                            <div class="w3-container">
+                                                <p><b>Email Title:</b> {{ request.title }}</p>
+                                                <p><b>Email Content:</b> {{ request.content }}</p>
+                                                <form action="{% url 'update_email_status' request.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="status" value="Read">
+                                                    <button type="submit" class="w3-button w3-theme">Mark as Unread</button>
+                                                    <br>
+                                                    <br>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </div>
