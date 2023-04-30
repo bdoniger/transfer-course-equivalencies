@@ -25,14 +25,25 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
 .parent {
   width: 100%;
-  text-align: left; /* centers the child elements horizontally */
+  text-align: left;
 
 }
 
 .child {
   display: inline-block;
-  {#width: 30%; /* adjust as needed */#}
 }
+.email-card {
+    width: 90%;
+    margin: 0 auto 1em;
+    display: block;
+    alignment: center;
+
+        }
+
+.email-title {
+            display: block;
+            width: 100%;
+        }
 </style>
 </head>
 <body>
@@ -198,55 +209,79 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     </div>
 </div>
 
-<div class="w3-main" style="margin-left:260px">
-<br>
-    {% if filtered_courses.courses > 0 %}
-        <h1>Search Results</h1>
-    {% endif %}
-    {% if filtered_courses.courses %}
-    <table>
-        <tbody>
-        {% for subject in filtered_courses.filteredSubjects %}
-        <tr>
-        <td>
-        <details>
-          <summary style="text-align:left">
-            {{ subject.courseSubject }}
-          </summary>
-        <table>
-        <thead>
-        <tr>
-            <th>Subject</th>
-            <th>Number</th>
-            <th>Name</th>
-            <th>University</th>
-            <th>Details</th>
-        </tr>
-        </thead>
-            {% for course in filtered_courses.courses %}
-                {% if course.courseSubject == subject.courseSubject %}
-                    <tr>
-                        <td>{{ course.courseSubject }}</td>
-                        <td>{{ course.courseNumber }}</td>
-                        <td style="text-align: left">{{ course.courseName }}</td>
-                        <td>{{ course.universityLong }}</td>
-                        <td style="text-align: center"><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }}&university={{ course.universityShort }}>Info</a></td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-        </details>
-        </td>
 
-        </tr>
-        {% endfor %}
-        <tr>
-        </tbody>
-        {% else %}
-            <h2>No courses found.</h2>
-        {% endif %}
-    </table>
+<div class="parent" style="width: 85%; margin-left:260px; display: inline-block">
+    {% if filtered_courses.courses%}
+        <h2>Search Results</h2>
+        <div class="w3-row-padding">
+            {% for subject in filtered_courses.filteredSubjects %}
+                <div class="w3-col m2">
+                    <div class="w3-card w3-container w3-margin w3-padding email-card email-card-container">
+                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="openModal('subject-{{ forloop.counter }}')">{{ subject.courseSubject }}</h5>
+                        <div id="subject-{{ forloop.counter }}" class="w3-modal course-modal">
+                            <div class="w3-modal-content w3-animate-top w3-auto">
+                                <header class="w3-container w3-theme">
+                                    <span onclick="document.getElementById('subject-{{ forloop.counter }}').style.display='none'"
+                                        class="w3-button w3-display-topright">&times;</span>
+                                    <h5>{{ subject.courseSubject }}</h5>
+                                </header>
+                                <div class="w3-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Subject</th>
+                                                <th>Number</th>
+                                                <th>Name</th>
+                                                <th>University</th>
+                                                <th>Details</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for course in filtered_courses.courses %}
+                                                {% if course.courseSubject == subject.courseSubject %}
+                                                    <tr>
+                                                        <td>{{ course.courseSubject }}</td>
+                                                        <td>{{ course.courseNumber }}</td>
+                                                        <td style="text-align: left">{{ course.courseName }}</td>
+                                                        <td>{{ course.universityLong }}</td>
+                                                        <td style="text-align: center"><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }}&university={{ course.universityShort }}>Info</a></td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="w3-padding-16"></div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h2>No courses found.</h2>
+    {% endif %}
 </div>
+
+
+
+
+
+<script>
+  function openModal(modalId) {
+    document.getElementById(modalId).style.display = "block";
+  }
+
+  var modals = document.getElementsByClassName("course-modal");
+
+  for (var i = 0; i < modals.length; i++) {
+    modals[i].addEventListener("click", function(event) {
+      if (event.target.classList.contains("w3-modal")) {
+        event.target.style.display = "none";
+      }
+    });
+  }
+</script>
 
 <script>
 // Get the Sidebar

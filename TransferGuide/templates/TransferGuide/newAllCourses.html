@@ -22,6 +22,29 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   bottom: 0;
   height: inherit;
 }
+.parent {
+  width: 100%;
+  text-align: left;
+  margin-left:260px;
+
+}
+
+.child {
+  display: inline-block;
+}
+
+.email-card {
+    width: 90%;
+    margin: 0 auto 1em;
+    display: block;
+    alignment: center;
+
+        }
+
+.email-title {
+            display: block;
+            width: 100%;
+        }
 </style>
 </head>
 <body>
@@ -78,44 +101,138 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
 <div class="w3-main" style="margin-left:260px">
 
+    <link href="http://cdn-na.infragistics.com/igniteui/2022.2/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link href="http://cdn-na.infragistics.com/igniteui/2022.2/latest/css/structure/infragistics.css" rel="stylesheet" />
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+    <!-- Ignite UI for jQuery Required Combined JavaScript Files -->
+    <script src="http://cdn-na.infragistics.com/igniteui/2022.2/latest/js/infragistics.core.js"></script>
+    <script src="http://cdn-na.infragistics.com/igniteui/2022.2/latest/js/infragistics.lob.js"></script>
+
 <br>
-{% for subject in all_courses_list.subjects %}
-    <div class="w3-row">
-        <div class="w3-twothird w3-container">
-{#            <h4 class="w3-text-teal">{{ subject.courseSubject }}</h4>#}
-            <details>
-            <summary>{{ subject.courseSubject }}</summary>
-            <table>
-                <thead>
-                <tr>
-                    <th>Subject</th>
-                    <th>Number</th>
-                    <th>Name</th>
-                    <th>University</th>
-                    <th>Details</th>
-                </tr>
-                </thead>
-                    {% for course in all_courses_list.courses %}
-                        {% if course.courseSubject == subject.courseSubject %}
-                            <tr>
-                                <td>{{ course.courseSubject }}</td>
-                                <td>{{ course.courseNumber }}</td>
-                                <td style="text-align: left">{{ course.courseName }}</td>
-                                <td>{{ course.universityLong }}</td>
-                                <td style="text-align: center"><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }}&university={{ course.universityShort }}>Info</a></td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-            </table>
-            </details>
-        </div>
+    <br>
+
+    <style>
+        .combo-label {margin-bottom:.5em;}
+    </style>
+    <br />
+    <div class=".ui-widget-overlay"></div>
+<h2>Search for Courses</h2>
+    <div>
+<script>
+    var subjects = JSON.parse('{{ all_courses_list.json }}'.replace(/&quot;/g,'"'));
+
+    $(function () {
+        // Set up the combo box for selecting subjects
+        $("#checkboxSelectCombo").igCombo({
+            width: 300,
+            dataSource: subjects,
+            textKey: "Name",
+            valueKey: "Name",
+            dropDownOrientation: "bottom",
+            placeHolder: "Select Subjects"
+        });
+
+
+        // Handle the submit button click event
+        $("#submitBtn").click(function() {
+            var selectedValues = $("#checkboxSelectCombo").igCombo("value");
+            var cur_url = window.location.href;
+            var index = cur_url.indexOf('?');
+            if (index > -1){
+                cur_url = cur_url.substring(0,index);
+            }
+            window.location.href = cur_url + "?subject=" + selectedValues
+        });
+    });
+</script>
     </div>
-{% endfor %}
+</div>
+    <div class="parent" style="width: 100%; margin-left:260px; display: inline-block">
+        <br>
+        <div class="child">
+            <a class="combo-label">Select Subject</a>
+            <br>
+            <div id="checkboxSelectCombo" style="width: 25%"></div>
+        </div>
+        <br>
+        <button class="w3-button w3-theme" id="submitBtn" type="submit" value="Submit">Submit</button>
+        <button class="w3-button w3-theme"><a href="{% url 'search_results' %}" style="text-decoration: none;">Clear Search</a></button>
+    </div>
 
+<div class="parent" style="width: 85%; margin-left:260px; display: inline-block">
+    {% if all_courses_list.courses%}
+        <h2>Search Results</h2>
+        <div class="w3-row-padding">
+            {% for subject in all_courses_list.subjects %}
+                <div class="w3-col m2">
+                    <div class="w3-card w3-container w3-margin w3-padding email-card email-card-container">
+                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="openModal('subject-{{ forloop.counter }}')">{{ subject.courseSubject }}</h5>
+                        <div id="subject-{{ forloop.counter }}" class="w3-modal course-modal">
+                            <div class="w3-modal-content w3-animate-top w3-auto">
+                                <header class="w3-container w3-theme">
+                                    <span onclick="document.getElementById('subject-{{ forloop.counter }}').style.display='none'"
+                                        class="w3-button w3-display-topright">&times;</span>
+                                    <h5>{{ subject.courseSubject }}</h5>
+                                </header>
+                                <div class="w3-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Subject</th>
+                                                <th>Number</th>
+                                                <th>Name</th>
+                                                <th>University</th>
+                                                <th>Details</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for course in all_courses_list.courses %}
+                                                {% if course.courseSubject == subject.courseSubject %}
+                                                    <tr>
+                                                        <td>{{ course.courseSubject }}</td>
+                                                        <td>{{ course.courseNumber }}</td>
+                                                        <td style="text-align: left">{{ course.courseName }}</td>
+                                                        <td>{{ course.universityLong }}</td>
+                                                        <td style="text-align: center"><a href={% url 'course_info' %}?subject={{ course.courseSubject }}&number={{ course.courseNumber }}&name={{ course.courseName | slugify }}&university={{ course.universityShort }}>Info</a></td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="w3-padding-16"></div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h2>No courses found.</h2>
+    {% endif %}
+</div>
 
+<script>
+  function openModal(modalId) {
+    document.getElementById(modalId).style.display = "block";
+  }
+
+  var modals = document.getElementsByClassName("course-modal");
+
+  for (var i = 0; i < modals.length; i++) {
+    modals[i].addEventListener("click", function(event) {
+      if (event.target.classList.contains("w3-modal")) {
+        event.target.style.display = "none";
+      }
+    });
+  }
+</script>
 
 <!-- END MAIN -->
-</div>
 
 <script>
 // Get the Sidebar
