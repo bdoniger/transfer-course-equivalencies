@@ -541,15 +541,19 @@ def pending_requests(request):
             "status") + " at " + time.strftime("%Y-%m-%d %H:%M:%S")
         autoReply = AutoReplyEmail.objects.create(content=content1,
                                                   studentEmail=request.GET.get("request.studentEmail"))
+        print(autoReply)
         form.status = status
         form.save()
 
     return render(request, "TransferGuide/newPendingRequests.html", context={"requests": requests})
 
 
-def update_email_status(request, email_id):
+def update_email_status(request, email_id, auto_reply):
     if request.method == 'POST':
-        email = Emails.objects.get(id=email_id)
+        if auto_reply == 1:
+            email = AutoReplyEmail.objects.get(id=email_id)
+        else:
+            email = Emails.objects.get(id=email_id)
         email.status = request.POST.get('status')
         email.save()
         return redirect('mailBox')
