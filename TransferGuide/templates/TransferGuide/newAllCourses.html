@@ -120,7 +120,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     </style>
     <br />
     <div class=".ui-widget-overlay"></div>
-<h2>Search for Courses</h2>
     <div>
 <script>
     var subjects = JSON.parse('{{ all_courses_list.json }}'.replace(/&quot;/g,'"'));
@@ -165,7 +164,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
 <div class="parent" style="width: 85%; margin-left:260px; display: inline-block">
     {% if all_courses_list.courses%}
-        <h2>Search Results</h2>
+        <h2>All Courses</h2>
         <div class="w3-row-padding">
             {% for subject in all_courses_list.subjects %}
                 <div class="w3-col m2">
