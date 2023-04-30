@@ -576,6 +576,7 @@ def send_reply(request, email_id, auto_reply, for_admins):
                                         reply='True', for_admins=for_admins_value, send_time=timezone.now())
         email.status = 'Read'
         email.save()
+        messages.add_message(request, messages.SUCCESS, "Email sent")
         return redirect('mailBox')
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -597,6 +598,7 @@ def email_database(request):
         emailS1 = Emails.objects.create(title=request.POST['title'], content=request.POST['content'],
                                         studentName=request.user,
                                         studentEmail=request.user.email, reply='False', for_admins='True', send_time=timezone.now())
+        messages.add_message(request, messages.SUCCESS, "Email sent")
     return redirect('index')
 
 
