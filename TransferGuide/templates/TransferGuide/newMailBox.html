@@ -183,8 +183,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                     {% for request in requests %}
                         {% if request.status == 'Unread' and request.for_admins == 'True' %}
                             <div class="w3-card w3-container w3-margin email-card email-card-container">
-                                <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }} from {{ request.studentName }}</h5>
-                                <div id="email-{{ request.id }}" class="w3-modal">
+                                <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="openModal('email-{{ request.id }}')">{{ request.title }} from {{ request.studentName }}</h5>
+                                <div id="email-{{ request.id }}" class="w3-modal course-modal">
                                     <div class="w3-modal-content w3-animate-top">
                                         <header class="w3-container w3-theme">
                                             <span onclick="document.getElementById('email-{{ request.id }}').style.display='none'"
@@ -224,8 +224,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                     {% for request in requests %}
                         {% if request.status == 'Read' and request.for_admins == 'True' %}
                             <div class="w3-card w3-container w3-margin email-card email-card-container">
-                                <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }} from {{ request.studentName }}</h5>
-                                <div id="email-{{ request.id }}" class="w3-modal">
+                                <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="openModal('email-{{ request.id }}')">{{ request.title }} from {{ request.studentName }}</h5>
+                                <div id="email-{{ request.id }}" class="w3-modal course-modal">
                                     <div class="w3-modal-content w3-animate-top">
                                         <header class="w3-container w3-theme">
                                             <span onclick="document.getElementById('email-{{ request.id }}').style.display='none'"
@@ -270,8 +270,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                             {% if request.studentEmail == user.email %}
                                 {% if request.status == 'Unread' %}
                                     <div class="w3-card w3-container w3-margin email-card email-card-container">
-                                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }}</h5>
-                                        <div id="email-{{ request.id }}" class="w3-modal">
+                                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="openModal('email-{{ request.id }}')">{{ request.title }}</h5>
+                                        <div id="email-{{ request.id }}" class="w3-modal course-modal">
                                             <div class="w3-modal-content w3-animate-top">
                                                 <header class="w3-container w3-theme">
                                                     <span onclick="document.getElementById('email-{{ request.id }}').style.display='none'"
@@ -300,8 +300,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                             {% if request.studentEmail == user.email %}
                                 {% if request.status == 'Unread' and request.for_admins == 'False' %}
                                     <div class="w3-card w3-container w3-margin email-card email-card-container">
-                                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }}</h5>
-                                        <div id="email-{{ request.id }}" class="w3-modal">
+                                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="openModal('email-{{ request.id }}')">{{ request.title }}</h5>
+                                        <div id="email-{{ request.id }}" class="w3-modal course-modal">
                                             <div class="w3-modal-content w3-animate-top">
                                                 <header class="w3-container w3-theme">
                                                     <span onclick="document.getElementById('email-{{ request.id }}').style.display='none'"
@@ -341,8 +341,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                             {% if request.studentEmail == user.email %}
                                 {% if request.status == 'Read' %}
                                     <div class="w3-card w3-container w3-margin email-card email-card-container">
-                                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }}</h5>
-                                        <div id="email-{{ request.id }}" class="w3-modal">
+                                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="openModal('email-{{ request.id }}')">{{ request.title }}</h5>
+                                        <div id="email-{{ request.id }}" class="w3-modal course-modal">
                                             <div class="w3-modal-content w3-animate-top">
                                                 <header class="w3-container w3-theme">
                                                     <span onclick="document.getElementById('email-{{ request.id }}').style.display='none'"
@@ -371,8 +371,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                             {% if request.studentEmail == user.email %}
                                 {% if request.status == 'Read' and request.for_admins == 'False'%}
                                     <div class="w3-card w3-container w3-margin email-card email-card-container">
-                                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('email-{{ request.id }}').style.display='block'">{{ request.title }}</h5>
-                                        <div id="email-{{ request.id }}" class="w3-modal">
+                                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="openModal('email-{{ request.id }}')">{{ request.title }}</h5>
+                                        <div id="email-{{ request.id }}" class="w3-modal course-modal">
                                             <div class="w3-modal-content w3-animate-top">
                                                 <header class="w3-container w3-theme">
                                                     <span onclick="document.getElementById('email-{{ request.id }}').style.display='none'"
@@ -421,7 +421,21 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 </div>
 
 
+<script>
+  function openModal(modalId) {
+    document.getElementById(modalId).style.display = "block";
+  }
 
+  var modals = document.getElementsByClassName("course-modal");
+
+  for (var i = 0; i < modals.length; i++) {
+    modals[i].addEventListener("click", function(event) {
+      if (event.target.classList.contains("w3-modal")) {
+        event.target.style.display = "none";
+      }
+    });
+  }
+</script>
 
 
 <script>

@@ -159,8 +159,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
             {% for request in requests %}
                 {% if request.status == "Pending" %}
                     <div class="w3-card w3-container w3-margin w3-padding email-card email-card-container">
-                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('request-{{ request.id }}').style.display='block'">Request for: {{ request.courseSubject }} {{ request.courseNumber }} by {{ request.studentName }}</h5>
-                        <div id="request-{{ request.id }}" class="w3-modal">
+                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="openModal('request-{{ request.id }}')">Request for: {{ request.courseSubject }} {{ request.courseNumber }} by {{ request.studentName }}</h5>
+                        <div id="request-{{ request.id }}" class="w3-modal course-modal">
                             <div class="w3-modal-content w3-animate-top">
                                 <header class="w3-container w3-theme">
                                     <span onclick="document.getElementById('request-{{ request.id }}').style.display='none'"
@@ -203,8 +203,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
             {% for request in requests %}
                 {% if request.status == "Accepted" %}
                     <div class="w3-card w3-container w3-margin w3-padding email-card email-card-container">
-                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('request-{{ request.id }}').style.display='block'">Request for: {{ request.courseSubject }} {{ request.courseNumber }} by {{ request.studentName }}</h5>
-                        <div id="request-{{ request.id }}" class="w3-modal">
+                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="openModal('request-{{ request.id }}')">Request for: {{ request.courseSubject }} {{ request.courseNumber }} by {{ request.studentName }}</h5>
+                        <div id="request-{{ request.id }}" class="w3-modal course-modal">
                             <div class="w3-modal-content w3-animate-top">
                                 <header class="w3-container w3-theme">
                                     <span onclick="document.getElementById('request-{{ request.id }}').style.display='none'"
@@ -247,8 +247,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
             {% for request in requests %}
                 {% if request.status == "Rejected" %}
                     <div class="w3-card w3-container w3-margin w3-padding email-card email-card-container">
-                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="document.getElementById('request-{{ request.id }}').style.display='block'">Request for: {{ request.courseSubject }} {{ request.courseNumber }} by {{ request.studentName }}</h5>
-                        <div id="request-{{ request.id }}" class="w3-modal">
+                        <h5 class="w3-bar-item w3-button w3-medium email-title" onclick="openModal('request-{{ request.id }}')">Request for: {{ request.courseSubject }} {{ request.courseNumber }} by {{ request.studentName }}</h5>
+                        <div id="request-{{ request.id }}" class="w3-modal course-modal">
                             <div class="w3-modal-content w3-animate-top">
                                 <header class="w3-container w3-theme">
                                     <span onclick="document.getElementById('request-{{ request.id }}').style.display='none'"
@@ -296,6 +296,23 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         };
     </script>
 {% endif %}
+
+<script>
+  function openModal(modalId) {
+    document.getElementById(modalId).style.display = "block";
+  }
+
+  var modals = document.getElementsByClassName("course-modal");
+
+  for (var i = 0; i < modals.length; i++) {
+    modals[i].addEventListener("click", function(event) {
+      if (event.target.classList.contains("w3-modal")) {
+        event.target.style.display = "none";
+      }
+    });
+  }
+</script>
+
 
 <script>
 // Get the Sidebar
