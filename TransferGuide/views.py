@@ -596,7 +596,7 @@ def email_database(request):
     if request.method == "POST":
         emailS1 = Emails.objects.create(title=request.POST['title'], content=request.POST['content'],
                                         studentName=request.user,
-                                        studentEmail=request.user.email, reply='False', for_admins='True', send_time=timezone.now)
+                                        studentEmail=request.user.email, reply='False', for_admins='True', send_time=timezone.now())
     return redirect('index')
 
 
