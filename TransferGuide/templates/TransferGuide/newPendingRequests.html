@@ -172,6 +172,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                                     <p><b>Course Subject: </b>{{ request.courseSubject }}</p>
                                     <p><b>Course Number: </b>{{ request.courseNumber }}</p>
                                     <p><b>Course Name: </b>{{ request.courseName }}</p>
+                                    <p><b>Requestor Name: </b>{{ request.studentName }}</p>
+                                    <p><b>Requestor Email: </b>{{ request.studentEmail }}</p>
                                     <p><b>Status:</b> {{ request.status }}</p>
                                     <form action="{% url 'pendingRequests' %}" method="GET">
                                         <label for="status">Change Status: </label>
@@ -216,6 +218,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                                     <p><b>Course Subject: </b>{{ request.courseSubject }}</p>
                                     <p><b>Course Number: </b>{{ request.courseNumber }}</p>
                                     <p><b>Course Name: </b>{{ request.courseName }}</p>
+                                    <p><b>Requestor Name: </b>{{ request.studentName }}</p>
+                                    <p><b>Requestor Email: </b>{{ request.studentEmail }}</p>
                                     <p><b>Status:</b> {{ request.status }}</p>
                                     <form action="{% url 'pendingRequests' %}" method="GET">
                                         <label for="status">Change Status: </label>
@@ -260,6 +264,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                                     <p><b>Course Subject: </b>{{ request.courseSubject }}</p>
                                     <p><b>Course Number: </b>{{ request.courseNumber }}</p>
                                     <p><b>Course Name: </b>{{ request.courseName }}</p>
+                                    <p><b>Requestor Name: </b>{{ request.studentName }}</p>
+                                    <p><b>Requestor Email: </b>{{ request.studentEmail }}</p>
                                     <p><b>Status:</b> {{ request.status }}</p>
                                     <form action="{% url 'pendingRequests' %}" method="GET">
                                         <label for="status">Change Status: </label>
