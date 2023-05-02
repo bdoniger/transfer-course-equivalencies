@@ -386,59 +386,10 @@ class AddEquivalency(generic.ListView):
     template_name = 'TransferGuide/newAddEquivCourse.html'
     context_object_name = 'all_courses_list'
 
-    def get_queryset(self):
-        all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
-        all_numbers_queryset = Course.objects.all().values("courseNumber").order_by("courseNumber").distinct()
-        all_names_queryset = Course.objects.all().values("courseName").order_by("courseName").distinct()
-
-        all_subjects_queryset = all_subjects_queryset.values_list()
-        all_numbers_queryset = all_numbers_queryset.values_list()
-        all_names_queryset = all_names_queryset.values_list()
-        subjects = []
-        numbers = []
-        names = []
-
-        all_together = []
-        all_together_query = Course.objects.all().values().distinct().order_by('courseSubject', 'courseNumber')
-        # print(all_together_query)
-        for course in all_together_query:
-            if course.get('universityShort') == 'UVA':
-                to_add = ''
-                to_add += course.get('courseSubject')  # subject
-                to_add += ' ' + course.get('courseNumber')  # number
-                courseName = course.get('courseName')
-                if "\"" in courseName:
-                    to_add += ' ' + courseName.replace("\"", '')  # name
-                else:
-                    to_add += ' ' + course.get('courseName')  # name
-                all_together.append(to_add)
-
-        all_together_json = json.dumps(all_together)
-
-        for item in all_subjects_queryset:
-            if item[4] == 'UVA':
-                if item[3] not in subjects:
-                    subjects.append(item[3])
-        for item in all_numbers_queryset:
-            if item[4] == 'UVA':
-                if item[2] not in numbers:
-                    numbers.append(item[2])
-        for item in all_names_queryset:
-            if item[4] == 'UVA':
-                if item[1] not in names:
-                    if "\"" in item[1]:
-                        names.append(item[1].replace("\"", ''))
-                    else:
-                        names.append(item[1])
-
-        json_subjects = json.dumps(subjects)
-        json_numbers = json.dumps(numbers)
-        json_names = json.dumps(names)
-        return {"json": json_subjects, "numbersJSON": json_numbers, "namesJSON": json_names,
-                "courses": all_subjects_queryset, "all_together": all_together_json}
-
     @staticmethod
-    def post(request, *args, **kwargs):
+    def post(request):
+        print("before if")
+        print(request.method)
         if request.method == 'POST':
             form = request.POST
 
@@ -496,18 +447,147 @@ class AddEquivalency(generic.ListView):
                     oldEquivList = list()
 
                 oldEquivList.append(UVAEquivCourseDict)
-                uvaCourse[0].equivalentCourse.append(UVAEquivCourseDict)
+                if type(uvaCourse[0].equivalentCourse) is dict:
+                    uvaCourse[0].equivalentCourse.update(UVAEquivCourseDict)
+                else:
+                    uvaCourse[0].equivalentCourse.append(UVAEquivCourseDict)
                 UVACourse = uvaCourse[0]
                 UVACourse.equivalentCourse = oldEquivList
 
                 UVACourse.save(force_update=True)
-
+                messages.add_message(request, messages.SUCCESS, "Course Equivalency Added")
                 return redirect('addEquivCoursePage')
             else:
-                messages.error(request, 'class equivalency already exists in database')
+                messages.error(request, 'Class Equivalency Already Exists in Database')
                 return redirect('addEquivCoursePage')
 
-        return redirect('addEquivCoursePage')
+    def get_queryset(self):
+        all_subjects_queryset = Course.objects.all().values('courseSubject').order_by('courseSubject').distinct()
+        all_numbers_queryset = Course.objects.all().values("courseNumber").order_by("courseNumber").distinct()
+        all_names_queryset = Course.objects.all().values("courseName").order_by("courseName").distinct()
+
+        all_subjects_queryset = all_subjects_queryset.values_list()
+        all_numbers_queryset = all_numbers_queryset.values_list()
+        all_names_queryset = all_names_queryset.values_list()
+        subjects = []
+        numbers = []
+        names = []
+
+        all_together = []
+        all_together_query = Course.objects.all().values().distinct().order_by('courseSubject', 'courseNumber')
+        # print(all_together_query)
+        for course in all_together_query:
+            if course.get('universityShort') == 'UVA':
+                to_add = ''
+                to_add += course.get('courseSubject')  # subject
+                to_add += ' ' + course.get('courseNumber')  # number
+                courseName = course.get('courseName')
+                if "\"" in courseName:
+                    to_add += ' ' + courseName.replace("\"", '')  # name
+                else:
+                    to_add += ' ' + course.get('courseName')  # name
+                all_together.append(to_add)
+
+        all_together_json = json.dumps(all_together)
+
+        for item in all_subjects_queryset:
+            if item[4] == 'UVA':
+                if item[3] not in subjects:
+                    subjects.append(item[3])
+        for item in all_numbers_queryset:
+            if item[4] == 'UVA':
+                if item[2] not in numbers:
+                    numbers.append(item[2])
+        for item in all_names_queryset:
+            if item[4] == 'UVA':
+                if item[1] not in names:
+                    if "\"" in item[1]:
+                        names.append(item[1].replace("\"", ''))
+                    else:
+                        names.append(item[1])
+
+        json_subjects = json.dumps(subjects)
+        json_numbers = json.dumps(numbers)
+        json_names = json.dumps(names)
+        return {"json": json_subjects, "numbersJSON": json_numbers, "namesJSON": json_names,
+                "courses": all_subjects_queryset, "all_together": all_together_json}
+
+
+# def post_equiv_course(request):
+#     print("before if")
+#     print(request.method)
+#     if request.method == 'POST':
+#         form = request.POST
+#
+#         existingCourseSet = Course.objects.filter(Q(universityLong__iexact=form.get('outsideUniversity'))).filter(
+#             courseSubject=form.get('outsideSubject')).filter(courseNumber=form.get('outsideNumber'))
+#
+#         if len(existingCourseSet) <= 0:
+#             # queryset is empty
+#
+#             oCourse = Course()
+#             oCourse.courseName = form.get('outsideName')
+#             oCourse.courseNumber = form.get('outsideNumber')
+#             oCourse.courseSubject = form.get('outsideSubject')
+#             oCourse.universityShort = form.get('outsideAcronym')
+#             oCourse.universityLong = form.get('outsideUniversity')
+#             equivCourseDict = {
+#                 "universityShort": "UVA",
+#                 "universityLong": "University of Virginia",
+#                 "subject": form.get('uvaSubject'),
+#                 "number": form.get('uvaNumber'),
+#                 "name": form.get('uvaName')
+#             }
+#             equivCourseList = list()
+#             equivCourseList.append(equivCourseDict)
+#             oCourse.equivalentCourse = equivCourseList
+#
+#             oCourse.save()
+#
+#             uvaInfo = form.get('uvaSubject').split(' ')
+#             uvaSubject = uvaInfo[0]
+#             uvaNumber = uvaInfo[1]
+#             uvaName = ''
+#             for i in range(2, len(uvaInfo)):
+#                 uvaName += uvaInfo[i]
+#                 if i != len(uvaInfo) - 1:
+#                     uvaName += ' '
+#
+#             uvaUniversityLong = "University of Virginia"
+#             uvaUniversityShort = "UVA"
+#
+#             uvaCourse = Course.objects.all().filter(Q(courseSubject__iexact=uvaSubject) & Q(courseNumber__iexact=
+#                                                                                             uvaNumber) & Q(
+#                 courseName__iexact=uvaName) & Q(universityLong__iexact=uvaUniversityLong) &
+#                                                     Q(universityShort__iexact=uvaUniversityShort))
+#
+#             oldEquivList = uvaCourse[0].equivalentCourse
+#             UVAEquivCourseDict = {
+#                 "universityShort": form.get('outsideAcronym'),
+#                 "universityLong": form.get('outsideUniversity'),
+#                 "subject": form.get('outsideSubject'),
+#                 "number": form.get('outsideNumber'),
+#                 "name": form.get('outsideName')
+#             }
+#             if (len(oldEquivList) == 0):
+#                 oldEquivList = list()
+#
+#             oldEquivList.append(UVAEquivCourseDict)
+#             if type(uvaCourse[0].equivalentCourse) is dict:
+#                 uvaCourse[0].equivalentCourse.update(UVAEquivCourseDict)
+#             else:
+#                 uvaCourse[0].equivalentCourse.append(UVAEquivCourseDict)
+#             UVACourse = uvaCourse[0]
+#             UVACourse.equivalentCourse = oldEquivList
+#
+#             UVACourse.save(force_update=True)
+#             print("before message")
+#             messages.add_message(request, messages.SUCCESS, "Course Equivalency Added")
+#             print("after message")
+#             return render(request, 'TransferGuide/newAddEquivCourse.html')
+#         else:
+#             messages.error(request, 'class equivalency already exists in database')
+#             return redirect('addEquivCoursePage')
 
 
 class Test(generic.ListView):
