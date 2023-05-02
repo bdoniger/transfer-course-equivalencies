@@ -410,7 +410,7 @@ class AddEquivalency(generic.ListView):
                     "universityLong": "University of Virginia",
                     "subject": form.get('uvaSubject'),
                     "number": form.get('uvaNumber'),
-                    "name": form.get('uvaName')
+                    "name": form.get('uvaName').replace('&amp', '&')
                 }
                 equivCourseList = list()
                 equivCourseList.append(equivCourseDict)

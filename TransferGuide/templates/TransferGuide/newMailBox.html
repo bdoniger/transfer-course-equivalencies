@@ -24,15 +24,12 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 }
 
 .parent {
-  width: 100%;
-  text-align: left; /* centers the child elements horizontally */
-  {#margin-left:260px;#}
-
+    width: 100%;
+    text-align: left;
 }
 
 .child {
   display: inline-block;
-  {#width: 30%; /* adjust as needed */#}
 }
 .email-card {
     width: 90%;
@@ -160,7 +157,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         }
 
         window.addEventListener('DOMContentLoaded', (event) => {
-            // Example: Show a success message when the page loads
             {% for message in messages %}
                 {% if message.tags == 'success' %}
                     showSuccessMessage("{{ message }}", 5000);
@@ -168,7 +164,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
             {% endfor %}
         });
 
-        // You can call the 'showSuccessMessage' function whenever you want to show a success message.
     </script>
 
 
