@@ -148,9 +148,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     <div>
 
 
-    <div class="message-container" id="messageContainer" style="justify-content: center">
-        <!-- The message will be added here -->
-    </div>
+    <div class="message-container" id="messageContainer" style="justify-content: center"></div>
 
     <script>
         function showSuccessMessage(message, duration = 3000) {
@@ -167,15 +165,12 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         }
 
         window.addEventListener('DOMContentLoaded', (event) => {
-            // Example: Show a success message when the page loads
             {% for message in messages %}
                 {% if message.tags == 'success' %}
                     showSuccessMessage("{{ message }}", 5000);
                 {% endif %}
             {% endfor %}
         });
-
-        // You can call the 'showSuccessMessage' function whenever you want to show a success message.
     </script>
 
 
