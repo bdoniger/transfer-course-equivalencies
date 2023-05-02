@@ -50,15 +50,35 @@
 
     .parent {
       width: 100%;
-      text-align: left; /* centers the child elements horizontally */
-      {#margin-left:260px;#}
-
+      text-align: left;
     }
 
     .child {
       display: inline-block;
-      {#width: 30%; /* adjust as needed */#}
     }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-blocking Alert</title>
+    <style>
+        .message-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            z-index: 9999;
+            font-size: 16px;
+            transform: translateX(-50%);
+        }
+
+        .message {
+            background-color: teal;
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
     </style>
 
     <link href="https://cdn-na.infragistics.com/igniteui/2022.2/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
@@ -81,24 +101,10 @@
 </head>
 
 
-    {% if messages %}
-    <script>
-        window.addEventListener('DOMContentLoaded', (event) => {
-            {% for message in messages %}
-                {% if message == "Successfully changed user status" or message == "User not found" %}
-                    alert('{{ message }}');
-                {% endif %}
-            {% endfor %}
-        });
-    </script>
-    {% endif %}
-
-
     <script>
         var all_info = JSON.parse('{{ users_list.jsonIDS }}'.replaceAll(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&#x27;/g, "'"));
 
         jQuery(document).ready(function () {
-            // Set up the combo box for selecting subjects
             $("#userInfo").igCombo({
                 width: 300,
                 dataSource: all_info,
@@ -126,7 +132,6 @@
                     const userId = document.getElementById('userInfo').value;
                     const superuserStatus = document.getElementById('userStatus').value;
 
-                    // Make an AJAX request to the server to update the user's superuser status
                     fetch('/change_user_status/', {
                         method: 'POST',
                         headers: {
@@ -226,6 +231,31 @@
     </style>
     <br />
     <div class=".ui-widget-overlay"></div>
+
+    <div class="message-container" id="messageContainer" style="justify-content: center"></div>
+    <script>
+        function showSuccessMessage(message, duration = 3000) {
+            const messageContainer = document.getElementById('messageContainer');
+
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.textContent = message;
+            messageContainer.appendChild(messageElement);
+
+            setTimeout(() => {
+                messageElement.remove();
+            }, duration);
+        }
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    showSuccessMessage("{{ message }}", 5000);
+                {% endif %}
+            {% endfor %}
+        });
+    </script>
+
 
     {% if user.is_superuser and user.is_authenticated %}
     <h1>Change Superuser Status</h1>
