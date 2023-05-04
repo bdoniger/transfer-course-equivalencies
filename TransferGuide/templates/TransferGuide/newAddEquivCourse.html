@@ -161,8 +161,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     <script>
     var all_info = JSON.parse('{{ all_courses_list.all_together }}'.replace(/&quot;Bad&quot;/g, '\'Bad\'').replaceAll(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&#x27;/g, "'"));
 
-    $(function () {
-        $("#uvaSubject").igCombo({
+    jQuery(function () {
+        jQuery("#uvaSubject").igCombo({
             width: 300,
             dataSource: all_info,
             textKey: "Name",
@@ -178,23 +178,23 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         let outsideNumber = '';
         let outsideName = '';
 
-        $("#outsideUniversity").on("input", function() {
+        jQuery("#outsideUniversity").on("input", function() {
             outsideUniversity = $(this).val();
         });
 
-        $("#outsideAcronym").on("input", function() {
+        jQuery("#outsideAcronym").on("input", function() {
             outsideAcronym = $(this).val();
         });
 
-        $("#outsideSubject").on("input", function() {
+        jQuery("#outsideSubject").on("input", function() {
             outsideSubject = $(this).val();
         });
 
-        $("#outsideNumber").on("input", function() {
+        jQuery("#outsideNumber").on("input", function() {
             outsideNumber = $(this).val();
         });
 
-        $("#outsideName").on("input", function() {
+        jQuery("#outsideName").on("input", function() {
             outsideName = $(this).val();
         });
 
@@ -206,8 +206,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                 const outsideAcronym = document.getElementById('outsideAcronym').value;
                 const outsideSubject = document.getElementById('outsideSubject').value;
                 const outsideNumber = document.getElementById('outsideNumber').value;
-                const outsideName = document.getElementById('outsideName').value;
-                const uvaSubject = document.getElementById('uvaSubject').value;
+                const outsideName = document.getElementById('outsideName').value
+                const uvaSubject = $("#uvaSubject").igCombo("value");
 
                 fetch('/change_user_status/', {
                     method: 'POST',
@@ -243,14 +243,14 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 </div>
 <div class="w3-main">
     {% if user.is_superuser and user.is_authenticated %}
-<form id="courseForm" action="{% url 'addEquivCoursePage' %}" method="POST">
+<form id="courseForm" action="" method="POST">
 {% csrf_token %}
 <h2 style="margin-left: 260px">UVA Course Details</h2>
     <div class="parent" style="width: 100%; margin-left:260px; display: inline-block">
         <div class="child">
             <a class="combo-label">Select UVA Course</a>
             <br>
-            <label for="uvaSubject"></label><select name="uvaSubject" id="uvaSubject" style="width: 25%" required></select>
+            <label for="uvaSubject"></label><select name="uvaSubject" id="uvaSubject" style="width: 25%"></select>
         </div>
         <br>
     </div>

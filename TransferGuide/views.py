@@ -405,18 +405,6 @@ class AddEquivalency(generic.ListView):
                 oCourse.courseSubject = form.get('outsideSubject')
                 oCourse.universityShort = form.get('outsideAcronym')
                 oCourse.universityLong = form.get('outsideUniversity')
-                equivCourseDict = {
-                    "universityShort": "UVA",
-                    "universityLong": "University of Virginia",
-                    "subject": form.get('uvaSubject'),
-                    "number": form.get('uvaNumber'),
-                    "name": form.get('uvaName').replace('&amp', '&')
-                }
-                equivCourseList = list()
-                equivCourseList.append(equivCourseDict)
-                oCourse.equivalentCourse = equivCourseList
-
-                oCourse.save()
 
                 uvaInfo = form.get('uvaSubject').split(' ')
                 uvaSubject = uvaInfo[0]
@@ -426,6 +414,20 @@ class AddEquivalency(generic.ListView):
                     uvaName += uvaInfo[i]
                     if i != len(uvaInfo) - 1:
                         uvaName += ' '
+
+                equivCourseDict = {
+                    "universityShort": "UVA",
+                    "universityLong": "University of Virginia",
+                    "subject": uvaSubject,
+                    "number": uvaNumber,
+                    "name": uvaName
+                }
+                equivCourseList = list()
+                equivCourseList.append(equivCourseDict)
+                oCourse.equivalentCourse = equivCourseList
+
+                oCourse.save()
+
 
                 uvaUniversityLong = "University of Virginia"
                 uvaUniversityShort = "UVA"
