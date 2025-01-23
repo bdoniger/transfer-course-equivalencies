@@ -1,6 +1,8 @@
 # Transfer Guide Project
 ## Link: https://transfer-credit-guide.herokuapp.com/
 
+### No longer being hosted
+
 - This is a website designed to make transferring credit from other universities/colleges to the University of Virginia easier and smoother. 
 - This project is being created as a semester-long assigment for CS3240 at UVA.
 
